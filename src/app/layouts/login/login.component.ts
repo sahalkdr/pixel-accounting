@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {UserService} from "../../shared/services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,14 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  onSubmit(): void {
+  constructor(private userService: UserService){}
+
+  async onSubmit(): Promise<void> {
+
+
+    let userDetails = await this.userService.login(this.username, this.password);
+
+    debugger;
     // For now, we just prevent the form from submitting and show a placeholder message
     this.errorMessage = 'Login functionality is not implemented yet.';
   }
