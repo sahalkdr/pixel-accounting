@@ -1,4 +1,4 @@
-.login-container {
+.signup-container {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
@@ -48,6 +48,12 @@
   
   .error-message {
     color: red;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .success-message {
+    color: green;
     text-align: center;
     margin-top: 10px;
   }
