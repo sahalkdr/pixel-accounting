@@ -1,26 +1,63 @@
 .dashboard-container {
+  height: 100vh;
+
+  .mat-sidenav {
+    width: 250px;
+    background-color: #656384; /* Dark shade of grey */
+    color: white; /* Text color in the sidebar */
+  }
+
+  .mat-toolbar {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white; /* Text color in the toolbar */
   }
-  
-  .navbar {
-    width: 200px;
-    background-color: #333;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+
+  .mat-nav-list {
+    a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+
+      mat-icon {
+        margin-right: 8px; /* Adjust icon-text spacing */
+      }
+
+      .plus-sign {
+        margin-left: auto;
+        margin-right: 5px; /* Adjust plus sign spacing */
+        color: #28a745; /* Change color of the plus sign */
+      }
+    }
+
+    .mat-list-item {
+      &.active {
+        background-color: rgba(255, 255, 255, 0.1); /* Light background for active item */
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1); /* Light background on hover */
+      }
+    }
   }
-  
-  .navbar a {
-    color: white;
-    text-decoration: none;
-    margin-bottom: 10px;
-  }
-  
-  .navbar a.active {
-    font-weight: bold;
-  }
-  
+
   .content {
-    flex-grow: 1;
-    padding: 20px;
+    padding: 1rem;
   }
+
+  .footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+}

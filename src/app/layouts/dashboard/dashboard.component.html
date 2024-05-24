@@ -1,11 +1,44 @@
-<div class="dashboard-container">
-    <nav class="navbar">
-      <a routerLink="/dashboard/home" routerLinkActive="active">Home</a>
-      <a routerLink="/dashboard/parties" routerLinkActive="active">Parties</a>
-      <a routerLink="/dashboard/items" routerLinkActive="active">Items</a>
-      <a routerLink="/dashboard/quickbilling" routerLinkActive="active">Quick Billing</a>
-    </nav>
+<mat-sidenav-container class="dashboard-container">
+  <mat-sidenav mode="side" opened>
+    <mat-toolbar color="primary">
+      Company Name
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <mat-list-item routerLink="/dashboard/home" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/parties" routerLinkActive="active">
+        <mat-icon>group</mat-icon>
+        <span>Parties</span>
+        <mat-icon class="plus-sign">add</mat-icon>
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/items" routerLinkActive="active">
+        <mat-icon>inventory</mat-icon>
+        <span>Items</span>
+        <mat-icon class="plus-sign">add</mat-icon>
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/quickbilling" routerLinkActive="active">
+        <mat-icon>receipt</mat-icon>
+        <span>Quick Billing</span>
+        <mat-icon class="plus-sign">add</mat-icon>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <span class="spacer"></span>
+      <button mat-raised-button color="accent">
+        <mat-icon>add</mat-icon> Add Sale
+      </button>
+    </mat-toolbar>
     <div class="content">
       <router-outlet></router-outlet>
     </div>
-  </div>
+    <!-- <footer class="footer">
+      <p>&copy; 2024 Company Name. All rights reserved.</p>
+    </footer> -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
