@@ -52,6 +52,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router} from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 
 @Component({
@@ -68,7 +69,7 @@ export class LoginComponent {
   errorMessage: string = '';
   successMessage: string = ''; // Ensure this line is present
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router:Router) {}
 
 //   async onSubmit(): Promise<void> {
 //     this.errorMessage = '';
@@ -98,6 +99,9 @@ async onSubmit(): Promise<void> {
 
     if (loginResponse.success) {
       this.successMessage = 'Login successful!';
+      setTimeout(() => {
+        this.router.navigate(['/dashboard']);
+      }, 2000);
       // Handle other actions after successful login, such as navigating to another page
     } else {
       this.errorMessage = loginResponse.message || 'Unknown error occurred';

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-items',
@@ -25,6 +27,10 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./items.component.scss'],
 })
 export class ItemsComponent {
+  constructor(private router: Router) { }
+  navigateToAddItem() {
+    this.router.navigate(['/item/add']);
+  }
   selectedSection: string = 'products';
   selectedProduct: any = null;
   products = [

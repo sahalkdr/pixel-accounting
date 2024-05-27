@@ -11,7 +11,7 @@
       <!-- Item Listing -->
       <div class="item-listing" *ngIf="selectedSection === 'products'">
         <div class="add-item">
-          <button mat-button>
+          <button mat-button (click)="navigateToAddItem()">
             <mat-icon>add</mat-icon> Add Item
           </button>
         </div>
@@ -27,14 +27,13 @@
         <div class="product-items">
           <div class="product-item" *ngFor="let product of products">
             <div class="item-info">
-              <span>{{ product.name }}</span>
+              <span>{{ product.name }}</span><mat-icon>home</mat-icon>
               <span>{{ product.quantity }}</span>
             </div>
-            <mat-icon class="options-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="editProduct(product)">Edit</button>
-              <button mat-menu-item (click)="deleteProduct(product)">Delete</button>
-            </mat-menu>
+            
+              <mat-icon>edit</mat-icon>
+              <mat-icon>delete</mat-icon>
+            
           </div>
         </div>
       </div>
@@ -48,7 +47,7 @@
       </div>
   
       <!-- Transaction Details -->
-      <div class="transaction-details">
+      <!-- <div class="transaction-details">
         <h2>Transaction Details</h2>
         <table mat-table [dataSource]="transactions" class="mat-elevation-z8">
           <ng-container matColumnDef="type">
@@ -81,4 +80,4 @@
         </table>
       </div>
     </div>
-  </div>
+  </div> -->

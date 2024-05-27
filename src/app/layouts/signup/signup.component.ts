@@ -39,6 +39,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 
 @Component({
@@ -56,7 +57,7 @@ export class SignupComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router:Router) { }
 
   async onSubmit(): Promise<void> {
     this.errorMessage = '';
@@ -66,6 +67,9 @@ export class SignupComponent {
 
     if (result.success) {
       this.successMessage = 'Signup successful!';
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2000);
     } else {
       this.errorMessage = result.message;
     }

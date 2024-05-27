@@ -1,0 +1,24 @@
+<div class="add-party-container">
+    <h2>Add Party</h2>
+    <form (submit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" [(ngModel)]="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" [(ngModel)]="phone" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" [(ngModel)]="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" [(ngModel)]="address" name="address" required></textarea>
+      </div>
+      <button type="submit">Add Party</button>
+    </form>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  </div>
