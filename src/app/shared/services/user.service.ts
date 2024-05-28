@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 // import { HttpClient } from '@angular/common/http';
 // import { Observable } from 'rxjs';
 
@@ -8,13 +11,15 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService,private http: HttpClient) { }
 
   
  
   public userDetails: { username: string, password: string, token: string } = { username: "", password: "", token: "" };
 
-  
+  fetchParties(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost/restaurant/get-parties.php');
+  }
   
   async login(username: string, password: string) {
     const payload = { username, password };
@@ -120,9 +125,7 @@ export class UserService {
     }
   }
 
-  // fetchParties(): Observable<any[]> {
-  //   return this.http.get<any[]>('http://localhost/restaurant/api/parties');
-  // }
+  
 
   
 }

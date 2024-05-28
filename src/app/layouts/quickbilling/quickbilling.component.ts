@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Item {
   code: string;
@@ -14,10 +16,15 @@ interface Item {
 @Component({
   selector: 'app-quickbilling',
   templateUrl: './quickbilling.component.html',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   styleUrls: ['./quickbilling.component.scss']
 })
 export class QuickbillingComponent implements OnInit {
-  items: Item[] = [];
+  items: Item[] = [
+    { code: '', name: '', quantity: 0, unit: '', price: 0, discount: 0, tax: 0, total: 0 }
+  ];
+
   customerDetails: any = null; // Define the structure for customer details
   paymentMode: string = 'Cash';
   amountReceived: number = 0;
@@ -25,6 +32,13 @@ export class QuickbillingComponent implements OnInit {
   ngOnInit(): void {
     // Initialization logic here
     this.loadItems();
+  }
+
+  calculateItemTotal(item: Item): number {
+    const subtotal = item.quantity * item.price;
+    const discountAmount = (item.discount / 100) * subtotal;
+    const taxAmount = (item.tax / 100) * (subtotal - discountAmount);
+    return subtotal - discountAmount + taxAmount;
   }
 
   loadItems(): void {

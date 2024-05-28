@@ -16,28 +16,26 @@
       <div class="search-bar">
         <div class="search-field">
           <input type="text" placeholder="Search">
-
           <mat-icon>search</mat-icon>
         </div>
       </div>
       <div class="party-items">
         <div class="party-item" *ngFor="let party of parties">
-          <div class="item-info">
-            <span>{{ party.name }}</span><mat-icon>home</mat-icon>
-            <span class="options-icon">&#8942;</span>
+          <div class="item-info" (click)="showPartyDetails(party)">
+            <span>{{ party.name }}</span>
           </div>
           <div class="options">
-            <mat-icon>edit</mat-icon>
-            <mat-icon>delete</mat-icon>
+            <mat-icon (click)="editParty(party)">edit</mat-icon>
+            <mat-icon (click)="deleteParty(party)">delete</mat-icon>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Right section: Party Details and Transactions -->
-    <!-- <div class="right-section">
+    <div class="right-section" *ngIf="selectedParty">
       <div class="right-upper-section">
-        <div class="party-details" *ngIf="selectedParty">
+        <div class="party-details">
           <h2>{{ selectedParty.name }}</h2>
           <p><span class="icon">&#128222;</span> Phone: {{ selectedParty.phone }}</p>
           <p><span class="icon">&#9993;</span> Email: {{ selectedParty.email }}</p>
@@ -70,4 +68,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
