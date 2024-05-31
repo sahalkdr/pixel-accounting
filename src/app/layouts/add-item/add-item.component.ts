@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,30 +11,49 @@ import { UserService } from '../../shared/services/user.service';
   templateUrl: './add-item.component.html',
   styleUrl: './add-item.component.scss'
 })
-export class AdditemComponent {
+export class AdditemComponent implements OnInit{
 
-  itemName: string = '';
-  itemHSN: string = '';
-  category: string = '';
-  salePrice: number = 0;
-  stock: number = 0;
-  purchasePrice: number = 0;
-  taxRate: number = 0;
-  showPricingSection: boolean = true;
-  successMessage:string='';
-  errorMessage:string='';
+  newItem = {
+    name: '',
+    category_id: 0,
+    sale_price: 0,
+    stock: 0,
+    unit: '',
+    discount: 0
+  };
+  categories: { id: number, name: string }[] = [];
 
   constructor(private userService: UserService, private router: Router) { }
+  ngOnInit() {
+    this.loadCategories(); // Load categories when the component initializes
+  }
 
-  async onSubmit() {
-    const result = await this.userService.addItem(this.itemName, this.category, this.salePrice, this.itemHSN);
+  async loadCategories() {
+    try {
+      // Fetch categories from your UserService or API
+      const response = await this.userService.fetchCategories(); // Assuming you have a method for fetching categories
+      if (response.success) {
+        this.categories = response.categories;
+      } else {
+        console.error('Failed to fetch categories:', response.message);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  }
+
+  
+  async addItem() {
+    const result = await this.userService.addItem(this.newItem);
 
     if (result.success) {
-      this.successMessage = 'Item added successfully!';
-      // Navigate to another page or reset form
-      this.router.navigate(['/items']);  // Example: Navigate to items list
+      alert('Item added successfully');
+      setTimeout(() => {
+        this.router.navigate(['/dashboard/items']);
+      }, 2000);
+      // Reset form or navigate away
     } else {
-      this.errorMessage = result.message;
+      alert('Failed to add item: ' + result.message);
     }
   }
 
@@ -51,28 +70,28 @@ export class AdditemComponent {
   //   // You might want to call a service to save the item to the server
   // }
 
-  selectUnit() {
-    // Logic to select unit
-  }
+  // selectUnit() {
+  //   // Logic to select unit
+  // }
 
-  assignCode() {
-    // Logic to assign code
-  }
+  // assignCode() {
+  //   // Logic to assign code
+  // }
 
-  addItemImage() {
-    // Logic to add item image
-  }
+  // addItemImage() {
+  //   // Logic to add item image
+  // }
 
-  showPricing() {
-    this.showPricingSection = true;
-  }
+  // showPricing() {
+  //   this.showPricingSection = true;
+  // }
 
-  showStock() {
-    this.showPricingSection = false;
-  }
+  // showStock() {
+  //   this.showPricingSection = false;
+  // }
 
-  addWholesalePrice() {
-    // Logic to add wholesale price
-  }
+  // addWholesalePrice() {
+  //   // Logic to add wholesale price
+  // }
 
 }

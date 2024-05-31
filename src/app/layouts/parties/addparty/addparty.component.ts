@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 
@@ -22,7 +23,8 @@ export class AddpartyComponent {
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router,    private dialogRef: MatDialogRef<AddpartyComponent>
+  ) { }
   
 
   // async onSubmit(): Promise<void> {
@@ -47,10 +49,14 @@ export class AddpartyComponent {
     if (result.success) {
       this.successMessage = 'Party added successfully!';
       // Navigate to another page or reset form
-      this.router.navigate(['/parties']);  // Example: Navigate to parties list
+      this.dialogRef.close({ success: true, party: { name: this.name, phone: this.phone, email: this.email, address: this.address } });
     } else {
       this.errorMessage = result.message;
     }
+  }
+
+  onCancel(): void {
+    this.dialogRef.close({ success: false });
   }
   
 

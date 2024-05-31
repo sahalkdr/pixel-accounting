@@ -13,6 +13,31 @@
     background-color: #fff;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   }
+  .suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  
+  .suggestions ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .suggestions li {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .suggestions li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  
   
   .table-container {
     height: calc(100vh - 80px);
@@ -119,37 +144,8 @@
     }
   
     .customer-search {
-      position: relative;
+      height: 40%;
     }
-    
-    .customer-search ul {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      border: 1px solid #ccc;
-      background: #fff;
-      z-index: 1000;
-    }
-    
-    .customer-search ul li {
-      padding: 8px;
-      cursor: pointer;
-    }
-    
-    .customer-search ul li:hover {
-      background: #f0f0f0;
-    }
-    
-    .customer-search button {
-      margin-top: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    
   
     .billing-details {
       height: 60%;

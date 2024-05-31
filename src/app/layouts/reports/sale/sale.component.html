@@ -1,0 +1,71 @@
+<div class="container">
+    <!-- Header -->
+    <!-- <div class="header">
+      <div class="title">Enter Business Name</div>
+      <div class="actions">
+        <button class="custom-button primary">Add Sale</button>
+        <button class="custom-button accent">Add Purchase</button>
+        <button class="custom-button warn">Add More</button>
+      </div>
+    </div> -->
+  
+    <!-- Summary -->
+    <div class="filters">
+    <div class="dropdown">
+        <select>
+            <option value="this-month">This Month</option>
+            <option value="last-month">Last Month</option>
+            <option value="this-year">This Year</option>
+        </select>
+    </div>
+    <div class="date-picker">
+        <label for="from-date">From:</label>
+        <input type="date" id="from-date" name="from-date">
+        <label for="to-date">To:</label>
+        <input type="date" id="to-date" name="to-date">
+    </div>
+    
+    </div>
+    <div class="summary">
+      <div class="summary-item paid">
+        <div class="label">Paid</div>
+        <div class="amount">₹3,062.50</div>
+      </div>
+      <div class="summary-item unpaid">
+        <div class="label">Unpaid</div>
+        <div class="amount">₹0.00</div>
+      </div>
+      <div class="summary-item total">
+        <div class="label">Total</div>
+        <div class="amount">₹3,062.50</div>
+      </div>
+    </div>
+  
+    <!-- Transactions Table -->
+    <div class="transactions">
+      <table class="normal-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Invoice No.</th>
+            <th>Party Name</th>
+            <th>Transaction Type</th>
+            <th>Payment Type</th>
+            <th>Amount</th>
+            <th>Balance Due</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let element of transactions">
+            <td>{{element.date}}</td>
+            <td>{{element.invoiceNo}}</td>
+            <td>{{element.partyName}}</td>
+            <td>{{element.transactionType}}</td>
+            <td>{{element.paymentType}}</td>
+            <td>₹{{element.amount}}</td>
+            <td>₹{{element.balanceDue}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

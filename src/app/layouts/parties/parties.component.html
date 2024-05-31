@@ -9,20 +9,22 @@
     <!-- Left section: Search, Add Party, Party List -->
     <div class="left-section">
       <div class="add-party">
-        <button class="btn-primary" (click)="navigateToAddParty()">
+        <button class="btn-primary" (click)="openAddPartyDialog()">
           <span class="icon">+</span> Add Party
         </button>
       </div>
       <div class="search-bar">
         <div class="search-field">
-          <input type="text" placeholder="Search">
+          <input type="text" placeholder="Search" (input)="filterParties($event)">
+
           <mat-icon>search</mat-icon>
         </div>
       </div>
       <div class="party-items">
-        <div class="party-item" *ngFor="let party of parties">
-          <div class="item-info" (click)="showPartyDetails(party)">
-            <span>{{ party.name }}</span>
+        <div class="party-item" *ngFor="let party of filteredParties">
+          <div class="item-info">
+            <span>{{ party.name }}</span><mat-icon>home</mat-icon>
+            <span class="options-icon">&#8942;</span>
           </div>
           <div class="options">
             <mat-icon (click)="editParty(party)">edit</mat-icon>
@@ -32,40 +34,14 @@
       </div>
     </div>
 
-    <!-- Right section: Party Details and Transactions -->
-    <div class="right-section" *ngIf="selectedParty">
-      <div class="right-upper-section">
-        <div class="party-details">
-          <h2>{{ selectedParty.name }}</h2>
-          <p><span class="icon">&#128222;</span> Phone: {{ selectedParty.phone }}</p>
-          <p><span class="icon">&#9993;</span> Email: {{ selectedParty.email }}</p>
-          <p><span class="icon">&#127968;</span> Address: {{ selectedParty.address }}</p>
-          <button class="btn-primary" (click)="adjustParty(selectedParty)">Adjust Party</button>
-        </div>
-      </div>
-      <div class="transaction-details">
-        <h2>Transaction Details</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Quantity</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let transaction of transactions">
-              <td>{{ transaction.type }}</td>
-              <td>{{ transaction.name }}</td>
-              <td>{{ transaction.date }}</td>
-              <td>{{ transaction.quantity }}</td>
-              <td>{{ transaction.price }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="product-details" *ngIf="selectedParty">
+      <h2>{{ selectedParty.name }}</h2>
+      <p>Phone: {{ selectedParty.phone }}</p>
+      <p>Email: {{ selectedParty.email }}</p>
+      <p>Address: {{ selectedParty.address }}</p>
+      
+      <button mat-raised-button color="primary" (click)="openEditDialog(selectedParty)">Adjust Item</button>
     </div>
-  </div>
-</div>
+      
+   </div>
+</div> 
