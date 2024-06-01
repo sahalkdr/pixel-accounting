@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
+import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.component';
 
 import { AppComponent } from './app.component';
 import { PartiesComponent } from './layouts/parties/parties.component';

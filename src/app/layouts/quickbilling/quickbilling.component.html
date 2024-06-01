@@ -94,6 +94,7 @@
     <div class="actions">
       <button mat-button (click)="saveBill()">Save</button>
     </div>
+    <button (click)="viewBillDetails()">View Bill</button>
     <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   </div>

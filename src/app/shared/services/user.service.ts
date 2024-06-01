@@ -251,20 +251,28 @@ export class UserService {
     }
   }
 
-  async savePayment(payment: any) {
+  async saveBillItems(billId: number, items: { Id: number, quantity: number }[]) {
+    const payload = { bill_id: billId, items };
+  
     try {
-      const response = await this.apiService.httpRequest({
+      const saveBillItemsResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/add_payment.php',
-        data: payment
+        url: 'http://localhost/restaurant/saveBillItems.php',
+        data: payload
       });
-
-      return response.success ? { success: true } : { success: false, message: response.error };
+  
+      if (saveBillItemsResponse.success) {
+        return { success: true };
+      } else {
+        console.error('Save bill items error:', saveBillItemsResponse.error);
+        return { success: false, message: saveBillItemsResponse.error || 'Error saving items' };
+      }
     } catch (error) {
-      console.error('Save payment error:', error);
-      return { success: false, message: 'An error occurred while saving the payment. Please try again later.' };
+      console.error('Save bill items error:', error);
+      return { success: false, message: 'An error occurred while saving the bill items. Please try again later.' };
     }
   }
+  
 
 
   async deleteItem(id: number) {
