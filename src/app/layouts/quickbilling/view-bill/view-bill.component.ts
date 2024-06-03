@@ -20,7 +20,7 @@ export class ViewBillComponent implements OnInit {
 
   ngOnInit(): void {
     const billId = this.route.snapshot.queryParamMap.get('bill_id');
-    console.log('Bill ID from route:', billId); // Debugging line
+    console.log('Bill ID from route:', billId); 
     if (billId) {
       this.fetchBillDetails(billId);
     }
@@ -33,16 +33,16 @@ export class ViewBillComponent implements OnInit {
   fetchBillDetails(billId: string | null): void {
     if (billId) {
       const url = `http://localhost/restaurant/get_bill_details.php?bill_id=${billId}`;
-      console.log('Fetching bill details from URL:', url); // Debugging line
+      console.log('Fetching bill details from URL:', url);
 
       this.http.get<{ success: boolean, data: any }>(url)
         .subscribe({
           next: (data: any) => {
             if (data.success) {
-              console.log('Fetched bill details:', data.data); // Debugging line
+              console.log('Fetched bill details:', data.data); 
               this.billDetails = data.data;
             } else {
-              console.error('Error fetching bill details:', data.message); // Debugging line
+              console.error('Error fetching bill details:', data.message); 
             }
           },
           error: (err) => {

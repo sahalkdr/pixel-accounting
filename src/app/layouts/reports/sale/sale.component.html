@@ -10,7 +10,7 @@
     </div> -->
   
     <!-- Summary -->
-    <div class="filters">
+    <!-- <div class="filters">
     <div class="dropdown">
         <select>
             <option value="this-month">This Month</option>
@@ -23,22 +23,25 @@
         <input type="date" id="from-date" name="from-date">
         <label for="to-date">To:</label>
         <input type="date" id="to-date" name="to-date">
+        <button (click)="filterByDateRange()">Filter</button>
     </div>
     
-    </div>
+    </div> -->
     <div class="summary">
       <div class="summary-item paid">
-        <div class="label">Paid</div>
-        <div class="amount">₹3,062.50</div>
+        <div class="label">Total</div>
+        <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
       </div>
-      <div class="summary-item unpaid">
+      <!-- <div class="summary-item unpaid">
         <div class="label">Unpaid</div>
         <div class="amount">₹0.00</div>
       </div>
       <div class="summary-item total">
         <div class="label">Total</div>
-        <div class="amount">₹3,062.50</div>
-      </div>
+        <div class="amount">₹₹{{ totalPaidAmount.toFixed(2) }}
+
+        </div>
+      </div> -->
     </div>
   
     <!-- Transactions Table -->
@@ -47,25 +50,34 @@
         <thead>
           <tr>
             <th>Date</th>
-            <th>Invoice No.</th>
+            <th>Bill No.</th>
             <th>Party Name</th>
-            <th>Transaction Type</th>
-            <th>Payment Type</th>
-            <th>Amount</th>
-            <th>Balance Due</th>
+            <th>Payment Mode</th>
+            
+            <th>Subtotal</th>
+            <th>Total Amount</th>
+            <th>Amount Received</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let element of transactions">
-            <td>{{element.date}}</td>
-            <td>{{element.invoiceNo}}</td>
-            <td>{{element.partyName}}</td>
-            <td>{{element.transactionType}}</td>
-            <td>{{element.paymentType}}</td>
-            <td>₹{{element.amount}}</td>
-            <td>₹{{element.balanceDue}}</td>
+          <tr *ngFor="let bill of saledetails.bills">
+            <td>{{ bill.created_at }}</td>
+            <td>{{ bill.bill_id }}</td>
+            <td>{{ bill.customer_name }}</td>
+            <td>{{ bill.payment_mode }}</td>
+            
+            <td>{{ bill.subtotal }}</td>
+            <td>{{ bill.total_amount }}</td>
+            <td>{{ bill.amount_received }}</td>
+            <!-- <td><mat-icon (click)="viewBillDetails(bill.bill_id)">print</mat-icon></td> -->
+            
           </tr>
         </tbody>
       </table>
+      <button (click)="viewReport()">Print</button>
+      
+      
+      
+      
     </div>
   </div>

@@ -11,6 +11,7 @@ import { SaleComponent } from './layouts/reports/sale/sale.component';
 import { AdditemComponent } from './layouts/add-item/add-item.component';
 import { AddpartyComponent } from './layouts/parties/addparty/addparty.component'
 import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.component';
+import { PrintSaleReportComponent } from './layouts/reports/print-sale-report/print-sale-report.component';
 // import { AddpartyComponent } from './layouts/parties/addparty/addparty.component;
 
 export const routes: Routes = [
@@ -29,6 +30,7 @@ export const routes: Routes = [
         { path: 'quickbilling', component: QuickbillingComponent },
         { path: 'item/add', component: AdditemComponent },
         { path: 'parties/add', component: AddpartyComponent },
-        { path: 'bill-details', component: ViewBillComponent }
+        { path: 'bill-details', component: ViewBillComponent },
+        { path: 'sale-details', component: PrintSaleReportComponent }
         
 ];

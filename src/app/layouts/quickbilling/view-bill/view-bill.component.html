@@ -1,5 +1,10 @@
 <div *ngIf="billDetails" class="bill-container">
-    <h2>Bill Details</h2>
+   
+   
+      <h2>CompanyName</h2>
+      <h3> Place</h3>
+      <h3> 9856745676</h3>
+    
     <div class="bill-info">
       <div class="bill-info-row">
         <span class="label"><strong>Customer Name:</strong></span>
@@ -11,15 +16,15 @@
       </div>
       <div class="bill-info-row">
         <span class="label"><strong>Date:</strong></span>
-        <span class="value">{{ billDetails.bill.created_at | date: 'short' }}</span>
+        <span class="value">{{ billDetails.bill.created_at | date: 'dd-MM-yy' }}</span>
       </div>
       <div class="bill-info-row">
         <span class="label"><strong>Subtotal:</strong></span>
-        <span class="value">{{ billDetails.bill.subtotal | currency }}</span>
+        <span class="value">₹{{ billDetails.bill.subtotal  }}</span>
       </div>
       <div class="bill-info-row">
         <span class="label"><strong>Total Amount:</strong></span>
-        <span class="value">{{ billDetails.bill.total_amount | currency }}</span>
+        <span class="value">₹{{ billDetails.bill.total_amount  }}</span>
       </div>
       <div class="bill-info-row">
         <span class="label"><strong>Payment Mode:</strong></span>
@@ -27,7 +32,7 @@
       </div>
       <div class="bill-info-row">
         <span class="label"><strong>Amount Received:</strong></span>
-        <span class="value">{{ billDetails.bill.amount_received | currency }}</span>
+        <span class="value">₹{{ billDetails.bill.amount_received  }}</span>
       </div>
     </div>
   
