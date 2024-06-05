@@ -19,9 +19,12 @@ export class AdditemComponent implements OnInit{
     sale_price: 0,
     stock: 0,
     unit: '',
-    discount: 0
+    discount: 0,
+    has_tax:false,
+    tax_rate:0
+    
   };
-  categories: { id: number, name: string }[] = [];
+  categories: { id: number, name: string,tax_rate:number }[] = [];
 
   constructor(private userService: UserService, private router: Router) { }
   ngOnInit() {
@@ -41,9 +44,20 @@ export class AdditemComponent implements OnInit{
       console.error('Error fetching categories:', error);
     }
   }
+  onCategoryChange(event: any) {
+    const selectedCategory = this.categories.find(category => category.id === +event.target.value);
+    if (selectedCategory) {
+      this.newItem.tax_rate = selectedCategory.tax_rate;
+    }
+  }
 
   
   async addItem() {
+    if(!this.newItem.has_tax)
+    {
+      this.newItem.tax_rate=0;
+    }
+
     const result = await this.userService.addItem(this.newItem);
 
     if (result.success) {
@@ -57,41 +71,7 @@ export class AdditemComponent implements OnInit{
     }
   }
 
-  // onSubmit() {
-  //   // Add your logic to handle the form submission
-  //   console.log('Item added:', {
-  //     itemName: this.itemName,
-  //     itemHSN: this.itemHSN,
-  //     category: this.category,
-  //     salePrice: this.salePrice,
-  //     purchasePrice: this.purchasePrice,
-  //     taxRate: this.taxRate
-  //   });
-  //   // You might want to call a service to save the item to the server
-  // }
-
-  // selectUnit() {
-  //   // Logic to select unit
-  // }
-
-  // assignCode() {
-  //   // Logic to assign code
-  // }
-
-  // addItemImage() {
-  //   // Logic to add item image
-  // }
-
-  // showPricing() {
-  //   this.showPricingSection = true;
-  // }
-
-  // showStock() {
-  //   this.showPricingSection = false;
-  // }
-
-  // addWholesalePrice() {
-  //   // Logic to add wholesale price
-  // }
-
+  
+  
+  
 }

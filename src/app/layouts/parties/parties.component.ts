@@ -5,6 +5,7 @@ import { UserService } from '../../shared/services/user.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { EditPartyDialogComponent } from './edit-party-dialog/edit-party-dialog.component';
 import { AddpartyComponent } from './addparty/addparty.component';
@@ -16,13 +17,16 @@ import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dia
 @Component({
   selector: 'app-parties',
   standalone: true,
-  imports: [CommonModule,MatIconModule,HttpClientModule],
+  imports: [CommonModule,MatIconModule,HttpClientModule,NgxPaginationModule],
   templateUrl: './parties.component.html',
   styleUrl: './parties.component.scss'
 })
 export class PartiesComponent implements OnInit{
   public parties: any[] = [];
   public filteredParties: any[] = [];
+  p:number=1;
+  itemsPerPage:number=5;
+  totalParty:any;
   // constructor(private http:HttpClient){}
   selectedSection: string = 'parties';
   selectedParty: any = null;
@@ -34,6 +38,7 @@ export class PartiesComponent implements OnInit{
     { type: 'Sale', name: 'Item 1', date: '2023-01-01', quantity: 10, price: 100 },
     { type: 'Purchase', name: 'Item 2', date: '2023-02-01', quantity: 5, price: 50 }
   ];
+
 
   showSection(section: string) {
     this.selectedSection = section;
@@ -74,6 +79,7 @@ export class PartiesComponent implements OnInit{
         console.log(resp);
         this.parties=resp;
         this.filteredParties = resp;
+        this.totalParty=resp.length;
       }
     )
 
@@ -88,7 +94,9 @@ export class PartiesComponent implements OnInit{
       if (result.success) {
         this.parties.push(result.party);
         this.filteredParties = [...this.parties];
+        this.totalParty=[...this.parties].length;
       }
+      
     });
   }
 
@@ -98,6 +106,10 @@ export class PartiesComponent implements OnInit{
     this.filteredParties = this.parties.filter(party => 
       party.name.toLowerCase().includes(query)
     );
+    this.totalParty=this.parties.filter(party => 
+      party.name.toLowerCase().includes(query)
+    ).length;
+
   }
   deleteParty(party: any) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);

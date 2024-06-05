@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { EditPartyDialogComponent } from './edit-party-dialog/edit-party-dialog.component';
 import { PartiesComponent } from './parties.component';
 // Remove the import for ItemsComponent since it's standalone
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PartiesComponent } from './parties.component';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxPaginationModule,
     MatIconModule,
     MatDialogModule,
     MatButtonModule,

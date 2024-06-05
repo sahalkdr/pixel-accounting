@@ -7,7 +7,7 @@
     </div>
     <div class="form-group">
       <label for="category">Category:</label>
-      <select id="category" name="category" [(ngModel)]="newItem.category_id" required>
+      <select id="category" name="category" [(ngModel)]="newItem.category_id" (change)="onCategoryChange($event)" required>
         <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
       </select>
     </div>
@@ -26,6 +26,14 @@
     <div class="form-group">
       <label for="discount">Discount:</label>
       <input type="number" id="discount" name="discount" [(ngModel)]="newItem.discount" required>
+    </div>
+    <div class="form-group">
+      <label for="hasTax">Has Tax:</label>
+      <input type="checkbox" id="hasTax" name="hasTax" [(ngModel)]="newItem.has_tax">
+    </div>
+    <div class="form-group" *ngIf="newItem.has_tax">
+      <label for="taxRate">Tax Rate:</label>
+      <input type="number" id="taxRate" name="taxRate" [(ngModel)]="newItem.tax_rate">
     </div>
     <button type="submit" [disabled]="addItemForm.invalid">Add Item</button>
   </form>

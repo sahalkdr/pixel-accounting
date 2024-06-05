@@ -21,10 +21,10 @@
         </div>
       </div>
       <div class="party-items">
-        <div class="party-item" *ngFor="let party of filteredParties">
+        <div class="party-item" *ngFor="let party of filteredParties | paginate: {itemsPerPage:itemsPerPage,currentPage:p}">
           <div class="item-info">
-            <span>{{ party.name }}</span><mat-icon>home</mat-icon>
-            <span class="options-icon">&#8942;</span>
+            <span>{{ party.name }}</span>
+            
           </div>
           <div class="options">
             <mat-icon (click)="editParty(party)">edit</mat-icon>
@@ -32,7 +32,11 @@
           </div>
         </div>
       </div>
+      <div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
     </div>
+    
 
     <div class="product-details" *ngIf="selectedParty">
       <h2>{{ selectedParty.name }}</h2>
@@ -42,6 +46,8 @@
       
       <button mat-raised-button color="primary" (click)="openEditDialog(selectedParty)">Adjust Item</button>
     </div>
+
+   
       
    </div>
 </div> 

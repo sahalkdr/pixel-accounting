@@ -31,6 +31,7 @@
             <span>{{ product.name }}</span>
             <span>{{ product.stock }}</span>
             <span>{{ product.sale_price }}</span>
+            
           </div>
           <mat-icon (click)="editProduct(product)">edit</mat-icon>
           <mat-icon (click)="deleteProduct(product)">delete</mat-icon>
@@ -100,6 +101,8 @@
       <p>Category: {{ selectedProduct.category_name }}</p>
       <p>Unit: {{ selectedProduct.unit }}</p>
       <p>Discount: {{ selectedProduct.discount }}</p>
+      <p>Tax: {{ selectedProduct.tax_rate }}</p>
+      
       <button mat-raised-button color="primary" (click)="openEditDialog(selectedProduct)">Adjust Item</button>
     </div>
     
