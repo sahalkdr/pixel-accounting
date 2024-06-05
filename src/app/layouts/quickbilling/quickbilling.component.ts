@@ -20,6 +20,8 @@ interface Item {
   total: number;
   category_id: number;
   tax_rate: number;
+
+  stock:number;
 }
 
 interface Customer {
@@ -55,6 +57,8 @@ export class QuickbillingComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
   billId: number = 0;
+  showStockWarning: boolean = false;
+
 
   constructor(private userService: UserService, private http: HttpClient, private router: Router, private route: ActivatedRoute, private dialog: MatDialog, private fb: FormBuilder) {
     this.billingForm = this.fb.group({
@@ -127,6 +131,9 @@ export class QuickbillingComponent implements OnInit {
     }
   }
 
+  
+  
+
   async saveBill() {
     const billData = {
       party_id: this.customerDetails ? this.customerDetails.id : null,
@@ -135,7 +142,7 @@ export class QuickbillingComponent implements OnInit {
       payment_mode: this.paymentMode,
       amount_received: this.amountReceived
     };
-
+  
     try {
       // Save the bill first and get the bill ID
       const saveBillResponse = await this.userService.saveBill(billData);
@@ -144,26 +151,26 @@ export class QuickbillingComponent implements OnInit {
         return;
       }
       this.billId = saveBillResponse.billId;
-
+  
       // Save the items and quantities associated with the bill
       const itemsData = this.filteredProducts.map(item => ({
         Id: item.id, // Assuming you have an 'id' property for each item
         quantity: item.quantity
       }));
-
+  
       const saveItemsResponse = await this.userService.saveBillItems(this.billId, itemsData);
       if (!saveItemsResponse.success) {
         this.errorMessage = saveItemsResponse.message || 'Error saving items';
-        // Optionally, you may want to roll back the bill creation here if items saving fails
         return;
       }
-
+  
       this.successMessage = 'Bill and items saved successfully!';
     } catch (error) {
       console.error('Error saving bill or items:', error);
       this.errorMessage = 'An error occurred while saving the bill or items. Please try again later.';
     }
   }
+  
 
   viewBillDetails(): void {
     this.router.navigate(['/bill-details'], { queryParams: { bill_id: this.billId } });
@@ -187,8 +194,15 @@ export class QuickbillingComponent implements OnInit {
     this.suggestedItems = [];
     this.noItemsFound = false;
     const selectedItem = { ...item, quantity: 1, total: this.calculateItemTotal(item) };
-    this.filteredProducts.push(selectedItem);
-    this.updateItemTotal(selectedItem);
+    // this.filteredProducts.push(selectedItem);
+    // this.updateItemTotal(selectedItem);
+    if (selectedItem.quantity > item.stock) {
+      this.showStockWarning = true; // Display warning if stock not available
+    } else {
+      this.filteredProducts.push(selectedItem);
+      this.updateItemTotal(selectedItem);
+    }
+
   }
 
   selectCustomer(customer: Customer): void {
@@ -221,7 +235,14 @@ export class QuickbillingComponent implements OnInit {
   }
 
   onQuantityChange(item: Item): void {
-    this.updateItemTotal(item);
+    // this.updateItemTotal(item);
+    if (item.quantity > item.stock) {
+      this.showStockWarning = true; // Display warning if stock not available
+    } else {
+      this.showStockWarning = false;
+      this.updateItemTotal(item);
+    }
+
   }
 
   calculateSubtotal(): number {
