@@ -58,8 +58,28 @@ calculateTotalPaidAmount() {
 }
 
 filterByDateRange() {
-  this.fetchSaleDetails();
+  const fromDate = (<HTMLInputElement>document.getElementById('from-date')).value;
+  const toDate = (<HTMLInputElement>document.getElementById('to-date')).value;
+  const partyName = (<HTMLInputElement>document.getElementById('party-name')).value;
+
+  let url = `http://localhost/restaurant/get_all_bill_details.php?from_date=${fromDate}&to_date=${toDate}`;
+  
+  if (partyName.trim() !== '') {
+      url += `&party_name=${encodeURIComponent(partyName)}`;
+  }
+  
+  this.http.get<SaleDetails>(url).subscribe(
+      (resp: SaleDetails) => {
+          console.log(resp);
+          this.saledetails = resp;
+          this.calculateTotalPaidAmount();
+      },
+      error => {
+          console.error('Error:', error);
+      }
+  );
 }
+
 
 
   fetchSaleDetails() {
