@@ -10,13 +10,13 @@ import { EditItemDialogComponent } from './edit-item-dialog/edit-item-dialog.com
 import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 import { ItemsComponent } from './items.component';
-// Remove the import for ItemsComponent since it's standalone
+
 
 @NgModule({
   declarations: [
     EditItemDialogComponent ,
     AddCategoryDialogComponent,
-    EditCategoryDialogComponent// Only declare non-standalone components
+    EditCategoryDialogComponent
   ],
   imports: [
     CommonModule,
@@ -27,13 +27,13 @@ import { ItemsComponent } from './items.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    // Import standalone components here
+    
     ItemsComponent
   ],
   exports: [
     EditItemDialogComponent,
     AddCategoryDialogComponent,
-    EditCategoryDialogComponent // Export non-standalone components if needed
+    EditCategoryDialogComponent 
   ]
 })
 export class ItemsModule { }

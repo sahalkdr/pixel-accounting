@@ -1,35 +1,35 @@
 .bill-container {
-  max-width: 500px; // Further reduce the width for smaller print size
+  max-width: 500px; 
   margin: 0 auto;
-  padding: 10px; // Keep padding small
+  padding: 10px; 
   background: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
-  font-size: 10px; // Smaller font size for compactness
+  font-size: 10px; 
 }
 
 .company-details {
   text-align: center;
-  margin-bottom: 10px; // Reduce margin for compactness
+  margin-bottom: 10px; 
   h5 {
-      font-size: 16px; // Smaller font size
-      margin: 5px 0; // Reduce margin
+      font-size: 16px; 
+      margin: 5px 0; 
   }
   h6 {
-      font-size: 12px; // Smaller font size
-      margin: 3px 0; // Reduce margin
+      font-size: 12px; 
+      margin: 3px 0; 
   }
 }
 
 .bill-info {
-  margin-bottom: 15px; // Reduce margin for compactness
+  margin-bottom: 15px; 
 }
 
 .bill-info-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px; // Reduce margin for compactness
+  margin-bottom: 5px; 
 }
 
 .label {
@@ -48,7 +48,7 @@
 }
 
 .items-table th, .items-table td {
-  padding: 6px; // Reduce padding for compactness
+  padding: 6px; 
   border: 1px solid #ddd;
   text-align: center;
 }
@@ -72,15 +72,15 @@
 
 .print-button {
   display: block;
-  width: 80px; // Reduce width for compactness
-  margin: 10px auto; // Reduce margin for compactness
-  padding: 8px 16px; // Reduce padding for compactness
+  width: 80px; 
+  margin: 10px auto; 
+  padding: 8px 16px; 
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px; // Reduce font size for compactness
+  font-size: 14px; 
 }
 
 .print-button:hover {
@@ -88,7 +88,7 @@
 }
 
 @media print {
-  /* Define styles for printing */
+  
   button {
       display: none;
   }

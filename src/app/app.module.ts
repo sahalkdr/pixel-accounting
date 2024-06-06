@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { ItemsModule } from './layouts/items/items.module'; // Import the ItemsModule
+import { ItemsModule } from './layouts/items/items.module'; 
 import { PartiesModule } from './layouts/parties/parties.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,8 +22,8 @@ import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.co
 import { AppComponent } from './app.component';
 import { PartiesComponent } from './layouts/parties/parties.component';
 import { QuickbillingComponent } from './layouts/quickbilling/quickbilling.component';
-import { ItemsComponent } from './layouts/items/items.component'; // Adjust the path as necessary
-import { ReportsComponent } from './layouts/reports/reports.component'; // Import the ReportsComponent
+import { ItemsComponent } from './layouts/items/items.component'; 
+import { ReportsComponent } from './layouts/reports/reports.component'; 
 
 
 import { UserService } from './shared/services/user.service';
@@ -33,7 +33,7 @@ import { EditCategoryDialogComponent } from './layouts/items/edit-category-dialo
 const appRoutes: Routes = [
     { path: 'parties', component: PartiesComponent },
     { path: 'items', component: ItemsComponent },
-    // Other routes
+   
 ];
 
 @NgModule({
@@ -61,7 +61,7 @@ const appRoutes: Routes = [
         MatTableModule,
         RouterModule.forRoot(appRoutes),
         ItemsModule, 
-        PartiesModule // Import ItemsModule here
+        PartiesModule 
     ],
     providers: [UserService, ApiService],
     bootstrap: [AppComponent]

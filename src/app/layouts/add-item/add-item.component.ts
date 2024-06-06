@@ -28,13 +28,13 @@ export class AdditemComponent implements OnInit{
 
   constructor(private userService: UserService, private router: Router) { }
   ngOnInit() {
-    this.loadCategories(); // Load categories when the component initializes
+    this.loadCategories(); 
   }
 
   async loadCategories() {
     try {
-      // Fetch categories from your UserService or API
-      const response = await this.userService.fetchCategories(); // Assuming you have a method for fetching categories
+      
+      const response = await this.userService.fetchCategories(); 
       if (response.success) {
         this.categories = response.categories;
       } else {
@@ -65,7 +65,7 @@ export class AdditemComponent implements OnInit{
       setTimeout(() => {
         this.router.navigate(['/dashboard/items']);
       }, 2000);
-      // Reset form or navigate away
+      
     } else {
       alert('Failed to add item: ' + result.message);
     }

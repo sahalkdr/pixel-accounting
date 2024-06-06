@@ -189,7 +189,7 @@ export class ItemsComponent implements OnInit{
 
 
   editCategory(category: any) {
-    // Edit category logic here
+    
     const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
       width: '400px',
       data: { category }

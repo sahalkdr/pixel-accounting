@@ -27,17 +27,17 @@ export class PartiesComponent implements OnInit{
   p:number=1;
   itemsPerPage:number=5;
   totalParty:any;
-  // constructor(private http:HttpClient){}
+  
   selectedSection: string = 'parties';
   selectedParty: any = null;
   // parties: any[] = [
   //   { name: 'Party A', phone: '1234567890', email: 'partyA@example.com', address: '123 Main St' },
   //   { name: 'Party B', phone: '0987654321', email: 'partyB@example.com', address: '456 Elm St' }
   // ];
-  transactions: any[] = [
-    { type: 'Sale', name: 'Item 1', date: '2023-01-01', quantity: 10, price: 100 },
-    { type: 'Purchase', name: 'Item 2', date: '2023-02-01', quantity: 5, price: 50 }
-  ];
+  // transactions: any[] = [
+  //   { type: 'Sale', name: 'Item 1', date: '2023-01-01', quantity: 10, price: 100 },
+  //   { type: 'Purchase', name: 'Item 2', date: '2023-02-01', quantity: 5, price: 50 }
+  // ];
 
 
   showSection(section: string) {
@@ -50,14 +50,14 @@ export class PartiesComponent implements OnInit{
   }
   navigateToAddParty() {
     this.router.navigate(['parties/add']);
-    // Logic to navigate to add party page
+    
   }
 
   editParty(party: any) {
     
       this.selectedParty = party;
       
-    // Logic to edit party
+    
   }
 
   openEditDialog(party: any): void {
@@ -116,7 +116,7 @@ export class PartiesComponent implements OnInit{
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // User confirmed to delete
+      
         this.userService.deleteParty(party.id).then(response => {
           if (response.success) {
             this.parties = this.parties.filter(p => p.id !== party.id);
@@ -134,14 +134,7 @@ export class PartiesComponent implements OnInit{
   showPartyDetails(party: any) {
     this.selectedParty = party;
   }
-  // fetchParties() {
-  //   this.userService.fetchParties().subscribe(
-  //     data => this.parties = data,
-  //     error => console.error('Error fetching parties', error)
-  //   );
-  // }
+  
 
-  adjustParty(party: any) {
-    // Logic to adjust party details
-  }
+  
 }

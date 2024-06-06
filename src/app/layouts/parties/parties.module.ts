@@ -8,12 +8,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { EditPartyDialogComponent } from './edit-party-dialog/edit-party-dialog.component';
 import { PartiesComponent } from './parties.component';
-// Remove the import for ItemsComponent since it's standalone
+
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
-    EditPartyDialogComponent // Only declare non-standalone components
+    EditPartyDialogComponent 
   ],
   imports: [
     CommonModule,
@@ -25,11 +25,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    // Import standalone components here
+ 
     PartiesComponent
   ],
   exports: [
-    EditPartyDialogComponent // Export non-standalone components if needed
+    EditPartyDialogComponent 
   ]
 })
 export class PartiesModule { }

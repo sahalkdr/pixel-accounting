@@ -25,11 +25,7 @@
         <mat-icon class="plus-sign">add</mat-icon>
       </mat-list-item>
 
-      <!-- <mat-list-item routerLink="/reports" routerLinkActive="active">
-        <mat-icon>reports</mat-icon>
-        <span>Reports</span>
-        <mat-icon class="plus-sign">add</mat-icon>
-      </mat-list-item> -->
+      
       <mat-list-item routerLink="/dashboard/reports" routerLinkActive="active">
         <mat-icon>assessment</mat-icon>
         <span>Reports</span>
@@ -39,17 +35,15 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar>
-      <span class="spacer"></span>
+    <!-- <mat-toolbar>
+      <span class="spacer"></span> -->
       <!-- <button mat-raised-button color="accent">
         <mat-icon>add</mat-icon> Add Sale
       </button> -->
-    </mat-toolbar>
+    <!-- </mat-toolbar> -->
     <div class="content">
       <router-outlet></router-outlet>
     </div>
-    <!-- <footer class="footer">
-      <p>&copy; 2024 Company Name. All rights reserved.</p>
-    </footer> -->
+    
   </mat-sidenav-content>
 </mat-sidenav-container>

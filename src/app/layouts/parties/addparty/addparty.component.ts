@@ -27,28 +27,14 @@ export class AddpartyComponent {
   ) { }
   
 
-  // async onSubmit(): Promise<void> {
-  //   this.errorMessage = '';
-  //   this.successMessage = '';
-
-  //   const result = await this.userService.signup(this.username, this.email, this.password, this.phone);
-
-  //   if (result.success) {
-  //     this.successMessage = 'Signup successful!';
-  //     setTimeout(() => {
-  //       this.router.navigate(['/login']);
-  //     }, 2000);
-  //   } else {
-  //     this.errorMessage = result.message;
-  //   }
-  // }
+  
 
   async onSubmit() {
     const result = await this.userService.addParty(this.name, this.phone, this.email, this.address);
 
     if (result.success) {
       this.successMessage = 'Party added successfully!';
-      // Navigate to another page or reset form
+      
       this.dialogRef.close({ success: true, party: { name: this.name, phone: this.phone, email: this.email, address: this.address } });
     } else {
       this.errorMessage = result.message;

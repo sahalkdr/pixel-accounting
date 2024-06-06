@@ -144,7 +144,7 @@ export class QuickbillingComponent implements OnInit {
     };
   
     try {
-      // Save the bill first and get the bill ID
+      //sabe bill
       const saveBillResponse = await this.userService.saveBill(billData);
       if (!saveBillResponse.success) {
         this.errorMessage = saveBillResponse.message || 'Error saving bill';
@@ -152,9 +152,9 @@ export class QuickbillingComponent implements OnInit {
       }
       this.billId = saveBillResponse.billId;
   
-      // Save the items and quantities associated with the bill
+      // Save item,quantities 
       const itemsData = this.filteredProducts.map(item => ({
-        Id: item.id, // Assuming you have an 'id' property for each item
+        Id: item.id, // 
         quantity: item.quantity
       }));
   
@@ -194,10 +194,9 @@ export class QuickbillingComponent implements OnInit {
     this.suggestedItems = [];
     this.noItemsFound = false;
     const selectedItem = { ...item, quantity: 1, total: this.calculateItemTotal(item) };
-    // this.filteredProducts.push(selectedItem);
-    // this.updateItemTotal(selectedItem);
+    
     if (selectedItem.quantity > item.stock) {
-      this.showStockWarning = true; // Display warning if stock not available
+      this.showStockWarning = true; 
     } else {
       this.filteredProducts.push(selectedItem);
       this.updateItemTotal(selectedItem);
@@ -235,9 +234,9 @@ export class QuickbillingComponent implements OnInit {
   }
 
   onQuantityChange(item: Item): void {
-    // this.updateItemTotal(item);
+    
     if (item.quantity > item.stock) {
-      this.showStockWarning = true; // Display warning if stock not available
+      this.showStockWarning = true; 
     } else {
       this.showStockWarning = false;
       this.updateItemTotal(item);

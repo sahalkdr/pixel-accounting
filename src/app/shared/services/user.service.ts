@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
+
 
 
 @Injectable({
@@ -22,14 +21,14 @@ export class UserService {
     try {
       const loginResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/login.php',  // Adjust the URL to point to your actual backend
+        url: 'http://localhost/restaurant/login.php', 
         data: payload
       });
 
       if (loginResponse.success) {
         this.userDetails = {
           username: loginResponse.username,
-          password, // For demonstration purposes only. Never store plain passwords.
+          password, 
           token: loginResponse.token
         };
         return { success: true, userDetails: this.userDetails };
@@ -52,7 +51,7 @@ export class UserService {
 
       const signupResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/signup.php',  // Adjust the URL to point to your actual backend
+        url: 'http://localhost/restaurant/signup.php',  
         data: payload
       });
 
@@ -78,7 +77,7 @@ export class UserService {
 
       const addPartyResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/add-parties.php',  // Adjust the URL to point to your actual backend
+        url: 'http://localhost/restaurant/add-parties.php',  
         data: payload
       });
 
@@ -103,7 +102,7 @@ export class UserService {
 
       const addCategoryResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/add-categories.php',  // Adjust the URL to point to your actual backend
+        url: 'http://localhost/restaurant/add-categories.php',  
         data: payload
       });
 
@@ -126,14 +125,14 @@ export class UserService {
   
 
   async updateItem(id: number, updatedItem: any) {
-    const payload = { id, ...updatedItem }; // Merge the ID into the payload
+    const payload = { id, ...updatedItem }; 
 
     try {
       console.log('Sending update item payload:', payload);
 
       const updateItemResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/update_item.php', // Adjust the URL to your update item API endpoint
+        url: 'http://localhost/restaurant/update_item.php', 
         data: payload
       });
 
@@ -158,7 +157,7 @@ export class UserService {
 
       const updateCategoryResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/update_categories.php', // Adjust the URL to your update item API endpoint
+        url: 'http://localhost/restaurant/update_categories.php', 
         data: payload
       });
 
@@ -183,7 +182,7 @@ export class UserService {
 
       const updatePartyResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/edit_party.php', // Adjust the URL to your update item API endpoint
+        url: 'http://localhost/restaurant/edit_party.php', 
         data: payload
       });
 
@@ -203,7 +202,7 @@ export class UserService {
     try {
       const addItemResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/add_item.php',  // Adjust the URL to your actual backend
+        url: 'http://localhost/restaurant/add_item.php',  
         data: item
       });
 
@@ -222,7 +221,7 @@ export class UserService {
     try {
       const categoriesResponse = await this.apiService.httpRequest({
         method: 'GET',
-        url: 'http://localhost/restaurant/get_categories.php' // Mock API endpoint for fetching categories
+        url: 'http://localhost/restaurant/get_categories.php' 
       });
   
       if (categoriesResponse.success) {
@@ -281,7 +280,7 @@ export class UserService {
     try {
       const deleteItemResponse = await this.apiService.httpRequest({
         method: 'POST',
-        url: 'http://localhost/restaurant/delete_item.php', // URL to your delete item API endpoint
+        url: 'http://localhost/restaurant/delete_item.php', 
         data: payload
       });
 
@@ -315,9 +314,7 @@ export class UserService {
     }
   }
 
-  // fetchParties(): Observable<any[]> {
-  //   return this.http.get<any[]>('http://localhost/restaurant/api/parties');
-  // }
+  
 
   
 }

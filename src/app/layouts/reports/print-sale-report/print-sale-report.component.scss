@@ -1,4 +1,4 @@
-// print-sale-report.component.scss
+
 
 .transactions {
     width: 100%;
@@ -32,7 +32,7 @@
   }
   
   @media print {
-    /* Define styles for printing */
+    
     button {
       display: none;
     }
