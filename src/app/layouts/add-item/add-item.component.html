@@ -28,8 +28,9 @@
       <input type="number" id="discount" name="discount" [(ngModel)]="newItem.discount" required>
     </div>
     <div class="form-group">
-      <label for="hasTax">Has Tax:</label>
       <input type="checkbox" id="hasTax" name="hasTax" [(ngModel)]="newItem.has_tax">
+      <label for="hasTax">Has Tax:</label>
+      
     </div>
     <div class="form-group" *ngIf="newItem.has_tax">
       <label for="taxRate">Tax Rate:</label>

@@ -1,85 +1,52 @@
 <div class="container">
-    <!-- Header -->
-    <!-- <div class="header">
-      <div class="title">Enter Business Name</div>
-      <div class="actions">
-        <button class="custom-button primary">Add Sale</button>
-        <button class="custom-button accent">Add Purchase</button>
-        <button class="custom-button warn">Add More</button>
-      </div>
-    </div> -->
-  
-    <!-- Summary -->
-    <!-- <div class="filters">
-    <div class="dropdown">
-        <select>
-            <option value="this-month">This Month</option>
-            <option value="last-month">Last Month</option>
-            <option value="this-year">This Year</option>
-        </select>
-    </div>-->
+  <!-- Summary -->
+  <div class="filters">
     <div class="date-picker">
-        <label for="from-date">From:</label>
-        <input type="date" id="from-date" name="from-date">
-        <label for="to-date">To:</label>
-        <input type="date" id="to-date" name="to-date">
-        <label for="party-name">Party Name:</label>
-    <input type="text" id="party-name" name="party-name">
-        <button (click)="filterByDateRange()">Filter</button>
-    </div> 
-    
-     
-    <div class="summary">
-      <div class="summary-item paid">
-        <div class="label">Total</div>
-        <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
-      </div>
-      <!-- <div class="summary-item unpaid">
-        <div class="label">Unpaid</div>
-        <div class="amount">₹0.00</div>
-      </div>
-      <div class="summary-item total">
-        <div class="label">Total</div>
-        <div class="amount">₹₹{{ totalPaidAmount.toFixed(2) }}
-
-        </div>
-      </div> -->
-    </div>
-  
-    <!-- Transactions Table -->
-    <div class="transactions">
-      <table class="normal-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Bill No.</th>
-            <th>Party Name</th>
-            <th>Payment Mode</th>
-            
-            <th>Subtotal</th>
-            <th>Total Amount</th>
-            <th>Amount Received</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let bill of saledetails.bills">
-            <td>{{ bill.created_at }}</td>
-            <td>{{ bill.bill_id }}</td>
-            <td>{{ bill.customer_name }}</td>
-            <td>{{ bill.payment_mode }}</td>
-            
-            <td>{{ bill.subtotal }}</td>
-            <td>{{ bill.total_amount }}</td>
-            <td>{{ bill.amount_received }}</td>
-            <!-- <td><mat-icon (click)="viewBillDetails(bill.bill_id)">print</mat-icon></td> -->
-            
-          </tr>
-        </tbody>
-      </table>
-      <button (click)="viewReport()">Print</button>
-      
-      
-      
-      
+      <label for="from-date">From:</label>
+      <input type="date" id="from-date" name="from-date" (change)="filterByDateRange()">
+      <label for="to-date">To:</label>
+      <input type="date" id="to-date" name="to-date" (change)="filterByDateRange()">
+      <label for="party-name">Party Name:</label>
+      <input type="text" id="party-name" name="party-name" (input)="filterByDateRange()">
+      <mat-icon (click)="viewReport()">print</mat-icon>
     </div>
   </div>
+
+  <div class="summary">
+    <div class="summary-item paid">
+      <div class="label">Total</div>
+      <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="transactions">
+    <table class="normal-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Bill No.</th>
+          <th>Party Name</th>
+          <th>Payment Mode</th>
+          <th>Subtotal</th>
+          <th>Total Amount</th>
+          <th>Amount Received</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bill of saledetails.bills | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+          <td>{{ bill.created_at }}</td>
+          <td>{{ bill.bill_id }}</td>
+          <td>{{ bill.customer_name }}</td>
+          <td>{{ bill.payment_mode }}</td>
+          <td>{{ bill.subtotal }}</td>
+          <td>{{ bill.total_amount }}</td>
+          <td>{{ bill.amount_received }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="pagination-container">
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
