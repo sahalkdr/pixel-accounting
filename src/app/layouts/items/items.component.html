@@ -28,7 +28,7 @@
         </mat-form-field>
       </div>
       <div class="product-items">
-        <div class="product-item" *ngFor="let product of filteredProducts">
+        <div class="product-item" *ngFor="let product of filteredProducts | paginate: {itemsPerPage:itemsPerPage,currentPage:p}">
           <div class="item-info">
             <span>{{ product.name }}</span>
             <span>{{ product.stock }}</span>
@@ -39,7 +39,9 @@
           <mat-icon (click)="deleteProduct(product)">delete</mat-icon>
         </div>
       </div>
-      
+      <div class="pagination-container">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
     </div>
 
     <!-- Category Listing -->
@@ -69,6 +71,8 @@
         </div>
       </div>
     </div>
+
+    
 
    
 

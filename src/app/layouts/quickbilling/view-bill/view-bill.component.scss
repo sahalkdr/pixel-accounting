@@ -9,16 +9,22 @@
   font-size: 10px; 
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
 .company-details {
-  text-align: center;
-  margin-bottom: 10px; 
+  flex: 1;
   h5 {
-      font-size: 16px; 
-      margin: 5px 0; 
+    font-size: 16px;
+    margin: 5px 0;
   }
   h6 {
-      font-size: 12px; 
-      margin: 3px 0; 
+    font-size: 12px;
+    margin: 3px 0;
   }
 }
 
@@ -28,7 +34,19 @@
 
 .bill-info-row {
   display: flex;
-  justify-content: space-between;
+  justify-content:space-between;
+  margin-bottom: 5px; 
+}
+
+.bill-info-row-s {
+  display: flex;
+  justify-content:right;
+  margin-bottom: 5px; 
+}
+
+.bill-info-row-b {
+  display: flex;
+  justify-content:left;
   margin-bottom: 5px; 
 }
 
@@ -71,20 +89,20 @@
 }
 
 .print-button {
-  display: block;
-  width: 80px; 
-  margin: 10px auto; 
-  padding: 8px 16px; 
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px; 
+  // display: block;
+  // width: 80px; 
+  // margin: 10px auto; 
+  // padding: 8px 16px; 
+  // background-color: #007bff;
+  // color: white;
+  // border: none;
+  // border-radius: 5px;
+  // cursor: pointer;
+  // font-size: 14px; 
 }
 
 .print-button:hover {
-  background-color: #0056b3;
+  // background-color: #0056b3;
 }
 
 @media print {

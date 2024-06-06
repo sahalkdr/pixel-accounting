@@ -34,7 +34,7 @@ export class SaleComponent implements OnInit {
   saledetails: SaleDetails = { company_info: { name: '', place: '', phone: '' }, bills: [] };
   totalPaidAmount: number = 0;
   p:number=1;
-  itemsPerPage:number=13;
+  itemsPerPage:number=16;
 
   constructor(private http: HttpClient, private router: Router) { }
 

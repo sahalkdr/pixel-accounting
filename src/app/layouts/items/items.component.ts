@@ -15,6 +15,7 @@ import { EditItemDialogComponent } from './edit-item-dialog/edit-item-dialog.com
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dialog.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -31,6 +32,7 @@ import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dia
     MatInputModule,
     HttpClientModule,
     FormsModule,
+    NgxPaginationModule
   ],
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.scss'],
@@ -43,6 +45,8 @@ export class ItemsComponent implements OnInit{
 
   selectedSection: string = 'products';
   selectedProduct: any = null;
+  p:number=1;
+  itemsPerPage:number=8;
   // isEditMode: boolean = false;
   editForm: FormGroup;
   
