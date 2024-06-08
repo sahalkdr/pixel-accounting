@@ -11,7 +11,7 @@ export class UserService {
 
   
  
-  public userDetails: { username: string, password: string, token: string } = { username: "", password: "", token: "" };
+  public userDetails: { username: string, password: string, token: string,company_name:string,location:string,phone:string } = { username: "", password: "", token: "",company_name:"",location:"",phone:"" };
 
   
   
@@ -28,9 +28,13 @@ export class UserService {
       if (loginResponse.success) {
         this.userDetails = {
           username: loginResponse.username,
+          company_name:loginResponse.company_name,
+          location:loginResponse.location,
+          phone:loginResponse.phone,
           password, 
           token: loginResponse.token
         };
+        localStorage.setItem('angular17token', JSON.stringify(this.userDetails.token));
         return { success: true, userDetails: this.userDetails };
       } else {
         return { success: false, message: loginResponse.error };
@@ -41,10 +45,21 @@ export class UserService {
     }
   }
 
+  getUserDetails() {
+    if (!this.userDetails) {
+      return null;
+    }
+    return {
+      company_name: this.userDetails.company_name,
+      location: this.userDetails.location,
+      phone: this.userDetails.phone
+    };
+  
+  }
 
   
-  async signup(username: string, email: string, password: string, phone: string) {
-    const payload = { username, email, password, phone };
+  async signup(username: string, email: string, password: string, phone: string, company_name:string,location:string) {
+    const payload = { username, email, password, phone,company_name,location };
 
     try {
       console.log('Sending signup payload:', payload);

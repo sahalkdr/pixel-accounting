@@ -48,6 +48,19 @@ export class PartiesComponent implements OnInit{
   ngOnInit(): void {
     this.fetchparties();
   }
+
+  public fetchparties()
+  {
+    this.http.get('http://localhost/restaurant/get-parties.php').subscribe(
+      (resp:any) => {
+        console.log(resp);
+        this.parties=resp;
+        this.filteredParties = resp;
+        this.totalParty=resp.length;
+      }
+    )
+
+  }
   navigateToAddParty() {
     this.router.navigate(['parties/add']);
     
@@ -72,18 +85,7 @@ export class PartiesComponent implements OnInit{
       }
     });
   }
-  public fetchparties()
-  {
-    this.http.get('http://localhost/restaurant/get-parties.php').subscribe(
-      (resp:any) => {
-        console.log(resp);
-        this.parties=resp;
-        this.filteredParties = resp;
-        this.totalParty=resp.length;
-      }
-    )
-
-  }
+ 
 
   openAddPartyDialog(): void {
     const dialogRef = this.dialog.open(AddpartyComponent, {

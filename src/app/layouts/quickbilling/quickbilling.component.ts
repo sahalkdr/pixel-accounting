@@ -279,3 +279,9 @@ export class QuickbillingComponent implements OnInit {
     return this.amountReceived - this.calculateTotal();
   }
 }
+
+
+
+
+
+

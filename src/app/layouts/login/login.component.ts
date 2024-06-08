@@ -18,6 +18,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
+ 
   successMessage: string = ''; 
 
   constructor(private userService: UserService, private router:Router) {}
@@ -30,8 +31,11 @@ async onSubmit(): Promise<void> {
   try {
     const loginResponse = await this.userService.login(this.username, this.password);
 
+
     if (loginResponse.success) {
       this.successMessage = 'Login successful!';
+      
+      const company_name=loginResponse.userDetails?.company_name;
       setTimeout(() => {
         this.router.navigate(['/dashboard']);
       }, 2000);

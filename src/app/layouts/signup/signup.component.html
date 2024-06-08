@@ -19,6 +19,14 @@
       <label for="phone">Phone</label>
       <input type="text" id="phone" [(ngModel)]="phone" name="phone" required>
     </div>
+    <div class="form-group">
+      <label for="company_name">Company Name</label>
+      <input type="text" id="company_name" [(ngModel)]="company_name" name="company_name" required>
+    </div>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" [(ngModel)]="location" name="location" required>
+    </div>
     <button type="submit">Sign Up</button>
   </form>
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>

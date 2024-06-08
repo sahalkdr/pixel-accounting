@@ -20,6 +20,8 @@ export class SignupComponent {
   email: string = '';
   password: string = '';
   phone: string = '';
+  company_name: string='';
+  location: string='';
   errorMessage: string = '';
   successMessage: string = '';
 
@@ -29,7 +31,7 @@ export class SignupComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    const result = await this.userService.signup(this.username, this.email, this.password, this.phone);
+    const result = await this.userService.signup(this.username, this.email, this.password, this.phone, this.company_name, this.location);
 
     if (result.success) {
       this.successMessage = 'Signup successful!';

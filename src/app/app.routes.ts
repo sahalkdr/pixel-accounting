@@ -14,7 +14,9 @@ import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.co
 import { PrintSaleReportComponent } from './layouts/reports/print-sale-report/print-sale-report.component';
 // import { AddpartyComponent } from './layouts/parties/addparty/addparty.component;
 
+
 export const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'dashboard', component: DashboardComponent, children: [
