@@ -271,6 +271,18 @@ export class QuickbillingComponent implements OnInit {
     return totalDiscount;
   }
 
+  calculateTotalTax(): number {
+    const totalTax = this.filteredProducts.reduce((sum, item) => {
+      const subtotal = item.quantity * item.sale_price;
+      const discountAmount = item.discount;
+      const taxableAmount = subtotal - discountAmount;
+      const taxAmount = (item.tax_rate / 100) * taxableAmount;
+      return sum + taxAmount;
+    }, 0);
+    console.log('Total Tax:', totalTax);
+    return totalTax;
+  }
+
   removeItem(index: number): void {
     this.filteredProducts.splice(index, 1);
   }

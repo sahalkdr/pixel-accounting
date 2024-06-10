@@ -20,7 +20,10 @@
             <th>Item Name</th>
             <th>Qty</th>
             <th>Unit</th>
+
             <th>Price/Unit</th>
+            <th>Tax . Rs</th>
+            <th>Discount.Rs</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -32,12 +35,14 @@
             <td><input type="number" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" /></td>
             <td>{{ product.unit }}</td>
             <td>{{ product.sale_price }}</td>
+            <td>{{ (product.quantity * product.sale_price - product.discount) * product.tax_rate / 100 }}</td>
+            <td>{{ product.discount }}</td>
             <td>{{ product.total | number:'1.2-2' }}</td>
             <td><button (click)="removeItem(i)">Remove</button></td>
           </tr>
         </tbody>
         <tr>
-          <td colspan="7">Payment Mode:</td>
+          <td colspan="9">Payment Mode:</td>
           <td>
             <select [(ngModel)]="paymentMode">
               <option value="Cash">Cash</option>
@@ -75,6 +80,10 @@
       <div class="detail">
         <span class="label">Subtotal:</span>
         <span class="value">{{ calculateSubtotal() | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail">
+        <span class="label">Total Tax:</span>
+        <span class="value">{{ calculateTotalTax() | number:'1.2-2' }}</span>
       </div>
       <div class="detail">
         <span class="label">Total Discount:</span>
