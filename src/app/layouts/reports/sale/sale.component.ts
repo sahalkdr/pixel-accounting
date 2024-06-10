@@ -58,11 +58,16 @@ export class SaleComponent implements OnInit {
     const fromDate = (document.getElementById('from-date') as HTMLInputElement).value;
     const toDate = (document.getElementById('to-date') as HTMLInputElement).value;
     const partyName = (document.getElementById('party-name') as HTMLInputElement).value;
+    const paymentMode = (document.getElementById('payment_mode') as HTMLSelectElement).value;
 
     let url = `http://localhost/restaurant/get_all_bill_details.php?from_date=${fromDate}&to_date=${toDate}`;
 
     if (partyName.trim() !== '') {
       url += `&party_name=${encodeURIComponent(partyName)}`;
+    }
+
+    if (paymentMode.trim() !== '') {
+      url += `&payment_mode=${encodeURIComponent(paymentMode)}`;
     }
 
     this.http.get<SaleDetails>(url).subscribe(

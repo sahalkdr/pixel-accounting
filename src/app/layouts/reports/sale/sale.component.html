@@ -8,6 +8,12 @@
       <input type="date" id="to-date" name="to-date" (change)="filterByDateRange()">
       <label for="party-name">Party Name:</label>
       <input type="text" id="party-name" name="party-name" (input)="filterByDateRange()">
+      <label for="payment_mode">Payment Mode</label>
+      <select name="payment_mode" id="payment_mode" (change)="filterByDateRange()">
+        <option value="All">All</option>
+        <option value="Cash">Cash</option>
+        <option value="Online">Online</option>
+      </select>
       <mat-icon (click)="viewReport()">print</mat-icon>
     </div>
   </div>
