@@ -3,6 +3,7 @@ import { ApiService } from './api.service';
 
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +11,28 @@ export class UserService {
   constructor(private apiService: ApiService) { }
 
   
- 
+  async deleteCategory(id: number) {
+    try {
+      const deleteCategoryResponse = await this.apiService.httpRequest({
+        method: 'POST',
+        url: 'http://localhost/restaurant/delete_category.php',
+        data: { id }
+      });
+  
+      console.log('Delete Category Response:', deleteCategoryResponse); // Add this line to log the response
+  
+      if (deleteCategoryResponse.success) {
+        return { success: true, message: deleteCategoryResponse.message };
+      } else {
+        return { success: false, message: deleteCategoryResponse.message };
+      }
+    } catch (error) {
+      console.error('Delete category error:', error);
+      return { success: false, message: 'An error occurred while deleting the category. Please try again later.' };
+    }
+  }
+
+
   public userDetails: { username: string, password: string, token: string,company_name:string,location:string,phone:string } = { username: "", password: "", token: "",company_name:"",location:"",phone:"" };
 
   
@@ -309,6 +331,13 @@ export class UserService {
       return { success: false, message: 'An error occurred while deleting the item. Please try again later.' };
     }
   }
+
+ 
+  
+
+
+
+
 
   async deleteParty(id: number) {
     try {

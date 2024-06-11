@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,NgZone } from '@angular/core';
 import { OnSameUrlNavigation,Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -11,11 +11,13 @@ import { FormBuilder,FormGroup,ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../shared/services/user.service';
 import { FormsModule } from '@angular/forms'; //
 import { MatDialog } from '@angular/material/dialog';
-import { EditItemDialogComponent } from './edit-item-dialog/edit-item-dialog.component'; // Import your new dialog component
+import { EditItemDialogComponent } from './edit-item-dialog/edit-item-dialog.component'; 
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dialog.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatSnackBar,MatSnackBarConfig } from '@angular/material/snack-bar'; 
+
 
 
 
@@ -37,6 +39,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.scss'],
 })
+
+
 export class ItemsComponent implements OnInit{
   public products: any[] = [];
   public filteredProducts: any[] = [];
@@ -52,7 +56,7 @@ export class ItemsComponent implements OnInit{
   
 
   
-  constructor(private router: Router,private userService: UserService,private http: HttpClient,private fb: FormBuilder,public dialog: MatDialog) {
+  constructor(private router: Router,private userService: UserService,private http: HttpClient,private fb: FormBuilder,public dialog: MatDialog,private snackBar: MatSnackBar,private zone: NgZone) {
     this.editForm = this.fb.group({
       name: [''],
       sale_price: [''],
@@ -124,7 +128,11 @@ export class ItemsComponent implements OnInit{
 
   deleteProduct(product: any) {
 
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data:{
+        
+        name:product.name}
+    });
 
   dialogRef.afterClosed().subscribe(result => {
     if (result) {
@@ -141,7 +149,8 @@ export class ItemsComponent implements OnInit{
   }
 });
 }
-  openEditDialog(item: any): void {
+
+openEditDialog(item: any): void {
     const dialogRef = this.dialog.open(EditItemDialogComponent, {
       width: '400px',
       data: { item }
@@ -179,15 +188,12 @@ export class ItemsComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.addCategory(result).then(response => {
-          if (response.success) {
+        
             this.fetchcategories();
-          } else {
-            console.error('Error adding category:', response.message);
-          }
+          } 
         });
-      }
-    });
+      
+    
   }
  
 
@@ -211,8 +217,28 @@ export class ItemsComponent implements OnInit{
       }
     });
   }
-
   deleteCategory(category: any) {
-    this.categories = this.categories.filter(c => c !== category);
-  }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: { name: category.name }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            this.userService.deleteCategory(category.id).then(response => {
+                console.log('Response from deleteCategory API:', response);
+
+                this.snackBar.open(response.message, 'Close', { duration: 3000 });
+                
+                if (response.success) {
+                    this.fetchcategories();
+                }
+            }).catch(error => {
+                console.error('Error deleting category:', error);
+                this.snackBar.open('Error deleting category', 'Close', { duration: 3000 });
+            });
+        }
+    });
 }
+
+
+}  

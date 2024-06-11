@@ -33,6 +33,8 @@ export class EditCategoryDialogComponent {
     const id = this.data.category.id;
     this.userService.updateCategory(id, updatedCategory).then(response => {
       if (response.success) {
+        this.data.category.name = updatedCategory.name;
+          this.data.category.tax_rate = updatedCategory.tax_rate;
               this.dialogRef.close(updatedCategory);
            }
            else {

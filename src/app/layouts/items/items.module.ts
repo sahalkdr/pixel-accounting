@@ -10,6 +10,8 @@ import { EditItemDialogComponent } from './edit-item-dialog/edit-item-dialog.com
 import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 import { ItemsComponent } from './items.component';
+import { MatSnackBarModule,MatSnackBarConfig } from '@angular/material/snack-bar';
+
 
 
 @NgModule({
@@ -27,13 +29,15 @@ import { ItemsComponent } from './items.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
+    ItemsComponent,
     
-    ItemsComponent
   ],
   exports: [
     EditItemDialogComponent,
     AddCategoryDialogComponent,
     EditCategoryDialogComponent 
+    
   ]
 })
 export class ItemsModule { }

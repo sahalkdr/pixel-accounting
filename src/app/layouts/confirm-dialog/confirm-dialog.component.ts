@@ -1,14 +1,19 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+
+import { Component, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirm-dialog',
+  standalone:true,
+  imports:[CommonModule],
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
     this.dialogRef.close(false);

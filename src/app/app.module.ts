@@ -29,6 +29,8 @@ import { ReportsComponent } from './layouts/reports/reports.component';
 import { UserService } from './shared/services/user.service';
 import { ApiService } from './shared/services/api.service';
 import { EditCategoryDialogComponent } from './layouts/items/edit-category-dialog/edit-category-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 const appRoutes: Routes = [
     { path: 'parties', component: PartiesComponent },
@@ -61,7 +63,8 @@ const appRoutes: Routes = [
         MatTableModule,
         RouterModule.forRoot(appRoutes),
         ItemsModule, 
-        PartiesModule 
+        PartiesModule ,
+        MatSnackBarModule
     ],
     providers: [UserService, ApiService],
     bootstrap: [AppComponent]

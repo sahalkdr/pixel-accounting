@@ -114,7 +114,13 @@ export class PartiesComponent implements OnInit{
 
   }
   deleteParty(party: any) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data:{
+        
+        name:party.name}
+    }
+  
+    );
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
