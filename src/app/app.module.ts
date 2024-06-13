@@ -25,7 +25,8 @@ import { QuickbillingComponent } from './layouts/quickbilling/quickbilling.compo
 import { ItemsComponent } from './layouts/items/items.component'; 
 import { ReportsComponent } from './layouts/reports/reports.component'; 
 
-
+import {LoginComponent} from "./layouts/login/login.component";
+import {SignupComponent} from "./layouts/signup/signup.component";
 import { UserService } from './shared/services/user.service';
 import { ApiService } from './shared/services/api.service';
 import { EditCategoryDialogComponent } from './layouts/items/edit-category-dialog/edit-category-dialog.component';
@@ -35,6 +36,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 const appRoutes: Routes = [
     { path: 'parties', component: PartiesComponent },
     { path: 'items', component: ItemsComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'signup', component: SignupComponent }
    
 ];
 

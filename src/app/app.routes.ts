@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { RouterModule,Routes } from '@angular/router';
 import {LoginComponent} from "./layouts/login/login.component";
 import {SignupComponent} from "./layouts/signup/signup.component";
 import { DashboardComponent } from './layouts/dashboard/dashboard.component';
@@ -7,6 +7,7 @@ import { PartiesComponent } from './layouts/parties/parties.component';
 import { QuickbillingComponent } from './layouts/quickbilling/quickbilling.component';
 import { ReportsComponent } from './layouts/reports/reports.component';
 import { SaleComponent } from './layouts/reports/sale/sale.component';
+import { NgModule } from '@angular/core';
 
 import { AdditemComponent } from './layouts/add-item/add-item.component';
 import { AddpartyComponent } from './layouts/parties/addparty/addparty.component'
@@ -23,10 +24,11 @@ export const routes: Routes = [
         { path: 'items', component: ItemsComponent },
         { path: 'parties', component: PartiesComponent },
         {
-            path: 'reports', component: ReportsComponent, children: [
-              { path: 'sale', component: SaleComponent }
-            ]
-          } 
+          path: 'reports', component: ReportsComponent, children: [
+            { path: '', redirectTo: 'sale', pathMatch: 'full' },
+            { path: 'sale', component: SaleComponent }
+          ]
+        }
         ]
         },
         { path: 'quickbilling', component: QuickbillingComponent },
@@ -36,3 +38,4 @@ export const routes: Routes = [
         { path: 'sale-details', component: PrintSaleReportComponent }
         
 ];
+

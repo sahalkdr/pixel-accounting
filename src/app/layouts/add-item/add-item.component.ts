@@ -3,11 +3,18 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-additem',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,MatButtonModule,MatDialogModule,MatIconModule,MatInputModule,MatSelectModule,MatCheckboxModule],
   templateUrl: './add-item.component.html',
   styleUrl: './add-item.component.scss'
 })
@@ -45,7 +52,7 @@ export class AdditemComponent implements OnInit{
     }
   }
   onCategoryChange(event: any) {
-    const selectedCategory = this.categories.find(category => category.id === +event.target.value);
+    const selectedCategory = this.categories.find(category => category.id === event.value);
     if (selectedCategory) {
       this.newItem.tax_rate = selectedCategory.tax_rate;
     }

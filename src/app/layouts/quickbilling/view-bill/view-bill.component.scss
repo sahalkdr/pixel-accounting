@@ -89,21 +89,22 @@
 }
 
 .print-button {
-  // display: block;
-  // width: 80px; 
-  // margin: 10px auto; 
-  // padding: 8px 16px; 
-  // background-color: #007bff;
-  // color: white;
-  // border: none;
-  // border-radius: 5px;
-  // cursor: pointer;
-  // font-size: 14px; 
+  background-color: #0f1fb0; 
+  color: white;
+  border: none;
+  padding: 5px 5px; 
+  font-size: 16px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}  
+
+.button-container {
+  position: fixed;
+  bottom: 20px; 
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; 
 }
 
-.print-button:hover {
-  // background-color: #0056b3;
-}
 
 @media print {
   

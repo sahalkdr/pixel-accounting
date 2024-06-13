@@ -2,8 +2,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router} from '@angular/router';
+
 import { UserService } from '../../shared/services/user.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -11,7 +17,13 @@ import { UserService } from '../../shared/services/user.service';
   styleUrls: ['./login.component.scss'],
 
   standalone: true, // Add this line
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, MatInputModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatCardModule,
+    
+    
+  ]
 
 })
 export class LoginComponent {
@@ -46,5 +58,9 @@ async onSubmit(): Promise<void> {
     console.error('Login error:', error);
     this.errorMessage = 'An error occurred during login. Please try again later.';
   }
+}
+navigateToSignup() {
+  console.log('Navigating to signup');
+  this.router.navigate(['/signup']);
 }
 }

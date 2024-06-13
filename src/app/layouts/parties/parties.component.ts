@@ -12,12 +12,20 @@ import { AddpartyComponent } from './addparty/addparty.component';
 
 import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dialog.component';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
+
+
 
 
 @Component({
   selector: 'app-parties',
   standalone: true,
-  imports: [CommonModule,MatIconModule,HttpClientModule,NgxPaginationModule],
+  imports: [CommonModule,MatIconModule,HttpClientModule,NgxPaginationModule,MatButtonModule,MatInputModule],
   templateUrl: './parties.component.html',
   styleUrl: './parties.component.scss'
 })
@@ -44,7 +52,7 @@ export class PartiesComponent implements OnInit{
     this.selectedSection = section;
     this.selectedParty = null;
   }
-  constructor(private router: Router,private userService: UserService,private http: HttpClient,public dialog: MatDialog) { }
+  constructor(private router: Router,private userService: UserService,private http: HttpClient,public dialog: MatDialog,private snackBar: MatSnackBar) { }
   ngOnInit(): void {
     this.fetchparties();
   }
@@ -127,11 +135,17 @@ export class PartiesComponent implements OnInit{
       
         this.userService.deleteParty(party.id).then(response => {
           if (response.success) {
-            this.parties = this.parties.filter(p => p.id !== party.id);
+            this.fetchparties();
             if (this.selectedParty === party) {
               this.selectedParty = null;
             }
+            this.snackBar.open('Item deleted successfully', 'Close', {
+              duration: 5000,
+          });
           } else {
+            this.snackBar.open(response.message, 'Close', {
+              duration: 3000,
+          });
             console.error('Error deleting party:', response.message);
           }
         });

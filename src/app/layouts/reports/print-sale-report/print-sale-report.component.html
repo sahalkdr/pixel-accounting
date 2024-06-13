@@ -1,5 +1,5 @@
 <div class="transactions">
-    <table class="normal-table">
+    <table class="normal-table" >
       <thead>
         <tr>
           <th>Date</th>
@@ -23,6 +23,10 @@
         </tr>
       </tbody>
     </table>
-    <button (click)="printBill()" class="print-button">Print Bill</button>
+     
+    
+    <div class="button-container">
+      <button mat-raised-button (click)="printBill()" class="print-button">Print</button>
+    </div>
   </div>
   

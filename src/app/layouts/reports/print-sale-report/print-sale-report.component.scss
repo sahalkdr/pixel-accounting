@@ -1,42 +1,55 @@
-
-
 .transactions {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  .normal-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-  
-    th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-    }
-  
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-  
-    tr:hover {
-      background-color: #f1f1f1;
-    }
-  }
-  
-  @media print {
-    
-    button {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.normal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.normal-table th, .normal-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.normal-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.normal-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.normal-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.button-container {
+  position: fixed;
+  bottom: 20px; /* Adjust the distance from the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+.print-button {
+  background-color: #FF4081; /* Replace with your desired color */
+  color: white; /* Text color */
+  border: none;
+  padding: 10px 20px; /* Adjust padding as needed */
+  font-size: 16px; /* Adjust font size as needed */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+
+@media print {
+  .print-button {
       display: none;
-    }
-    
   }
-  
-  
+}

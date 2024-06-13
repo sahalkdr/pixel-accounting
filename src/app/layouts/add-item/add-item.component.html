@@ -2,40 +2,62 @@
   <h2>Add New Item</h2>
   <form (ngSubmit)="addItem()" #addItemForm="ngForm">
     <div class="form-group">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" [(ngModel)]="newItem.name" required>
+      <mat-form-field>
+        <mat-label>Name:</mat-label>
+        <input matInput id="name" name="name" [(ngModel)]="newItem.name" required>
+      </mat-form-field>
+      
     </div>
     <div class="form-group">
-      <label for="category">Category:</label>
-      <select id="category" name="category" [(ngModel)]="newItem.category_id" (change)="onCategoryChange($event)" required>
-        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-      </select>
+      
+
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Category:</mat-label>
+          <mat-select id="category" name="category" [(ngModel)]="newItem.category_id" (selectionChange)="onCategoryChange($event)" required>
+            <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+     
+
     </div>
     <div class="form-group">
-      <label for="salePrice">Sale Price:</label>
-      <input type="number" id="salePrice" name="salePrice" [(ngModel)]="newItem.sale_price" required>
+      <mat-form-field>
+        <mat-label>Sale Price:</mat-label>
+        <input matInput type="number" id="salePrice" name="salePrice" [(ngModel)]="newItem.sale_price" required>
+      </mat-form-field>      
     </div>
     <div class="form-group">
-      <label for="stock">Stock:</label>
-      <input type="number" id="stock" name="stock" [(ngModel)]="newItem.stock" required>
+      <mat-form-field>
+        <mat-label>Stock:</mat-label>
+        <input matInput type="number" id="stock" name="stock" [(ngModel)]="newItem.stock" required>
+      </mat-form-field>      
     </div>
     <div class="form-group">
-      <label for="unit">Unit:</label>
-      <input type="text" id="unit" name="unit" [(ngModel)]="newItem.unit" required>
+      <mat-form-field>
+        <mat-label>Unit:</mat-label>
+        <input matInput type="text" id="unit" name="unit" [(ngModel)]="newItem.unit" required>
+      </mat-form-field>      
     </div>
     <div class="form-group">
-      <label for="discount">Discount:</label>
-      <input type="number" id="discount" name="discount" [(ngModel)]="newItem.discount" required>
+      <mat-form-field>
+        <mat-label>Discount:</mat-label>
+        <input matInput type="number" id="discount" name="discount" [(ngModel)]="newItem.discount" required>
+      </mat-form-field>     
     </div>
     <div class="form-group">
-      <input type="checkbox" id="hasTax" name="hasTax" [(ngModel)]="newItem.has_tax">
-      <label for="hasTax">Has Tax:</label>
+      
+      <mat-checkbox id="hasTax" name="hasTax" [(ngModel)]="newItem.has_tax">
+        Has Tax
+      </mat-checkbox>
       
     </div>
     <div class="form-group" *ngIf="newItem.has_tax">
-      <label for="taxRate">Tax Rate:</label>
-      <input type="number" id="taxRate" name="taxRate" [(ngModel)]="newItem.tax_rate">
+      <mat-form-field>
+        <mat-label>Tax Rate(In percentage):</mat-label>
+        <input matInput type="number" id="taxRate" name="taxRate" [(ngModel)]="newItem.tax_rate">
+      </mat-form-field>      
     </div>
-    <button type="submit" [disabled]="addItemForm.invalid">Add Item</button>
-  </form>
+    <button mat-raised-button type="submit" [disabled]="addItemForm.invalid">Add Item</button>  </form>
 </div>

@@ -1,30 +1,27 @@
 <div class="parties-container">
-  
   <header class="parties-header">
     <div class="option" (click)="showSection('parties')">Parties</div>
   </header>
 
   <!-- Main content area -->
   <div class="parties-content">
-    
     <div class="left-section">
       <div class="add-party">
-        <button class="btn-primary" (click)="openAddPartyDialog()">
-          <span class="icon">+</span> Add Party
+        <button mat-button  (click)="openAddPartyDialog()">
+          <mat-icon>add</mat-icon> Add Party
         </button>
       </div>
       <div class="search-bar">
         <div class="search-field">
-          <input type="text" placeholder="Search" (input)="filterParties($event)">
-
-          <mat-icon>search</mat-icon>
+          
+          <input  type="text" placeholder="" (input)="filterParties($event)">
+          <button mat-button>search</button>
         </div>
       </div>
       <div class="party-items">
         <div class="party-item" *ngFor="let party of filteredParties | paginate: {itemsPerPage:itemsPerPage,currentPage:p}">
           <div class="item-info">
             <span>{{ party.name }}</span>
-            
           </div>
           <div class="options">
             <mat-icon (click)="editParty(party)">edit</mat-icon>
@@ -32,22 +29,15 @@
           </div>
         </div>
       </div>
-      <div>
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
-      </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
-    
 
     <div class="product-details" *ngIf="selectedParty">
       <h2>{{ selectedParty.name }}</h2>
       <p>Phone: {{ selectedParty.phone }}</p>
       <p>Email: {{ selectedParty.email }}</p>
       <p>Address: {{ selectedParty.address }}</p>
-      
-      <button mat-raised-button color="primary" (click)="openEditDialog(selectedParty)">Adjust Item</button>
+      <button mat-button  (click)="openEditDialog(selectedParty)">Adjust Party</button>
     </div>
-
-   
-      
-   </div>
-</div> 
+  </div>
+</div>

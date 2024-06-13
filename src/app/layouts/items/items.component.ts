@@ -16,7 +16,7 @@ import { AddCategoryDialogComponent } from './add-category-dialog/add-category-d
 import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dialog.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { MatSnackBar,MatSnackBarConfig } from '@angular/material/snack-bar'; 
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
 
 
@@ -138,11 +138,19 @@ export class ItemsComponent implements OnInit{
     if (result) {
     this.userService.deleteItem(product.id).then(response => {
       if (response.success) {
-        this.products = this.products.filter(p => p.id !== product.id);
+        this.fetchproducts();
+
+        
         if (this.selectedProduct === product) {
           this.selectedProduct = null;
         }
+        this.snackBar.open('Item deleted successfully', 'Close', {
+          duration: 5000,
+      });
       } else {
+        this.snackBar.open(response.message, 'Close', {
+          duration: 3000,
+      });
         console.error('Error deleting item:', response.message);
       }
     });

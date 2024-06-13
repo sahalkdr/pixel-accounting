@@ -7,6 +7,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../shared/services/user.service';
 import { AddpartyComponent } from '../parties/addparty/addparty.component';
 import { CurrencyPipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
+
+
+
+
 
 interface Item {
   id: number;
@@ -35,7 +46,8 @@ interface Customer {
   templateUrl: './quickbilling.component.html',
   styleUrls: ['./quickbilling.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, DatePipe],
+  
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, DatePipe,MatButtonModule,MatIconModule,MatInputModule,MatSelectModule],
   providers: [CurrencyPipe]
 })
 export class QuickbillingComponent implements OnInit {
@@ -58,6 +70,7 @@ export class QuickbillingComponent implements OnInit {
   errorMessage: string = '';
   billId: number = 0;
   showStockWarning: boolean = false;
+  additionalDiscount: number = 0;
 
 
   constructor(private userService: UserService, private http: HttpClient, private router: Router, private route: ActivatedRoute, private dialog: MatDialog, private fb: FormBuilder) {
@@ -66,7 +79,11 @@ export class QuickbillingComponent implements OnInit {
       subtotal: [0, Validators.required],
       total_amount: [0, Validators.required],
       payment_mode: ['', Validators.required],
-      amount_received: [0, Validators.required]
+      amount_received: [0, Validators.required],
+      additional_discount: [0, Validators.required],
+      total_tax: [0, Validators.required],
+      total_discount: [0, Validators.required],
+      
     });
   }
 
@@ -134,47 +151,53 @@ export class QuickbillingComponent implements OnInit {
   
   
 
-  async saveBill() {
+  async saveAndViewBill() {
+    this.successMessage = ''; 
+    this.errorMessage = ''; 
+    console.log('Before saving bill:', this.successMessage, this.errorMessage);
+  
     const billData = {
       party_id: this.customerDetails ? this.customerDetails.id : null,
       subtotal: this.calculateSubtotal(),
       total_amount: this.calculateTotal(),
       payment_mode: this.paymentMode,
-      amount_received: this.amountReceived
+      additional_discount: this.additionalDiscount,
+      total_tax: this.calculateTotalTax(),
+      total_discount: this.calculateTotalDiscount(),
+
+      
+      amount_received: this.amountReceived,
+      
     };
   
+    const itemsData = this.filteredProducts.map(item => ({
+      Id: item.id,
+      quantity: item.quantity
+    }));
+  
     try {
-      //sabe bill
-      const saveBillResponse = await this.userService.saveBill(billData);
-      if (!saveBillResponse.success) {
-        this.errorMessage = saveBillResponse.message || 'Error saving bill';
-        return;
+      // Save bill and items
+      const response = await this.userService.saveBillWithItems(billData, itemsData);
+      console.log('Save bill with items response:', response);
+  
+      if (response && response.success) {
+        const dialogRef = this.dialog.open(SuccessDialogComponent, {
+          width: '400px',
+          data: { billId: response.billId }, // Pass billId as data
+        });
+        dialogRef.afterClosed().subscribe(() => {
+          console.log('Dialog closed');
+          
+        });
+      } else {
+        this.errorMessage = response?.message || 'Error saving bill and items';
       }
-      this.billId = saveBillResponse.billId;
-  
-      // Save item,quantities 
-      const itemsData = this.filteredProducts.map(item => ({
-        Id: item.id, // 
-        quantity: item.quantity
-      }));
-  
-      const saveItemsResponse = await this.userService.saveBillItems(this.billId, itemsData);
-      if (!saveItemsResponse.success) {
-        this.errorMessage = saveItemsResponse.message || 'Error saving items';
-        return;
-      }
-  
-      this.successMessage = 'Bill and items saved successfully!';
     } catch (error) {
       console.error('Error saving bill or items:', error);
       this.errorMessage = 'An error occurred while saving the bill or items. Please try again later.';
     }
   }
   
-
-  viewBillDetails(): void {
-    this.router.navigate(['/bill-details'], { queryParams: { bill_id: this.billId } });
-  }
 
   searchParties(): void {
     if (this.customerSearchText) {
@@ -257,8 +280,11 @@ export class QuickbillingComponent implements OnInit {
       if (isNaN(item.total)) {
         console.error(`Error: Item total is NaN for item: ${item.name}`);
       } else {
+        const additionalDiscount = this.additionalDiscount || 0;
+
         total += item.total;
-        this.amountReceived = total;
+        
+        this.amountReceived = total-additionalDiscount;
       }
     });
     console.log('Total Amount:', total);
@@ -266,7 +292,7 @@ export class QuickbillingComponent implements OnInit {
   }
 
   calculateTotalDiscount(): number {
-    const totalDiscount = this.filteredProducts.reduce((sum, item) => sum + item.discount, 0);
+    const totalDiscount = this.filteredProducts.reduce((sum, item) => sum + (item.quantity*item.discount), 0);
     console.log('Total Discount:', totalDiscount);
     return totalDiscount;
   }

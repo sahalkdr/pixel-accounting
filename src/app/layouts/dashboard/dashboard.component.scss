@@ -3,15 +3,15 @@
 
   .mat-sidenav {
     width: 250px;
-    background-color: #7E909A,; /* Dark shade of grey */
-    color: white; /* Text color in the sidebar */
+    background-color: #7E909A,; 
+    color: white; 
   }
 
   .mat-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white; /* Text color in the toolbar */
+    color: white;
   }
 
   .mat-nav-list {
@@ -22,13 +22,12 @@
       align-items: center;
 
       mat-icon {
-        margin-right: 8px; /* Adjust icon-text spacing */
-      }
+        margin-right: 8px; 
 
       .plus-sign {
         margin-left: auto;
-        margin-right: 5px; /* Adjust plus sign spacing */
-        color: #28a745; /* Change color of the plus sign */
+        margin-right: 5px; 
+        color: #28a745; 
       }
     }
 
@@ -60,4 +59,5 @@
   .spacer {
     flex: 1;
   }
+}
 }

@@ -16,17 +16,10 @@
     .form-group {
       display: grid;
       gap: 5px;
-      label {
-        font-weight: bold;
-      }
-      input[type="text"],
-      input[type="number"],
-      select {
-        width: 100%;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-      }
+
+      
+
+      // Keep the button styling to ensure custom appearance
       button {
         padding: 10px 20px;
         background-color: #007bff;

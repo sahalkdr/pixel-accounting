@@ -19,7 +19,7 @@ export class UserService {
         data: { id }
       });
   
-      console.log('Delete Category Response:', deleteCategoryResponse); // Add this line to log the response
+      console.log('Delete Category Response:', deleteCategoryResponse); 
   
       if (deleteCategoryResponse.success) {
         return { success: true, message: deleteCategoryResponse.message };
@@ -212,7 +212,7 @@ export class UserService {
   }
 
   async updateParty(id: number, updatedParty: any) {
-    const payload = { id, ...updatedParty }; // Merge the ID into the payload
+    const payload = { id, ...updatedParty }; 
 
     try {
       console.log('Sending update party payload:', payload);
@@ -272,44 +272,44 @@ export class UserService {
     }
   }
   
-  async saveBill(bill: any) {
+  async saveBillWithItems(bill: any, items: { Id: number, quantity: number }[]) {
     try {
-      const response = await this.apiService.httpRequest({
+      // Save the bill first
+      const billResponse = await this.apiService.httpRequest({
         method: 'POST',
         url: 'http://localhost/restaurant/add_bill.php',
         data: bill
       });
-
-      return response.success ? { success: true, billId: response.bill_id } : { success: false, message: response.error };
-    } catch (error) {
-      console.error('Save bill error:', error);
-      return { success: false, message: 'An error occurred while saving the bill. Please try again later.' };
-    }
-  }
-
-  async saveBillItems(billId: number, items: { Id: number, quantity: number }[]) {
-    const payload = { bill_id: billId, items };
   
-    try {
-      const saveBillItemsResponse = await this.apiService.httpRequest({
+      if (!billResponse.success) {
+        return { success: false, message: billResponse.error || 'Error saving bill' };
+        console.error('messag:', billResponse.error);
+
+      }
+  
+      // If the bill is saved successfully, save the bill items
+      const billId = billResponse.bill_id;
+      const itemsPayload = { bill_id: billId, items };
+  
+      const itemsResponse = await this.apiService.httpRequest({
         method: 'POST',
         url: 'http://localhost/restaurant/saveBillItems.php',
-        data: payload
+        data: itemsPayload
       });
   
-      if (saveBillItemsResponse.success) {
-        return { success: true };
-      } else {
-        console.error('Save bill items error:', saveBillItemsResponse.error);
-        return { success: false, message: saveBillItemsResponse.error || 'Error saving items' };
+      if (!itemsResponse.success) {
+        return { success: false, message: itemsResponse.message || 'Error saving bill items' };
+        console.log('message:',itemsResponse.message);
       }
+  
+      // If both the bill and items are saved successfully
+      return { success: true, billId ,message:"Bill sabed successfully"};
     } catch (error) {
-      console.error('Save bill items error:', error);
-      return { success: false, message: 'An error occurred while saving the bill items. Please try again later.' };
+      console.error('Save bill with items error:', error);
+      return { success: false, message: 'An error occurred while saving the bill and items. Please try again later.' };
     }
   }
   
-
 
   async deleteItem(id: number) {
     const payload = { id };
@@ -340,11 +340,12 @@ export class UserService {
 
 
   async deleteParty(id: number) {
+    const payload = { id };
     try {
       const deleteResponse = await this.apiService.httpRequest({
         method: 'POST',
         url: 'http://localhost/restaurant/delete_party.php',
-        data: { id }
+        data: payload
       });
 
       if (deleteResponse.success) {

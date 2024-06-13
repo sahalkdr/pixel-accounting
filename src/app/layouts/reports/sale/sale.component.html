@@ -1,19 +1,33 @@
 <div class="container">
-  <!-- Summary -->
   <div class="filters">
     <div class="date-picker">
-      <label for="from-date">From:</label>
-      <input type="date" id="from-date" name="from-date" (change)="filterByDateRange()">
-      <label for="to-date">To:</label>
-      <input type="date" id="to-date" name="to-date" (change)="filterByDateRange()">
-      <label for="party-name">Party Name:</label>
-      <input type="text" id="party-name" name="party-name" (input)="filterByDateRange()">
-      <label for="payment_mode">Payment Mode</label>
-      <select name="payment_mode" id="payment_mode" (change)="filterByDateRange()">
-        <option value="All">All</option>
-        <option value="Cash">Cash</option>
-        <option value="Online">Online</option>
-      </select>
+      <mat-form-field>
+        <mat-label>From:</mat-label>
+        <input matInput [matDatepicker]="fromDatePicker" id="from-date" name="from-date" (dateInput)="filterByDateRange()">
+        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromDatePicker></mat-datepicker>
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>To:</mat-label>
+        <input matInput [matDatepicker]="toDatePicker" id="to-date" name="to-date" (dateInput)="filterByDateRange()">
+        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #toDatePicker></mat-datepicker>
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Party Name:</mat-label>
+        <input matInput type="text" id="party-name" name="party-name" (input)="filterByDateRange()">
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Payment Mode</mat-label>
+        <mat-select name="payment_mode" id="payment_mode" [(ngModel)]="paymentMode" (selectionChange)="filterByDateRange()">
+          <mat-option value="All">All</mat-option>
+          <mat-option value="Cash">Cash</mat-option>
+          <mat-option value="Online">Online</mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-icon (click)="viewReport()">print</mat-icon>
     </div>
   </div>
@@ -25,8 +39,7 @@
     </div>
   </div>
 
- 
-  <div class="transactions">
+  <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
     <table class="normal-table">
       <thead>
         <tr>
@@ -34,25 +47,29 @@
           <th>Bill No.</th>
           <th>Party Name</th>
           <th>Payment Mode</th>
-          <th>Subtotal</th>
-          <th>Total Amount</th>
+          <th>Total Tax (Rs)</th>
+          <!-- <th>Total Amount</th> -->
           <th>Amount Received</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let bill of saledetails.bills | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <tr *ngFor="let bill of (saledetails.bills || []) | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
           <td>{{ bill.created_at }}</td>
           <td>{{ bill.bill_id }}</td>
           <td>{{ bill.customer_name }}</td>
           <td>{{ bill.payment_mode }}</td>
-          <td>{{ bill.subtotal }}</td>
-          <td>{{ bill.total_amount }}</td>
+          <td>{{ bill.total_tax }}</td>
+          <!-- <td>{{ bill.total_amount }}</td> -->
           <td>{{ bill.amount_received }}</td>
         </tr>
       </tbody>
     </table>
   </div>
+  <ng-template #noRecordsTemplate>
+    <div class="no-records">No records found.</div>
+  </ng-template>
 </div>
-<div class="pagination-container">
+<div class="pagination-container" *ngIf="!noRecords && saledetails.bills?.length">
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
+

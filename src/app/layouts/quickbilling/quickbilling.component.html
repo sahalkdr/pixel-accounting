@@ -1,7 +1,10 @@
 <div class="quickbilling-container">
   <div class="left-side">
     <div class="table-container">
-      <input type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="searchItems()" />
+      <mat-form-field appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Search..." [(ngModel)]="searchText" (input)="searchItems()" />
+      </mat-form-field>
       <div *ngIf="suggestedItems.length > 0" class="suggestions">
         <ul>
           <li *ngFor="let item of suggestedItems" (click)="selectItem(item)">
@@ -20,11 +23,11 @@
             <th>Item Name</th>
             <th>Qty</th>
             <th>Unit</th>
-
             <th>Price/Unit</th>
             <th>Tax . Rs</th>
             <th>Discount.Rs</th>
             <th>Total</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -32,33 +35,47 @@
             <td>{{ i + 1 }}</td>
             <td>{{ product.item_code }}</td>
             <td>{{ product.name }}</td>
-            <td><input type="number" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" /></td>
+            <td>
+              <mat-form-field appearance="fill">
+                <input matInput type="number" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" />
+              </mat-form-field>
+            </td>
             <td>{{ product.unit }}</td>
             <td>{{ product.sale_price }}</td>
             <td>{{ (product.quantity * product.sale_price - product.discount) * product.tax_rate / 100 }}</td>
-            <td>{{ product.discount }}</td>
+            <td>{{ product.quantity * product.discount }}</td>
             <td>{{ product.total | number:'1.2-2' }}</td>
-            <td><button (click)="removeItem(i)">Remove</button></td>
+            <td>
+              <button mat-icon-button color="warn" (click)="removeItem(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
           </tr>
         </tbody>
-        <tr>
-          <td colspan="9">Payment Mode:</td>
-          <td>
-            <select [(ngModel)]="paymentMode">
-              <option value="Cash">Cash</option>
-              <option value="Online">Online</option>
-            </select>
-          </td>
-        </tr>
+        <tfoot>
+          <tr>
+            <td colspan="9">Payment Mode:</td>
+            <td>
+              <mat-form-field appearance="fill">
+                <mat-select [(ngModel)]="paymentMode">
+                  <mat-option value="Cash">Cash</mat-option>
+                  <mat-option value="Online">Online</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </tr>
+        </tfoot>
       </table>
       <div *ngIf="showStockWarning" class="stock-warning">Stock not available for selected quantity</div>
-
     </div>
   </div>
   <div class="right-side">
     <div class="customer-search">
       <h2>Customer Details</h2>
-      <input type="text" placeholder="Search Customer..." [(ngModel)]="customerSearchText" (input)="searchParties()" />
+      <mat-form-field appearance="fill">
+        <mat-label>Search Customer</mat-label>
+        <input matInput placeholder="Search Customer..." [(ngModel)]="customerSearchText" (input)="searchParties()" />
+      </mat-form-field>
       <div *ngIf="customerDetails">
         <p>Name: {{ customerDetails.name }}</p>
         <p>Phone: {{ customerDetails.phone }}</p>
@@ -94,6 +111,14 @@
         <span class="value">{{ calculateTotal() | number:'1.2-2' }}</span>
       </div>
       <div class="detail">
+        <span class="label">Additional Discount:</span>
+        <span class="value">
+          <mat-form-field appearance="fill">
+            <input matInput type="number" [(ngModel)]="additionalDiscount" (ngModelChange)="calculateTotal()" />
+          </mat-form-field>
+        </span>
+      </div>
+      <div class="detail">
         <span class="label">Payment Mode:</span>
         <span class="value">{{ paymentMode }}</span>
       </div>
@@ -102,10 +127,9 @@
         <span class="value">{{ amountReceived | number:'1.2-2' }}</span>
       </div>
     </div>
-    <div class="actions">
-      <button mat-button (click)="saveBill()">Save</button>
+    <div class="bottom-options">
+      <button mat-raised-button color="primary" (click)="saveAndViewBill()">Save</button>
     </div>
-    <button (click)="viewBillDetails()">View Bill</button>
     <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   </div>
