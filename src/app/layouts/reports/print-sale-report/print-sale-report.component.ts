@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
+
 interface SaleDetails {
   company_info: {
     name: string;
@@ -12,6 +13,8 @@ interface SaleDetails {
     bill_id: string;
     customer_name: string;
     subtotal: string;
+    total_tax: string;
+
     total_amount: string;
     payment_mode: string;
     amount_received: string;
@@ -28,6 +31,9 @@ interface SaleDetails {
 })
 export class PrintSaleReportComponent implements OnInit {
   saledetails: SaleDetails = { company_info: { name: '', place: '', phone: '' }, bills: [] };
+  totalPaidAmount: number = 0;
+  totalPaidTax: number = 0;
+  
 
   constructor(private http: HttpClient) { }
 
@@ -44,10 +50,32 @@ export class PrintSaleReportComponent implements OnInit {
       (resp: SaleDetails) => {
         console.log(resp);
         this.saledetails = resp;
+        this.calculateTotalPaidAmount();
+                this.calculateTotalPaidTax();
       },
+      
       error => {
         console.error('Error:', error);
       }
     );
+  }
+
+  calculateTotalPaidAmount() {
+    if (this.saledetails.bills && this.saledetails.bills.length > 0) {
+        this.totalPaidAmount = this.saledetails.bills.reduce((total, bill) => {
+            return total + parseFloat(bill.total_amount);
+        }, 0);
+    } else {
+        this.totalPaidAmount = 0;
+    }
+  }
+  calculateTotalPaidTax() {
+    if (this.saledetails.bills && this.saledetails.bills.length > 0) {
+        this.totalPaidTax = this.saledetails.bills.reduce((total, bill) => {
+            return total + parseFloat(bill.total_tax);
+        }, 0);
+    } else {
+        this.totalPaidTax = 0;
+    }
   }
 }

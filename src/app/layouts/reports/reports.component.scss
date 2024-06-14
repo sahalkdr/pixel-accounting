@@ -1,51 +1,60 @@
-.container {
+.report-container {
     display: flex;
     background: linear-gradient(135deg, #bdd3ea, #ffffff);
-    width: 1200px; 
-    height: 700px; 
-}
-
-.sidebar {
+    width: 1200px;
+    height: 700px;
+  }
+  
+  .sidebar {
     width: 150px;
     background-color: #bdd3ea;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: 100%;
-}
-
-.sidebar ul {
+  }
+  
+  .sidebar ul {
     list-style-type: none;
     padding: 0;
-}
-
-.sidebar li {
+  }
+  
+  .sidebar li {
     margin-bottom: 10px;
-}
-
-.sidebar a {
+  }
+  
+  .sidebar a {
     text-decoration: none;
     color: #007bff;
     display: block;
     padding: 8px 0;
     transition: all 0.3s ease;
-}
-
-.sidebar a:hover {
+  }
+  
+  .sidebar a:hover {
     background-color: #f0f5ff;
     border-radius: 5px;
-}
-
-.sidebar a.active {
+  }
+  
+  .sidebar a.active {
     font-weight: bold;
     color: #333333;
-}
-
-.content {
+  }
+  
+  .content {
     flex: 1;
     padding: 30px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 100%; 
-}
+    height: 100%;
+  }
+  
+  @media print {
+    .report-container,
+    .sidebar,
+    .content {
+      display: none !important; /* Hide elements from ReportComponent when printing */
+    }
+  }
+  

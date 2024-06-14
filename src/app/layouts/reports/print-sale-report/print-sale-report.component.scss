@@ -53,3 +53,39 @@
       display: none;
   }
 }
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+
+
+.summary-item {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #e0f7fa;
+  border-radius: 5px;
+  text-align: center;
+}
+.summary-item.total-tax {
+  background-color: #a5d6a7; 
+}
+
+.summary-item.paid {
+  background-color: #a5d6a7;
+}
+
+.summary-item.unpaid {
+  background-color: #ffccbc;
+}
+
+.summary-item.total {
+  background-color: #fff9c4;
+}
+
+.summary-item .label {
+  font-weight: bold;
+}

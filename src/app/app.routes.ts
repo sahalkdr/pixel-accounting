@@ -26,7 +26,8 @@ export const routes: Routes = [
         {
           path: 'reports', component: ReportsComponent, children: [
             { path: '', redirectTo: 'sale', pathMatch: 'full' },
-            { path: 'sale', component: SaleComponent }
+            { path: 'sale', component: SaleComponent },
+            
           ]
         }
         ]

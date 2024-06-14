@@ -17,6 +17,7 @@ import { formatDate } from '@angular/common';
 
 
 
+
 interface SaleDetails {
   success: boolean;
   message: string;
@@ -57,11 +58,16 @@ interface SaleDetails {
 export class SaleComponent implements OnInit {
   saledetails: SaleDetails = { success: true, message: '', bills: [] };
   totalPaidAmount: number = 0;
+  totalPaidTax: number = 0;
   
   itemsPerPage:number=15;
   p:number=1;
   paymentMode: string = 'All';
   noRecords: boolean = false;
+
+  fromDate: string = '';
+  toDate: string = '';
+  printableBills: Bill[] = []; // Store all bills for printing
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -86,6 +92,15 @@ export class SaleComponent implements OnInit {
         this.totalPaidAmount = 0;
     }
   }
+  calculateTotalPaidTax() {
+    if (this.saledetails.bills && this.saledetails.bills.length > 0) {
+        this.totalPaidTax = this.saledetails.bills.reduce((total, bill) => {
+            return total + parseFloat(bill.total_tax);
+        }, 0);
+    } else {
+        this.totalPaidTax = 0;
+    }
+  }
 
   filterByDateRange() {
     const fromDateInput = document.getElementById('from-date') as HTMLInputElement;
@@ -97,7 +112,10 @@ export class SaleComponent implements OnInit {
     const toDate = toDateInput ? this.formatDate(toDateInput.value) : '';
     const partyName = partyNameInput ? (partyNameInput.value ? partyNameInput.value.trim() : '') : '';
     const paymentMode = paymentModeSelect ? (paymentModeSelect.value ? paymentModeSelect.value.trim() : '') : '';
-  
+    
+    this.fromDate = fromDate;
+    this.toDate = toDate;
+
     console.log('Payment Mode:', this.paymentMode); 
     console.log('From Date:', fromDate); 
     console.log('To Date:', toDate);
@@ -118,18 +136,25 @@ export class SaleComponent implements OnInit {
         if (resp.success) {
           if (resp.bills) {
             this.saledetails.bills = resp.bills;
+            this.printableBills = resp.bills; // Store all bills for printing
+
           } else {
             this.saledetails.bills = [];
+            this.printableBills = [];
+
             this.noRecords = true;
             this.p = 1; 
           }
           this.noRecords = false;
         } else {
           this.saledetails.bills = [];
+          this.printableBills = [];
+
           this.noRecords = true;
           this.p = 1; 
         }
         this.calculateTotalPaidAmount();
+        this.calculateTotalPaidTax();
       },
       error => {
         console.error('Error:', error);
@@ -146,20 +171,39 @@ export class SaleComponent implements OnInit {
     }
     return `${parts[2]}-${parts[0]}-${parts[1]}`;
   }
+
+  printPage(): void {
+    const printContents = document.getElementById('print-area')?.innerHTML;
+    if (printContents) {
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload();
+    }
+  }
+
+  
+  
   
   fetchSaleDetails() {
     this.http.get<SaleDetails>('http://localhost/restaurant/get_all_bill_details.php').subscribe(
       (resp: SaleDetails) => {
         if (resp.success) {
         this.saledetails = resp;
+        this.printableBills = resp.bills ? resp.bills : [];
+
         this.noRecords = false;
         }
         else
         {
           this.saledetails.bills = [];
+          this.printableBills = [];
+
           this.noRecords = true;
         }
         this.calculateTotalPaidAmount();
+        this.calculateTotalPaidTax();
       },
       error => {
         console.error('Error:', error);

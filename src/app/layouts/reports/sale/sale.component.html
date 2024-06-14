@@ -7,19 +7,19 @@
         <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #fromDatePicker></mat-datepicker>
       </mat-form-field>
-    
+
       <mat-form-field>
         <mat-label>To:</mat-label>
         <input matInput [matDatepicker]="toDatePicker" id="to-date" name="to-date" (dateInput)="filterByDateRange()">
         <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #toDatePicker></mat-datepicker>
       </mat-form-field>
-    
+
       <mat-form-field>
         <mat-label>Party Name:</mat-label>
         <input matInput type="text" id="party-name" name="party-name" (input)="filterByDateRange()">
       </mat-form-field>
-    
+
       <mat-form-field>
         <mat-label>Payment Mode</mat-label>
         <mat-select name="payment_mode" id="payment_mode" [(ngModel)]="paymentMode" (selectionChange)="filterByDateRange()">
@@ -28,18 +28,76 @@
           <mat-option value="Online">Online</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-icon (click)="viewReport()">print</mat-icon>
+      <mat-icon (click)="printPage()">print</mat-icon>
     </div>
   </div>
+  
+    <div class="summary">
+      <div class="summary-item paid">
+        <div class="label">Total</div>
+        <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
+      </div>
+      <div class="summary-item total-tax">
+        <div class="label">Total Tax</div>
+        <div class="amount">₹{{ totalPaidTax.toFixed(2) }}</div>
+      </div>
+      
+    </div>
 
+    <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
+      <table class="normal-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Bill No.</th>
+            <th>Party Name</th>
+            <th>Payment Mode</th>
+            <th>Total Tax (Rs)</th>
+            <!-- <th>Total Amount</th> -->
+            <th>Amount Received</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bill of (saledetails.bills || []) | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+            <td>{{ bill.created_at }}</td>
+            <td>{{ bill.bill_id }}</td>
+            <td>{{ bill.customer_name }}</td>
+            <td>{{ bill.payment_mode }}</td>
+            <td class="right-align">{{ bill.total_tax }}</td>
+            <!-- <td>{{ bill.total_amount }}</td> -->
+            <td class="right-align">{{ bill.amount_received }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noRecordsTemplate>
+      <div class="no-records">No records found.</div>
+    </ng-template>
+  
+</div>
+
+<div class="pagination-container" *ngIf="!noRecords && saledetails.bills?.length">
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+
+<div id="print-area" style="display: none;">
   <div class="summary">
     <div class="summary-item paid">
       <div class="label">Total</div>
       <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
     </div>
+    <div class="summary-item total-tax">
+      <div class="label">Total Tax</div>
+      <div class="amount">₹{{ totalPaidTax.toFixed(2) }}</div>
+    </div>
+    <div class="summary-item date-range">
+      <div><strong>From Date:</strong> {{ fromDate }}</div>
+      <div><strong>To Date:</strong> {{ toDate }}</div>
+    </div>
   </div>
 
-  <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
+  <div class="transactions">
     <table class="normal-table">
       <thead>
         <tr>
@@ -48,28 +106,22 @@
           <th>Party Name</th>
           <th>Payment Mode</th>
           <th>Total Tax (Rs)</th>
-          <!-- <th>Total Amount</th> -->
           <th>Amount Received</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let bill of (saledetails.bills || []) | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <tr *ngFor="let bill of printableBills">
           <td>{{ bill.created_at }}</td>
           <td>{{ bill.bill_id }}</td>
           <td>{{ bill.customer_name }}</td>
           <td>{{ bill.payment_mode }}</td>
-          <td>{{ bill.total_tax }}</td>
-          <!-- <td>{{ bill.total_amount }}</td> -->
-          <td>{{ bill.amount_received }}</td>
+          <td class="right-align">{{ bill.total_tax }}</td>
+          <td class="right-align">{{ bill.amount_received }}</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <ng-template #noRecordsTemplate>
-    <div class="no-records">No records found.</div>
-  </ng-template>
-</div>
-<div class="pagination-container" *ngIf="!noRecords && saledetails.bills?.length">
-  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+  <div *ngIf="printableBills.length === 0" class="no-records">No records found.</div>
 </div>
 

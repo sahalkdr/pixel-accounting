@@ -1,4 +1,14 @@
 <div class="transactions">
+  <div class="summary">
+    <div class="summary-item paid">
+      <div class="label">Total</div>
+      <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
+    </div>
+    <div class="summary-item total-tax">
+      <div class="label">Total Tax</div>
+      <div class="amount">₹{{ totalPaidTax.toFixed(2) }}</div> 
+    </div>
+  </div>
     <table class="normal-table" >
       <thead>
         <tr>
@@ -6,7 +16,7 @@
           <th>Bill No.</th>
           <th>Party Name</th>
           <th>Payment Mode</th>
-          <th>Subtotal</th>
+          <!-- <th>Subtotal</th> -->
           <th>Total Amount</th>
           <th>Amount Received</th>
         </tr>
@@ -17,7 +27,7 @@
           <td>{{ bill.bill_id }}</td>
           <td>{{ bill.customer_name }}</td>
           <td>{{ bill.payment_mode }}</td>
-          <td>{{ bill.subtotal }}</td>
+          <!-- <td>{{ bill.subtotal }}</td> -->
           <td>{{ bill.total_amount }}</td>
           <td>{{ bill.amount_received }}</td>
         </tr>
