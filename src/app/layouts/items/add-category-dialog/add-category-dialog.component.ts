@@ -32,17 +32,18 @@ export class AddCategoryDialogComponent {
   }
 
 
-  onSubmit():void {
+  onSubmit(): void {
     if (this.addCategoryForm.valid) {
-      const newCategory = this.addCategoryForm.value;
-      this.userService.addCategory(newCategory).then(response => {
-        if (response.success) {
-          this.dialogRef.close(newCategory);
-        } else {
-          console.error('Error adding category:', response.message);
-        }
-      });
-  }
+        const newCategory = this.addCategoryForm.value;
+        this.userService.addCategory(newCategory).then(response => {
+            if (response.success) {
+                this.dialogRef.close(response.category);
+            } else {
+                console.error('Error adding category:', response.message);
+            }
+        });
+    }
 }
+
 
 }

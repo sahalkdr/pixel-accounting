@@ -131,30 +131,31 @@ export class UserService {
     }
   }
 
-  async addCategory(category:{name: string, tax_rate: number}) {
-    const payload = { name:category.name, tax_rate :category.tax_rate};
+  async addCategory(category: { name: string, tax_rate: number }) {
+    const payload = { name: category.name, tax_rate: category.tax_rate };
 
     try {
-      console.log('Sending add category payload:', payload);
+        console.log('Sending add category payload:', payload);
 
-      const addCategoryResponse = await this.apiService.httpRequest({
-        method: 'POST',
-        url: 'http://localhost/restaurant/add-categories.php',  
-        data: payload
-      });
+        const addCategoryResponse = await this.apiService.httpRequest({
+            method: 'POST',
+            url: 'http://localhost/restaurant/add-categories.php',
+            data: payload
+        });
 
-      console.log('Add party response:', addCategoryResponse);
+        console.log('Add category response:', addCategoryResponse);
 
-      if (addCategoryResponse.success) {
-        return { success: true, message: addCategoryResponse.success };
-      } else {
-        return { success: false, message: addCategoryResponse.error };
-      }
+        if (addCategoryResponse.success) {
+            return { success: true, category: addCategoryResponse.category };
+        } else {
+            return { success: false, message: addCategoryResponse.error };
+        }
     } catch (error) {
-      console.error('Add party error:', error);
-      return { success: false, message: 'An error occurred while adding the party. Please try again later.' };
+        console.error('Add category error:', error);
+        return { success: false, message: 'An error occurred while adding the category. Please try again later.' };
     }
-  }
+}
+
 
  
 

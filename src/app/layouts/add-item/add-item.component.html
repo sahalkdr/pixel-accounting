@@ -15,7 +15,10 @@
         <mat-form-field>
           <mat-label>Category:</mat-label>
           <mat-select id="category" name="category" [(ngModel)]="newItem.category_id" (selectionChange)="onCategoryChange($event)" required>
+            <mat-option (click)="openAddCategoryDialog()">+ Add New Category</mat-option>
+
             <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
+
           </mat-select>
         </mat-form-field>
       </div>

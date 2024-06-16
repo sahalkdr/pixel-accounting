@@ -129,7 +129,23 @@ export class QuickbillingComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
-        this.parties.push(result.party);
+        const newCustomer: Customer = {
+          id: result.party.id,
+          name: result.party.name,
+          phone: result.party.phone
+        };
+        this.parties.push(newCustomer);
+        
+
+        this.selectCustomer(newCustomer); // Corrected line        this.customerSearchText = '';
+
+        this.noCustomersFound = false;
+        this.suggestedCustomers = [];
+        this.suggestedCustomers = [];
+
+
+      
+
       }
     });
   }

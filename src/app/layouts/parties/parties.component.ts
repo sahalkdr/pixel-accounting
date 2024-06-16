@@ -64,7 +64,7 @@ export class PartiesComponent implements OnInit{
         console.log(resp);
         this.parties=resp;
         this.filteredParties = resp;
-        this.totalParty=resp.length;
+        
       }
     )
 
@@ -103,8 +103,9 @@ export class PartiesComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if (result.success) {
         this.parties.push(result.party);
+        this.fetchparties();
         this.filteredParties = [...this.parties];
-        this.totalParty=[...this.parties].length;
+        
       }
       
     });

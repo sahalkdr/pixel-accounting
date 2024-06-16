@@ -10,6 +10,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { AddCategoryDialogComponent } from '../items/add-category-dialog/add-category-dialog.component';
+
 
 @Component({
   selector: 'app-additem',
@@ -33,7 +36,7 @@ export class AdditemComponent implements OnInit{
   };
   categories: { id: number, name: string,tax_rate:number }[] = [];
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router,private dialog: MatDialog) { }
   ngOnInit() {
     this.loadCategories(); 
   }
@@ -51,6 +54,23 @@ export class AdditemComponent implements OnInit{
       console.error('Error fetching categories:', error);
     }
   }
+
+  
+  openAddCategoryDialog(): void {
+    const dialogRef = this.dialog.open(AddCategoryDialogComponent, {
+        width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result && result.id) {
+            this.categories.push(result); 
+            this.newItem.category_id = result.id;  //auto selct new categoty
+            this.newItem.tax_rate = result.tax_rate;
+        }
+    });
+}
+
+
   onCategoryChange(event: any) {
     const selectedCategory = this.categories.find(category => category.id === event.value);
     if (selectedCategory) {
