@@ -13,6 +13,10 @@ import { AdditemComponent } from './layouts/add-item/add-item.component';
 import { AddpartyComponent } from './layouts/parties/addparty/addparty.component'
 import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.component';
 import { PrintSaleReportComponent } from './layouts/reports/print-sale-report/print-sale-report.component';
+
+import { AuthGuard } from './shared/services/auth_guard';
+
+
 // import { AddpartyComponent } from './layouts/parties/addparty/addparty.component;
 
 
@@ -30,13 +34,13 @@ export const routes: Routes = [
             
           ]
         }
-        ]
+        ],canActivate: [AuthGuard]
         },
-        { path: 'quickbilling', component: QuickbillingComponent },
-        { path: 'item/add', component: AdditemComponent },
-        { path: 'parties/add', component: AddpartyComponent },
-        { path: 'bill-details', component: ViewBillComponent },
-        { path: 'sale-details', component: PrintSaleReportComponent }
+        { path: 'quickbilling', component: QuickbillingComponent ,canActivate: [AuthGuard]},
+        { path: 'item/add', component: AdditemComponent ,canActivate: [AuthGuard]},
+        { path: 'parties/add', component: AddpartyComponent ,canActivate: [AuthGuard]},
+        { path: 'bill-details', component: ViewBillComponent ,canActivate: [AuthGuard]},
+        { path: 'sale-details', component: PrintSaleReportComponent ,canActivate: [AuthGuard]}
         
 ];
 

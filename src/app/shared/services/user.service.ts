@@ -32,8 +32,27 @@ export class UserService {
     }
   }
 
+  async verifyToken(token: string) {
+    try {
+      const verifyTokenResponse = await this.apiService.httpRequest({
+        method: 'POST',
+        url: 'http://localhost/restaurant/verify_token.php',
+        data: { token }
+      });
 
-  public userDetails: { username: string, password: string, token: string,company_name:string,location:string,phone:string } = { username: "", password: "", token: "",company_name:"",location:"",phone:"" };
+      if (verifyTokenResponse.success) {
+        return true; // Token is valid
+      } else {
+        return false; // Token is invalid
+      }
+    } catch (error) {
+      console.error('Token verification error:', error);
+      return false; // Error occurred during token verification
+    }
+  }
+
+
+  public userDetails: { user_id: string | number,username: string, password: string, token: string,company_name:string,location:string,phone:string } = { user_id:"",username: "", password: "", token: "",company_name:"",location:"",phone:"" };
 
   
   
@@ -46,9 +65,11 @@ export class UserService {
         url: 'http://localhost/restaurant/login.php', 
         data: payload
       });
-
+      console.log('Login Response:', loginResponse);
       if (loginResponse.success) {
+        const userId = parseInt(loginResponse.user_id, 10);
         this.userDetails = {
+          user_id:userId,
           username: loginResponse.username,
           company_name:loginResponse.company_name,
           location:loginResponse.location,
@@ -56,7 +77,7 @@ export class UserService {
           password, 
           token: loginResponse.token
         };
-        localStorage.setItem('angular17token', JSON.stringify(this.userDetails.token));
+        localStorage.setItem('userId', userId.toString());        localStorage.setItem('angular17token', this.userDetails.token);
         return { success: true, userDetails: this.userDetails };
       } else {
         return { success: false, message: loginResponse.error };

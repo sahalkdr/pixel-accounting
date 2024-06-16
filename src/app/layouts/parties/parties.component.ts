@@ -54,8 +54,34 @@ export class PartiesComponent implements OnInit{
   }
   constructor(private router: Router,private userService: UserService,private http: HttpClient,public dialog: MatDialog,private snackBar: MatSnackBar) { }
   ngOnInit(): void {
+    // this.checkLoggedIn
+
     this.fetchparties();
   }
+
+//   async checkLoggedIn(): Promise<void> {
+//     console.log('Checking login status...');
+//     const id = localStorage.getItem('userId');
+//     const token = localStorage.getItem('angular17token');
+
+//     console.log('Token:', token);
+//     console.log('User Id:', id);
+//     if (!token) {
+//         console.log('Token not found, redirecting to login...');
+//         this.router.navigate(['/login']);
+//         return;
+//     }
+
+//     const tokenValid = await this.userService.verifyToken(token);
+//     console.log('Token validity:', tokenValid);
+//     if (!tokenValid) {
+//         console.log('Token invalid, redirecting to login...');
+//         this.router.navigate(['/login']);
+//     } else {
+//         console.log('User logged in.');
+//     }
+// }
+
 
   public fetchparties()
   {
