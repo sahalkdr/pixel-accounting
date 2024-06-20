@@ -93,7 +93,9 @@ export class QuickbillingComponent implements OnInit {
   }
 
   fetchProducts(): void {
-    this.http.get<Item[]>('http://localhost/restaurant/get-items.php').subscribe(
+    const userId = localStorage.getItem('userId');
+
+    this.http.get<Item[]>(`http://localhost/restaurant/get-items.php?user_id=${userId}`).subscribe(
       (resp: Item[]) => {
         this.products = resp.map((item: any) => ({
           ...item,
@@ -111,7 +113,9 @@ export class QuickbillingComponent implements OnInit {
   }
 
   fetchParties(): void {
-    this.http.get<Customer[]>('http://localhost/restaurant/get-parties.php').subscribe(
+    const userId = localStorage.getItem('userId');
+
+    this.http.get<Customer[]>(`http://localhost/restaurant/get-parties.php?user_id=${userId}`).subscribe(
       (resp: Customer[]) => {
         this.parties = resp;
         console.log('Fetched parties:', this.parties);
@@ -138,9 +142,9 @@ export class QuickbillingComponent implements OnInit {
         
 
         this.selectCustomer(newCustomer); // Corrected line        this.customerSearchText = '';
+        this.customerSearchText = '';
 
         this.noCustomersFound = false;
-        this.suggestedCustomers = [];
         this.suggestedCustomers = [];
 
 
@@ -168,21 +172,33 @@ export class QuickbillingComponent implements OnInit {
   
 
   async saveAndViewBill() {
+    const user_id = localStorage.getItem('userId');
+    if (user_id === null) {
+      this.errorMessage = 'User not logged in.';
+      return;
+    }
+    
     this.successMessage = ''; 
     this.errorMessage = ''; 
     console.log('Before saving bill:', this.successMessage, this.errorMessage);
   
+    // if (!this.customerDetails) {
+    //   this.errorMessage = 'No customer selected.';
+    //   return;
+    // }
+
     const billData = {
-      party_id: this.customerDetails ? this.customerDetails.id : null,
+      party_id: this.customerDetails ? this.customerDetails.id : null,  // Allowing null for party_id
       subtotal: this.calculateSubtotal(),
       total_amount: this.calculateTotal(),
       payment_mode: this.paymentMode,
       additional_discount: this.additionalDiscount,
       total_tax: this.calculateTotalTax(),
       total_discount: this.calculateTotalDiscount(),
-
+      
       
       amount_received: this.amountReceived,
+      user_id:user_id,
       
     };
   
@@ -252,6 +268,8 @@ export class QuickbillingComponent implements OnInit {
       name: customer.name,
       phone: customer.phone
     };
+    console.log('Selected customer:', this.customerDetails); 
+
   }
 
   calculateItemTotal(item: Item): number {

@@ -54,7 +54,7 @@ export class UserService {
 
   public userDetails: { user_id: string | number,username: string, password: string, token: string,company_name:string,location:string,phone:string } = { user_id:"",username: "", password: "", token: "",company_name:"",location:"",phone:"" };
 
-  
+
   
   async login(username: string, password: string) {
     const payload = { username, password };
@@ -77,7 +77,10 @@ export class UserService {
           password, 
           token: loginResponse.token
         };
-        localStorage.setItem('userId', userId.toString());        localStorage.setItem('angular17token', this.userDetails.token);
+        localStorage.setItem('userId', userId.toString()); 
+        localStorage.setItem('angular17token', this.userDetails.token);
+        localStorage.setItem('companyName', loginResponse.company_name); // Store company name in local storage
+
         return { success: true, userDetails: this.userDetails };
       } else {
         return { success: false, message: loginResponse.error };
@@ -89,14 +92,7 @@ export class UserService {
   }
 
   getUserDetails() {
-    if (!this.userDetails) {
-      return null;
-    }
-    return {
-      company_name: this.userDetails.company_name,
-      location: this.userDetails.location,
-      phone: this.userDetails.phone
-    };
+    return this.userDetails;
   
   }
 
@@ -127,33 +123,44 @@ export class UserService {
 
   }
 
-  async addParty(name: string, phone: string, email: string, address: string) {
-    const payload = { name, phone, email, address };
+  async addParty(name: string, phone: string, email: string, address: string, user_id: string | number) {
+    const payload = { name, phone, email, address, user_id };
 
     try {
-      console.log('Sending add party payload:', payload);
+        console.log('Sending add party payload:', payload);
 
-      const addPartyResponse = await this.apiService.httpRequest({
-        method: 'POST',
-        url: 'http://localhost/restaurant/add-parties.php',  
-        data: payload
-      });
+        const addPartyResponse = await this.apiService.httpRequest({
+            method: 'POST',
+            url: 'http://localhost/restaurant/add-parties.php',
+            data: payload
+        });
 
-      console.log('Add party response:', addPartyResponse);
+        console.log('Add party response:', addPartyResponse);
 
-      if (addPartyResponse.success) {
-        return { success: true, message: addPartyResponse.success };
-      } else {
-        return { success: false, message: addPartyResponse.error };
-      }
+        if (addPartyResponse.success) {
+            return {
+                success: true,
+                party: {
+                    id: addPartyResponse.party_id,
+                    name,
+                    phone,
+                    email,
+                    address
+                }
+            };
+        } else {
+            return { success: false, message: addPartyResponse.error };
+        }
     } catch (error) {
-      console.error('Add party error:', error);
-      return { success: false, message: 'An error occurred while adding the party. Please try again later.' };
+        console.error('Add party error:', error);
+        return { success: false, message: 'An error occurred while adding the party. Please try again later.' };
     }
-  }
+}
 
-  async addCategory(category: { name: string, tax_rate: number }) {
-    const payload = { name: category.name, tax_rate: category.tax_rate };
+  
+
+  async addCategory(category: { name: string, tax_rate: number },user_id: string | number) {
+    const payload = { name: category.name, tax_rate: category.tax_rate,user_id };
 
     try {
         console.log('Sending add category payload:', payload);
@@ -257,7 +264,7 @@ export class UserService {
       return { success: false, message: 'An error occurred while updating the party. Please try again later.' };
     }
   }
-  async addItem(item: { name: string, category_id: number, sale_price: number, stock: number, unit: string, discount: number }) {
+  async addItem(item: { name: string, category_id: number, sale_price: number, stock: number, unit: string, discount: number,user_id: string | number }) {
     try {
       const addItemResponse = await this.apiService.httpRequest({
         method: 'POST',
@@ -277,10 +284,11 @@ export class UserService {
   }
 
   async fetchCategories() {
+    const userId = localStorage.getItem('userId');
     try {
       const categoriesResponse = await this.apiService.httpRequest({
         method: 'GET',
-        url: 'http://localhost/restaurant/get_categories.php' 
+        url: `http://localhost/restaurant/get_categories.php?user_id=${userId}`
       });
   
       if (categoriesResponse.success) {

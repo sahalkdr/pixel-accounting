@@ -33,9 +33,15 @@ export class AddCategoryDialogComponent {
 
 
   onSubmit(): void {
+    const user_id = localStorage.getItem('userId');
+    if (user_id === null) {
+      
+      return;
+    }
+
     if (this.addCategoryForm.valid) {
         const newCategory = this.addCategoryForm.value;
-        this.userService.addCategory(newCategory).then(response => {
+        this.userService.addCategory(newCategory,user_id).then(response => {
             if (response.success) {
                 this.dialogRef.close(response.category);
             } else {

@@ -29,10 +29,14 @@ export class DashboardComponent implements OnInit{
   constructor(private userService: UserService,private http:HttpClient){}
 
   ngOnInit(): void {
-    const userDetails = this.userService.getUserDetails();
-    if (userDetails) {
-      this.company_name = userDetails.company_name;
-      
+    const storedCompanyName = localStorage.getItem('companyName');
+    if (storedCompanyName) {
+      this.company_name = storedCompanyName;
+    } else {
+      const userDetails = this.userService.getUserDetails();
+      if (userDetails) {
+        this.company_name = userDetails.company_name;
+      }
     }
   }
 

@@ -112,7 +112,8 @@ export class SaleComponent implements OnInit {
     const toDate = toDateInput ? this.formatDate(toDateInput.value) : '';
     const partyName = partyNameInput ? (partyNameInput.value ? partyNameInput.value.trim() : '') : '';
     const paymentMode = paymentModeSelect ? (paymentModeSelect.value ? paymentModeSelect.value.trim() : '') : '';
-    
+    const userId = localStorage.getItem('userId');
+
     this.fromDate = fromDate;
     this.toDate = toDate;
 
@@ -120,7 +121,7 @@ export class SaleComponent implements OnInit {
     console.log('From Date:', fromDate); 
     console.log('To Date:', toDate);
   
-    let url = `http://localhost/restaurant/get_all_bill_details.php?from_date=${fromDate}&to_date=${toDate}`;
+    let url = `http://localhost/restaurant/get_all_bill_details.php?from_date=${fromDate}&to_date=${toDate}&user_id=${userId}`;
   
     if (partyName !== '') {
       url += `&party_name=${encodeURIComponent(partyName)}`;
@@ -136,7 +137,8 @@ export class SaleComponent implements OnInit {
         if (resp.success) {
           if (resp.bills) {
             this.saledetails.bills = resp.bills;
-            this.printableBills = resp.bills; // Store all bills for printing
+            this.printableBills = resp.bills; 
+            // Store all bills for printing
 
           } else {
             this.saledetails.bills = [];
@@ -187,7 +189,9 @@ export class SaleComponent implements OnInit {
   
   
   fetchSaleDetails() {
-    this.http.get<SaleDetails>('http://localhost/restaurant/get_all_bill_details.php').subscribe(
+    const userId = localStorage.getItem('userId');
+
+    this.http.get<SaleDetails>(`http://localhost/restaurant/get_all_bill_details.php?user_id=${userId}`).subscribe(
       (resp: SaleDetails) => {
         if (resp.success) {
         this.saledetails = resp;

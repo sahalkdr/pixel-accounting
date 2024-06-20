@@ -90,7 +90,9 @@ export class ItemsComponent implements OnInit{
   }
   public fetchproducts()
   {
-    this.http.get('http://localhost/restaurant/get-items.php').subscribe(
+    const userId = localStorage.getItem('userId');
+
+    this.http.get(`http://localhost/restaurant/get-items.php?user_id=${userId}`).subscribe(
       (resp:any) => {
         console.log(resp);
         this.products=resp;
@@ -102,7 +104,8 @@ export class ItemsComponent implements OnInit{
   }
   public fetchcategories()
   {
-    this.http.get('http://localhost/restaurant/get_categories.php').subscribe(
+    const userId = localStorage.getItem('userId');
+    this.http.get(`http://localhost/restaurant/get_categories.php?user_id=${userId}`).subscribe(
       (resp:any) => {
         console.log(resp);
         this.categories=resp.categories;

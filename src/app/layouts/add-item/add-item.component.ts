@@ -31,7 +31,8 @@ export class AdditemComponent implements OnInit{
     unit: '',
     discount: 0,
     has_tax:false,
-    tax_rate:0
+    tax_rate:0,
+    user_id:''
     
   };
   categories: { id: number, name: string,tax_rate:number }[] = [];
@@ -43,6 +44,8 @@ export class AdditemComponent implements OnInit{
 
   async loadCategories() {
     try {
+
+     
       
       const response = await this.userService.fetchCategories(); 
       if (response.success) {
@@ -80,6 +83,15 @@ export class AdditemComponent implements OnInit{
 
   
   async addItem() {
+    const userid = localStorage.getItem('userId');
+    if (userid === null) {
+      
+      return;
+    } 
+    this.newItem.user_id=userid;
+
+    
+
     if(!this.newItem.has_tax)
     {
       this.newItem.tax_rate=0;

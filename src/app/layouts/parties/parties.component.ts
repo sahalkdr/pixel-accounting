@@ -85,7 +85,9 @@ export class PartiesComponent implements OnInit{
 
   public fetchparties()
   {
-    this.http.get('http://localhost/restaurant/get-parties.php').subscribe(
+    const userId = localStorage.getItem('userId');
+
+    this.http.get(`http://localhost/restaurant/get-parties.php?user_id=${userId}`).subscribe(
       (resp:any) => {
         console.log(resp);
         this.parties=resp;

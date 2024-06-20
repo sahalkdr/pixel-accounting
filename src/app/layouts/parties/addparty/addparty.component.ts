@@ -30,16 +30,22 @@ export class AddpartyComponent {
   
 
   async onSubmit() {
-    const result = await this.userService.addParty(this.name, this.phone, this.email, this.address);
+    const user_id = localStorage.getItem('userId');
+
+    if (user_id === null) {
+        this.errorMessage = 'User not logged in.';
+        return;
+    }  
+    const result = await this.userService.addParty(this.name, this.phone, this.email, this.address, user_id);
 
     if (result.success) {
-      this.successMessage = 'Party added successfully!';
-      
-      this.dialogRef.close({ success: true, party: { name: this.name, phone: this.phone, email: this.email, address: this.address } });
+        this.successMessage = 'Party added successfully!';
+        this.dialogRef.close({ success: true, party: result.party });
     } else {
-      this.errorMessage = result.message;
+        this.errorMessage = result.message;
     }
-  }
+}
+
 
   onCancel(): void {
     this.dialogRef.close({ success: false });
