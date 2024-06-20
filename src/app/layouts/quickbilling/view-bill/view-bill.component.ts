@@ -24,11 +24,16 @@ export class ViewBillComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const userDetails = this.userService.getUserDetails();
-    if (userDetails) {
-      this.company_name = userDetails.company_name;
-      this.location = userDetails.location;
-      this.phone = userDetails.phone;
+    const storedCompanyName = localStorage.getItem('companyName');
+    this.location = localStorage.getItem('location');
+    this.phone = localStorage.getItem('phone');
+    if (storedCompanyName) {
+      this.company_name = storedCompanyName;
+    } else {
+      const userDetails = this.userService.getUserDetails();
+      if (userDetails) {
+        this.company_name = userDetails.company_name;
+      }
     }
 
     const billId = this.route.snapshot.queryParamMap.get('bill_id');

@@ -79,7 +79,9 @@ export class UserService {
         };
         localStorage.setItem('userId', userId.toString()); 
         localStorage.setItem('angular17token', this.userDetails.token);
-        localStorage.setItem('companyName', loginResponse.company_name); // Store company name in local storage
+        localStorage.setItem('companyName', loginResponse.company_name); 
+        localStorage.setItem('location', loginResponse.location);
+        localStorage.setItem('phone', loginResponse.phone);
 
         return { success: true, userDetails: this.userDetails };
       } else {
