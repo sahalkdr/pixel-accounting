@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @Component({
@@ -21,6 +22,7 @@ import { Router } from '@angular/router';
     MatButtonModule,
     MatFormFieldModule,
     MatCardModule,
+    MatProgressBarModule
     
     
   ]
@@ -35,17 +37,20 @@ export class LoginComponent {
 
   constructor(private userService: UserService, private router:Router) {}
 
+  public isLoading: boolean = false;
 
 async onSubmit(): Promise<void> {
   this.errorMessage = '';
   this.successMessage = '';
 
   try {
+    this.isLoading = true;
     const loginResponse = await this.userService.login(this.username, this.password);
+    this.isLoading = false;
 
 
     if (loginResponse.success) {
-      this.successMessage = 'Login successful!';
+      this.successMessage = 'Login successful! Please wait. Redirecting to dashboard..........';
 
       
       

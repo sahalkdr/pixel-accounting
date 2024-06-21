@@ -21,6 +21,7 @@
     <div class="register-link">
       <a (click)="navigateToSignup()">Not registered yet? Sign up here</a>
     </div>
+    <mat-progress-bar mode="indeterminate"  *ngIf="isLoading"></mat-progress-bar>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
   </mat-card>
