@@ -1,19 +1,18 @@
 <div class="parties-container">
   <header class="parties-header">
     <div class="option" (click)="showSection('parties')">Parties</div>
+    <button mat-mini-fab (click)="openAddPartyDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+     
   </header>
+
 
   <!-- Main content area -->
   <div class="parties-content">
-    <div class="left-section">
-      <div class="add-party">
-        <button mat-button  (click)="openAddPartyDialog()">
-          <mat-icon>add</mat-icon> Add Party
-        </button>
-      </div>
+    <div [ngClass]="selectedParty ? 'left-section' : 'left-section-alone'">
       <div class="search-bar">
         <div class="search-field">
-          
           <input  type="text" placeholder="" (input)="filterParties($event)">
           <button mat-button>search</button>
         </div>
