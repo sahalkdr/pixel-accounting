@@ -1,0 +1,40 @@
+<mat-sidenav-container class="dashboard-container">
+  <mat-sidenav mode="side" opened>
+    <mat-toolbar color="primary">
+      {{company_name}}
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <mat-list-item routerLink="/dashboard/home" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/parties" routerLinkActive="active">
+        <mat-icon>group</mat-icon>
+        <span>Parties</span>
+        <mat-icon class="plus-sign">add</mat-icon>
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/items" routerLinkActive="active">
+        <mat-icon>inventory</mat-icon>
+        <span>Items</span>
+        <mat-icon class="plus-sign">add</mat-icon>
+      </mat-list-item>
+      <mat-list-item routerLink="/quickbilling" routerLinkActive="active">
+        <mat-icon>receipt</mat-icon>
+        <span>Quick Billing</span>
+        <mat-icon class="plus-sign">add</mat-icon>
+      </mat-list-item>
+      <mat-list-item routerLink="/dashboard/reports" routerLinkActive="active">
+        <mat-icon>assessment</mat-icon>
+        <span>Reports</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </mat-sidenav-content>
+</mat-sidenav-container>
