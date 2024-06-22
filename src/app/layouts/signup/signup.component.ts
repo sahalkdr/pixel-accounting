@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon'
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +22,9 @@ import { MatIconModule } from '@angular/material/icon'
     MatButtonModule,
     MatFormFieldModule,
     MatCardModule,
-    MatIconModule],
+    MatIconModule,
+    MatProgressBarModule
+  ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
@@ -36,19 +40,28 @@ export class SignupComponent {
 
   constructor(private userService: UserService, private router:Router) { }
 
+  public isLoading: boolean = false;
+
   async onSubmit(): Promise<void> {
     this.errorMessage = '';
     this.successMessage = '';
-
+    try {
+    this.isLoading = true;
     const result = await this.userService.signup(this.username, this.email, this.password, this.phone, this.company_name, this.location);
-
+    this.isLoading = false;
     if (result.success) {
-      this.successMessage = 'Signup successful!';
+      this.successMessage = 'Signup successful! Please wait. Redirecting to Login..........';
       setTimeout(() => {
         this.router.navigate(['/login']);
       }, 2000);
     } else {
       this.errorMessage = result.message;
     }
+  }
+    catch (error) {
+      console.error('Login error:', error);
+      this.errorMessage = 'An error occurred during login. Please try again later.';
+    }
+  
   }
 }
