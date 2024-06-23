@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,10 +14,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
-
-
-
-
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 interface Item {
   id: number;
@@ -47,7 +47,11 @@ interface Customer {
   styleUrls: ['./quickbilling.component.scss'],
   standalone: true,
   
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, DatePipe,MatButtonModule,MatIconModule,MatInputModule,MatSelectModule],
+  imports: [CommonModule, FormsModule, 
+    ReactiveFormsModule, HttpClientModule, 
+    DatePipe,MatButtonModule,MatIconModule,MatInputModule,
+    MatSelectModule, MatAutocompleteModule,
+    MatButtonToggleModule],
   providers: [CurrencyPipe]
 })
 export class QuickbillingComponent implements OnInit {
@@ -73,7 +77,10 @@ export class QuickbillingComponent implements OnInit {
   additionalDiscount: number = 0;
 
 
-  constructor(private userService: UserService, private http: HttpClient, private router: Router, private route: ActivatedRoute, private dialog: MatDialog, private fb: FormBuilder) {
+  constructor(private userService: UserService, 
+    private http: HttpClient, private router: Router, 
+    private route: ActivatedRoute, private dialog: MatDialog, 
+    private fb: FormBuilder) {
     this.billingForm = this.fb.group({
       customer_name: ['', Validators.required],
       subtotal: [0, Validators.required],
@@ -87,9 +94,46 @@ export class QuickbillingComponent implements OnInit {
     });
   }
 
+
+  searchControl = new FormControl('');
+  customerControl = new FormControl('');
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<Item[]> = new Observable();
+  filteredOptionsCustomer: Observable<Customer[]> = new Observable();
+
+
   ngOnInit(): void {
     this.fetchProducts();
     this.fetchParties();
+    this.filteredOptions = this.searchControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+    this.filteredOptionsCustomer = this.customerControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterCustomer(value || '')),
+    );
+  }
+
+  private _filterCustomer(value: string): Customer[] {
+    const filterValue = value.toLowerCase();
+    debugger;
+    let a = this.parties.filter(party =>
+      party.name.toLowerCase().includes(filterValue)
+    );
+    return this.parties.filter(party =>
+      party.name.toLowerCase().includes(filterValue)
+    );
+    
+  }
+
+  private _filter(value: string): Item[] {
+    const filterValue = value.toLowerCase();
+    debugger;
+    return this.products.filter(product =>
+      product.item_code.toLowerCase().includes(filterValue) ||
+      product.name.toLowerCase().includes(filterValue)
+    );
   }
 
   fetchProducts(): void {
@@ -244,7 +288,15 @@ export class QuickbillingComponent implements OnInit {
     }
   }
 
+  selectItemById(id: string){
+    let item = this.products.filter(f=> f.id);
+    if(!item) return;
+    this.selectItem(item[0]);
+    this.searchControl.setValue('');
+  }
+
   selectItem(item: Item): void {
+    debugger;
     this.searchText = '';
     this.suggestedItems = [];
     this.noItemsFound = false;
@@ -259,6 +311,11 @@ export class QuickbillingComponent implements OnInit {
 
   }
 
+  selectCustomerByID(id: number){
+    let customer = this.parties.filter(f=> f.id == id);
+    if(customer?.length) this.selectCustomer(customer[0]);
+    this.customerControl.setValue('');
+  }
   selectCustomer(customer: Customer): void {
     this.customerSearchText = '';
     this.suggestedCustomers = [];

@@ -1,7 +1,25 @@
 <div class="quickbilling-container">
   <div class="left-side">
     <div class="table-container">
-      <mat-form-field appearance="fill">
+
+
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Search</mat-label>
+          <input type="text"
+                 placeholder="Search By Item code or Name"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="searchControl"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectItemById($event.option.value)">
+            @for (option of filteredOptions | async; track option) {
+              <mat-option [value]="option.id">{{option.name}} - {{option.unit}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <!-- <mat-form-field appearance="fill">
         <mat-label>Search</mat-label>
         <input matInput placeholder="Search..." [(ngModel)]="searchText" (input)="searchItems()" />
       </mat-form-field>
@@ -11,7 +29,7 @@
             {{ item.name }} - {{ item.unit }}
           </li>
         </ul>
-      </div>
+      </div> -->
       <div *ngIf="noItemsFound" class="not-found">
         <p>Item not found</p>
       </div>
@@ -24,8 +42,8 @@
             <th>Qty</th>
             <th>Unit</th>
             <th>Price/Unit</th>
-            <th>Tax . Rs</th>
-            <th>Discount.Rs</th>
+            <th>Tax</th>
+            <th>Discount</th>
             <th>Total</th>
             <th>Action</th>
           </tr>
@@ -36,9 +54,7 @@
             <td>{{ product.item_code }}</td>
             <td>{{ product.name }}</td>
             <td>
-              <mat-form-field appearance="fill">
-                <input matInput type="number" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" />
-              </mat-form-field>
+                <input type="number" class="quantiyInput" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" />
             </td>
             <td>{{ product.unit }}</td>
             <td>{{ product.sale_price }}</td>
@@ -54,14 +70,20 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="9">Payment Mode:</td>
+            <td colspan="9">Payment Mode</td>
             <td>
-              <mat-form-field appearance="fill">
+
+              <mat-button-toggle-group [(ngModel)]="paymentMode" appearance="legacy" name="fontStyle" aria-label="Font Style">
+                <mat-button-toggle value="Cash">Cash</mat-button-toggle>
+                <mat-button-toggle value="Online">Online</mat-button-toggle>
+              </mat-button-toggle-group>
+
+              <!-- <mat-form-field appearance="fill">
                 <mat-select [(ngModel)]="paymentMode">
                   <mat-option value="Cash">Cash</mat-option>
                   <mat-option value="Online">Online</mat-option>
                 </mat-select>
-              </mat-form-field>
+              </mat-form-field> -->
             </td>
           </tr>
         </tfoot>
@@ -72,21 +94,37 @@
   <div class="right-side">
     <div class="customer-search">
       <h2>Customer Details</h2>
-      <mat-form-field appearance="fill">
+      <form class="example-form">
+        <mat-form-field>
+          <mat-label>Search</mat-label>
+          <input type="text"
+                 placeholder="Search Customer By Name"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="customerControl"
+                 [matAutocomplete]="auto2">
+          <mat-autocomplete  #auto2="matAutocomplete" (optionSelected)="selectCustomerByID($event.option.value)">
+            @for (option of filteredOptionsCustomer | async; track option) {
+              <mat-option [value]="option.id">{{option.name}} - {{option.phone}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <!-- <mat-form-field appearance="fill">
         <mat-label>Search Customer</mat-label>
         <input matInput placeholder="Search Customer..." [(ngModel)]="customerSearchText" (input)="searchParties()" />
-      </mat-form-field>
+      </mat-form-field> -->
       <div *ngIf="customerDetails">
         <p>Name: {{ customerDetails.name }}</p>
         <p>Phone: {{ customerDetails.phone }}</p>
       </div>
-      <div *ngIf="suggestedCustomers.length > 0" class="suggestions">
+      <!-- <div *ngIf="suggestedCustomers.length > 0" class="suggestions">
         <ul>
           <li *ngFor="let party of suggestedCustomers" (click)="selectCustomer(party)">
             {{ party.name }} - {{ party.phone }}
           </li>
         </ul>
-      </div>
+      </div> -->
       <div *ngIf="noCustomersFound" class="not-found">
         <p>Customer not found</p>
         <button mat-button (click)="openAddPartyDialog()">Add New Customer</button>
@@ -113,9 +151,7 @@
       <div class="detail">
         <span class="label">Additional Discount:</span>
         <span class="value">
-          <mat-form-field appearance="fill">
-            <input matInput type="number" [(ngModel)]="additionalDiscount" (ngModelChange)="calculateTotal()" />
-          </mat-form-field>
+          <input type="number" class="quantiyInput" [(ngModel)]="additionalDiscount" (ngModelChange)="calculateTotal()"  />
         </span>
       </div>
       <div class="detail">
