@@ -17,6 +17,8 @@ import { EditCategoryDialogComponent } from './edit-category-dialog/edit-categor
 import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dialog.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatSnackBar } from '@angular/material/snack-bar'; 
+import { AdditemComponent } from '../add-item/add-item.component'; 
+
 
 
 
@@ -50,7 +52,7 @@ export class ItemsComponent implements OnInit{
   selectedSection: string = 'products';
   selectedProduct: any = null;
   p:number=1;
-  itemsPerPage:number=8;
+  itemsPerPage:number=7;
   // isEditMode: boolean = false;
   editForm: FormGroup;
   
@@ -76,8 +78,28 @@ export class ItemsComponent implements OnInit{
   }
 
   navigateToAddItem() {
-    this.router.navigate(['/item/add']);
-  }
+    const dialogRef = this.dialog.open(AdditemComponent, {
+        width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+        if (result && result.success && result.item) {
+            
+            this.products.push(result.item);
+            this.fetchproducts();
+       
+            this.filteredProducts = [...this.products];
+        }
+    });
+}
+
+
+
+
+
+
+  
+  
   navigateToAddCategories()
   {
     this.router.navigate(['/category/add']);
@@ -97,6 +119,8 @@ export class ItemsComponent implements OnInit{
         console.log(resp);
         this.products=resp;
         this.filteredProducts = resp;
+        
+
         
       }
     )

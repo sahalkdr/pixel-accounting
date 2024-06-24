@@ -1,18 +1,22 @@
-<h1 mat-dialog-title>Add Category</h1>
-<div mat-dialog-content>
-  <form [formGroup]="addCategoryForm">
-    <mat-form-field>
-      <mat-label>Category Name</mat-label>
-      <input matInput formControlName="name">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Tax Rate(In percentage)</mat-label>
-      <input matInput formControlName="tax_rate">
-    </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSubmit()">Add</button>
-</div>
 
+ <div class="signup-container">
+  <mat-card>
+    <mat-card-title>Add Category</mat-card-title>
+    <form [formGroup]="addCategoryForm">
+      <mat-form-field class="form-group" appearance="fill">
+        <mat-label>Category Name</mat-label>
+        <input matInput type="text" formControlName="name" required>
+       
+      </mat-form-field>
+      <mat-form-field class="form-group" appearance="fill">
+        <mat-label>Tax Rate (In percentage)</mat-label>
+        <input matInput type="number" formControlName="tax_rate" required>
+        
+          
+      </mat-form-field>
+      
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="addCategoryForm.invalid">Add</button>
+    </form>
+  </mat-card>
+</div>

@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../shared/services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -19,7 +22,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
     MatToolbarModule,
     MatListModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
@@ -41,7 +45,7 @@ export class DashboardComponent implements OnInit {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private userService: UserService,private http:HttpClient) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private userService: UserService,private http:HttpClient,private router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -60,6 +64,12 @@ export class DashboardComponent implements OnInit {
         this.company_name = userDetails.company_name;
       }
     }
+  }
+  logout()
+  {
+    localStorage.removeItem('angular17token');
+    localStorage.removeItem('userId');
+    this.router.navigate(['/login']);
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

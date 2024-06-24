@@ -33,7 +33,7 @@ export class PartiesComponent implements OnInit{
   public parties: any[] = [];
   public filteredParties: any[] = [];
   p:number=1;
-  itemsPerPage:number=5;
+  itemsPerPage:number=6;
   totalParty:any;
   
   selectedSection: string = 'parties';

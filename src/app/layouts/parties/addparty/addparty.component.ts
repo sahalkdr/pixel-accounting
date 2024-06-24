@@ -4,14 +4,22 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
 import { MatDialogRef } from '@angular/material/dialog';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 
 
 @Component({
   selector: 'app-addparty',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+  MatButtonModule,
+MatInputModule],
   templateUrl: './addparty.component.html',
   styleUrl: './addparty.component.scss'
 })

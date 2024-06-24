@@ -267,6 +267,7 @@ export class UserService {
     }
   }
   async addItem(item: { name: string, category_id: number, sale_price: number, stock: number, unit: string, discount: number,user_id: string | number }) {
+    
     try {
       const addItemResponse = await this.apiService.httpRequest({
         method: 'POST',
@@ -275,7 +276,18 @@ export class UserService {
       });
 
       if (addItemResponse.success) {
-        return { success: true, message: addItemResponse.message };
+        return { success: true, message: addItemResponse.message, item: {
+          id: addItemResponse.item.id,
+                    name: addItemResponse.item.name,
+                    category_id: addItemResponse.item.category_id,
+                    sale_price: addItemResponse.item.sale_price,
+                    stock: addItemResponse.item.stock,
+                    unit: addItemResponse.item.unit,
+                    discount: addItemResponse.item.discount,
+                    has_tax: addItemResponse.item.has_tax,
+                    tax_rate: addItemResponse.item.tax_rate,
+                    user_id: addItemResponse.item.user_id
+      } };
       } else {
         return { success: false, message: addItemResponse.message };
       }

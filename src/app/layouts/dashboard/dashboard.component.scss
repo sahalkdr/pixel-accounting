@@ -7,9 +7,14 @@
   left: 0;
   right: 0;
 }
+.example-app-name
+{
+  margin-right: 1380px;
+}
 
 .example-is-mobile .example-toolbar {
   position: fixed;
+ 
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
 }
@@ -40,9 +45,9 @@ h1.example-app-name {
 
 .mat-toolbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   color: white;
+  
 }
 
 .mat-nav-list {
@@ -87,7 +92,6 @@ h1.example-app-name {
   width: 100%;
 }
 
-.spacer {
-  flex: 1;
-}
+
+
 }

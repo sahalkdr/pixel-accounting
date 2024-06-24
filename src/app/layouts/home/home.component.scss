@@ -1,0 +1,43 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 600px;
+    margin: 0 auto; 
+    background-color: #f8f9fa; 
+  }
+  
+  .section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+    background-color: pink;
+    padding: 20px;
+    margin: 10px 0; 
+    height: 140px;
+    border-radius: 4px;
+  }
+  
+  .section span {
+    font-size: 20px;
+  }
+  
+  .section button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .section button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -4,20 +4,22 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule ,MatDialogRef} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+
 import { AddCategoryDialogComponent } from '../items/add-category-dialog/add-category-dialog.component';
 
 
 @Component({
   selector: 'app-additem',
   standalone: true,
-  imports: [CommonModule,FormsModule,MatButtonModule,MatDialogModule,MatIconModule,MatInputModule,MatSelectModule,MatCheckboxModule],
+  imports: [CommonModule,FormsModule,MatButtonModule,MatDialogModule,MatIconModule,MatInputModule,MatSelectModule,MatCheckboxModule,MatCardModule],
   templateUrl: './add-item.component.html',
   styleUrl: './add-item.component.scss'
 })
@@ -37,7 +39,7 @@ export class AdditemComponent implements OnInit{
   };
   categories: { id: number, name: string,tax_rate:number }[] = [];
 
-  constructor(private userService: UserService, private router: Router,private dialog: MatDialog) { }
+  constructor(private userService: UserService, private router: Router,private dialog: MatDialog,private dialogRef: MatDialogRef<AdditemComponent>) { }
   ngOnInit() {
     this.loadCategories(); 
   }
@@ -74,6 +76,7 @@ export class AdditemComponent implements OnInit{
 }
 
 
+
   onCategoryChange(event: any) {
     const selectedCategory = this.categories.find(category => category.id === event.value);
     if (selectedCategory) {
@@ -85,30 +88,24 @@ export class AdditemComponent implements OnInit{
   async addItem() {
     const userid = localStorage.getItem('userId');
     if (userid === null) {
-      
-      return;
-    } 
-    this.newItem.user_id=userid;
+        return;
+    }
+    this.newItem.user_id = userid;
 
-    
-
-    if(!this.newItem.has_tax)
-    {
-      this.newItem.tax_rate=0;
+    if (!this.newItem.has_tax) {
+        this.newItem.tax_rate = 0;
     }
 
     const result = await this.userService.addItem(this.newItem);
 
     if (result.success) {
-      alert('Item added successfully');
-      setTimeout(() => {
-        this.router.navigate(['/dashboard/items']);
-      }, 2000);
-      
+        this.dialogRef.close({ success: true, item: result.item }); 
     } else {
-      alert('Failed to add item: ' + result.message);
+        alert('Failed to add item: ' + result.message);
     }
-  }
+}
+
+
 
   
   
