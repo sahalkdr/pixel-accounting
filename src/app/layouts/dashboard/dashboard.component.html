@@ -1,20 +1,14 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    
     <h1 class="example-app-name">{{company_name}}</h1>
-    
     <button mat-icon-button (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
-    
-    
   </mat-toolbar>
 
-  <mat-sidenav-container class="example-sidenav-container"
-                        [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
         <mat-list-item routerLink="/dashboard/home" routerLinkActive="active" matTooltip="Home">
           <mat-icon>home</mat-icon>
@@ -25,14 +19,12 @@
         <mat-list-item routerLink="/dashboard/items" routerLinkActive="active" matTooltip="Items">
           <mat-icon>inventory</mat-icon>
         </mat-list-item>
-        <mat-list-item routerLink="/dashboard/quickbilling" routerLinkActive="active" matTooltip="QuickBiling">
+        <mat-list-item routerLink="/dashboard/quickbilling" routerLinkActive="active" matTooltip="QuickBilling">
           <mat-icon>receipt</mat-icon>
         </mat-list-item>
-        <mat-list-item routerLink="/dashboard/reports" routerLinkActive="active">
+        <mat-list-item routerLink="/dashboard/reports" routerLinkActive="active" matTooltip="Reports">
+          <mat-icon>assessment</mat-icon>
         </mat-list-item>
-        <!-- @for (nav of fillerNav; track nav) {
-          <a mat-list-item routerLink=".">{{nav}}</a>
-        } -->
       </mat-nav-list>
     </mat-sidenav>
 
@@ -40,9 +32,6 @@
       <div class="content">
         <router-outlet></router-outlet>
       </div>
-      <!-- @for (content of fillerContent; track content) {
-  <p>{{content}}</p>
-} -->
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

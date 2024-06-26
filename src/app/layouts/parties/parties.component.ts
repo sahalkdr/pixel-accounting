@@ -11,13 +11,14 @@ import { EditPartyDialogComponent } from './edit-party-dialog/edit-party-dialog.
 import { AddpartyComponent } from './addparty/addparty.component';
 
 import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dialog.component';
-
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar'; 
+import Swal from 'sweetalert2';
 
 
 
@@ -25,7 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-parties',
   standalone: true,
-  imports: [CommonModule,MatIconModule,HttpClientModule,NgxPaginationModule,MatButtonModule,MatInputModule],
+  imports: [CommonModule,MatIconModule,HttpClientModule,NgxPaginationModule,MatButtonModule,MatInputModule,MatCardModule],
   templateUrl: './parties.component.html',
   styleUrl: './parties.component.scss'
 })
@@ -151,36 +152,39 @@ export class PartiesComponent implements OnInit{
 
   }
   deleteParty(party: any) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data:{
-        
-        name:party.name}
-    }
-  
-    );
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-      
-        this.userService.deleteParty(party.id).then(response => {
+    Swal.fire({
+      title:'Confirm Deletion',
+      text:`Are you sure you want to delete "${party.name}"?`,
+      icon:'warning',
+      showCancelButton:true,
+      confirmButtonText:'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
+
+    }).then((result)=>{
+      if (result.isConfirmed)
+        {
+          this.userService.deleteParty(party.id).then(response => {
+            console.log('Response from deleteParty API:', response);
+            Swal.fire(
+              'Deleted!',
+              response.message,
+              response.success ? 'success' : 'error'
+          );
           if (response.success) {
             this.fetchparties();
-            if (this.selectedParty === party) {
-              this.selectedParty = null;
-            }
-            this.snackBar.open('Item deleted successfully', 'Close', {
-              duration: 5000,
-          });
-          } else {
-            this.snackBar.open(response.message, 'Close', {
-              duration: 3000,
-          });
-            console.error('Error deleting party:', response.message);
-          }
-        });
-      }
+        }
+     }).catch(error=>{
+          console.error('Error deleting category:', error);
+          Swal.fire('Error', 'Error deleting category', 'error');
+
+     });
+
+        }
     });
   }
+
+
+   
 
   showPartyDetails(party: any) {
     this.selectedParty = party;

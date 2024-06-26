@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Edit Item</h2>
+<!-- <h2 mat-dialog-title>Edit Item</h2>
 <div mat-dialog-content>
   <form [formGroup]="editForm">
     <mat-form-field>
@@ -18,4 +18,42 @@
 <div mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>
   <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+</div> -->
+
+
+<div class="signup-container">
+  <mat-card>
+    <mat-card-title>Edit Item</mat-card-title>
+    <form [formGroup]="editForm">
+      <mat-form-field class="form-group" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="name" required>
+       
+      </mat-form-field>
+      <mat-form-field class="form-group" appearance="fill">
+        <mat-label>Sale Price</mat-label>
+        <input matInput type="number" formControlName="sale_price" required>
+      </mat-form-field>
+      <mat-form-field class="form-group" appearance="fill">
+        <mat-label>Unit</mat-label>
+        <input matInput type="text" formControlName="unit" required>
+      </mat-form-field>
+      <mat-form-field class="form-group" appearance="fill">
+        <mat-label>Stock</mat-label>
+        <input matInput type="number" formControlName="stock" required>
+      </mat-form-field>
+      <mat-form-field class="form-group" appearance="fill">
+        <mat-label>Discount</mat-label>
+        <input matInput type="number" formControlName="discount" required>
+      </mat-form-field>
+      
+        <mat-form-field class="form-group" appearance="fill">
+          <mat-label>Tax Rate(in perentage)</mat-label>
+          <input matInput type="number" formControlName="tax_rate" required>
+        </mat-form-field>
+        
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+    </form>
+  </mat-card>
 </div>

@@ -7,9 +7,9 @@
   left: 0;
   right: 0;
 }
-.example-app-name
-{
-  margin-right: 1380px;
+
+.example-app-name {
+  margin-right: 1200px;
 }
 
 .example-is-mobile .example-toolbar {
@@ -18,10 +18,10 @@
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
 }
-
 h1.example-app-name {
   margin-left: 8px;
 }
+
 
 .example-sidenav-container {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
@@ -34,12 +34,9 @@ h1.example-app-name {
      `<body>` to be our scrolling element for mobile layouts. */
   flex: 1 0 auto;
 }
-
-
-
 .mat-sidenav {
-  width: 60px;
-  background-color: #7E909A,; 
+  width: 60px; /* Changed to a more standard width */
+  background-color: #7E909A; /* Removed the comma */
   color: white; 
 }
 
@@ -47,7 +44,6 @@ h1.example-app-name {
   display: flex;
   align-items: center;
   color: white;
-  
 }
 
 .mat-nav-list {
@@ -58,12 +54,13 @@ h1.example-app-name {
     align-items: center;
 
     mat-icon {
-      margin-right: 8px; 
+      margin-right: 8px;
+    }
 
     .plus-sign {
       margin-left: auto;
-      margin-right: 5px; 
-      color: #28a745; 
+      margin-right: 5px;
+      color: #28a745;
     }
   }
 
@@ -92,6 +89,12 @@ h1.example-app-name {
   width: 100%;
 }
 
+// // Customize the backdrop color
+// ::ng-deep .mat-drawer-backdrop {
+//   background-color: rgba(0, 0, 0, 0.1) !important; /* Adjusted backdrop color to be lighter */
+// }
 
-
+// Optional: Remove the backdrop completely
+::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+  opacity: 0 !important; /* Makes the backdrop completely transparent */
 }

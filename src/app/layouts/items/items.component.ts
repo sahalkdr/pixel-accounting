@@ -18,6 +18,7 @@ import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dia
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatSnackBar } from '@angular/material/snack-bar'; 
 import { AdditemComponent } from '../add-item/add-item.component'; 
+import Swal from 'sweetalert2';
 
 
 
@@ -154,36 +155,36 @@ export class ItemsComponent implements OnInit{
   }
 
   deleteProduct(product: any) {
+    Swal.fire({
+      title:'Confirm Deletion',
+      text:`Are you sure you want to delete "${product.name}"?`,
+      icon:'warning',
+      showCancelButton:true,
+      confirmButtonText:'Yes, delete it!',
+      cancelButtonText: 'No, cancel'
 
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data:{
-        
-        name:product.name}
-    });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-    this.userService.deleteItem(product.id).then(response => {
-      if (response.success) {
-        this.fetchproducts();
-
-        
-        if (this.selectedProduct === product) {
-          this.selectedProduct = null;
+    }).then((result)=>{
+      if (result.isConfirmed)
+        {
+          this.userService.deleteItem(product.id).then(response => {
+            Swal.fire(
+              'Deleted!',
+              response.message,
+              response.success ? 'success' : 'error'
+          );
+          if (response.success) {
+            this.fetchproducts();
         }
-        this.snackBar.open('Item deleted successfully', 'Close', {
-          duration: 5000,
-      });
-      } else {
-        this.snackBar.open(response.message, 'Close', {
-          duration: 3000,
-      });
-        console.error('Error deleting item:', response.message);
-      }
+     }).catch(error=>{
+          console.error('Error deleting Item:', error);
+          Swal.fire('Error', 'Error deleting item', 'error');
+
+     });
+
+        }
     });
   }
-});
-}
+
 
 openEditDialog(item: any): void {
     const dialogRef = this.dialog.open(EditItemDialogComponent, {
@@ -252,28 +253,38 @@ openEditDialog(item: any): void {
       }
     });
   }
-  deleteCategory(category: any) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        data: { name: category.name }
-    });
+  
 
-    dialogRef.afterClosed().subscribe(result => {
-        if (result) {
+deleteCategory(category: any) {
+    Swal.fire({
+        title: 'Confirm Deletion',
+        text: `Are you sure you want to delete "${category.name}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
             this.userService.deleteCategory(category.id).then(response => {
                 console.log('Response from deleteCategory API:', response);
 
-                this.snackBar.open(response.message, 'Close', { duration: 3000 });
+                Swal.fire(
+                    'Deleted!',
+                    response.message,
+                    response.success ? 'success' : 'error'
+                );
                 
                 if (response.success) {
                     this.fetchcategories();
                 }
             }).catch(error => {
                 console.error('Error deleting category:', error);
-                this.snackBar.open('Error deleting category', 'Close', { duration: 3000 });
+                Swal.fire('Error', 'Error deleting category', 'error');
             });
         }
     });
 }
+
 
 
 }  
