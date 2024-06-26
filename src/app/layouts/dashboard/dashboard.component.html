@@ -10,19 +10,19 @@
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
-        <mat-list-item routerLink="/dashboard/home" routerLinkActive="active" matTooltip="Home">
+        <mat-list-item routerLink="/dashboard/home" routerLinkActive="active" matTooltip="Home" matTooltipPosition="above">
           <mat-icon>home</mat-icon>
         </mat-list-item>
-        <mat-list-item routerLink="/dashboard/parties" routerLinkActive="active" matTooltip="Parties">
+        <mat-list-item routerLink="/dashboard/parties" routerLinkActive="active" matTooltip="Parties" matTooltipPosition="above">
           <mat-icon>group</mat-icon>
         </mat-list-item>
-        <mat-list-item routerLink="/dashboard/items" routerLinkActive="active" matTooltip="Items">
+        <mat-list-item routerLink="/dashboard/items" routerLinkActive="active" matTooltip="Items" matTooltipPosition="above">
           <mat-icon>inventory</mat-icon>
         </mat-list-item>
-        <mat-list-item routerLink="/dashboard/quickbilling" routerLinkActive="active" matTooltip="QuickBilling">
+        <mat-list-item routerLink="/dashboard/quickbilling" routerLinkActive="active" matTooltip="QuickBilling" matTooltipPosition="above">
           <mat-icon>receipt</mat-icon>
         </mat-list-item>
-        <mat-list-item routerLink="/dashboard/reports" routerLinkActive="active" matTooltip="Reports">
+        <mat-list-item routerLink="/dashboard/reports" routerLinkActive="active" matTooltip="Reports" matTooltipPosition="above">
           <mat-icon>assessment</mat-icon>
         </mat-list-item>
       </mat-nav-list>
