@@ -8,12 +8,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { EditPartyDialogComponent } from './edit-party-dialog/edit-party-dialog.component';
 import { PartiesComponent } from './parties.component';
+import { MatCardModule } from '@angular/material/card';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
-    EditPartyDialogComponent 
+     
   ],
   imports: [
     CommonModule,
@@ -25,11 +26,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
- 
+    MatCardModule,
     PartiesComponent
   ],
   exports: [
-    EditPartyDialogComponent 
+     
   ]
 })
 export class PartiesModule { }

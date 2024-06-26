@@ -32,6 +32,11 @@ export class UserService {
     }
   }
 
+  async logout()
+  {
+    
+  }
+
   async verifyToken(token: string) {
     try {
       const verifyTokenResponse = await this.apiService.httpRequest({

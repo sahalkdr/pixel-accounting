@@ -1,24 +1,11 @@
 <div class="items-container">
-  
   <header class="items-header">
     <div class="option" (click)="showSection('products')">Products</div>
     <div class="option" (click)="showSection('categories')">Categories</div>
-    <!-- <div class="option" (click)="showSection('units')">Units</div> -->
   </header>
-
-  
   <div class="items-content">
-
-    <!-- item Listing -->
-    
-    <div [ngClass]="selectedProduct ? 'left-section' : 'left-section-alone'" *ngIf="selectedSection === 'products'">
-      
-      <!-- <div class="add-item">
-        <button mat-button (click)="navigateToAddItem()">
-          <mat-icon>add</mat-icon> Add Item
-        </button>
-      </div> -->
-      
+    <!-- Product Listing -->
+    <div  [ngClass]="selectedProduct ? 'left-section' : 'left-section-alone'" *ngIf="selectedSection === 'products'">
       <div class="search-bar">
         <mat-form-field class="search-field" appearance="outline">
           <mat-label>Search</mat-label>
@@ -26,43 +13,37 @@
           <button mat-icon-button matSuffix>
             <mat-icon>search</mat-icon>
           </button>
-          
         </mat-form-field>
         <button mat-mini-fab (click)="navigateToAddItem()">
           <mat-icon>add</mat-icon>
         </button>
       </div>
       <div class="product-items">
-        <div class="product-item" *ngFor="let product of filteredProducts | paginate: {itemsPerPage:itemsPerPage,currentPage:p}">
+        <div class="product-header">
+          <span>Name</span>
+          <span>Stock</span>
+          <span>Sale Price</span>
+          <span>Actions</span>
+        </div>
+        <div class="product-item" *ngFor="let product of filteredProducts | paginate: {itemsPerPage:itemsPerPage, currentPage:p}">
           <div class="item-info">
             <span>{{ product.name }}</span>
             <span>{{ product.stock }}</span>
             <span>{{ product.sale_price }}</span>
-            
           </div>
           <div class="options">
-          <mat-icon (click)="editProduct(product)">edit</mat-icon>
-          <mat-icon (click)="deleteProduct(product)">delete</mat-icon>
-        </div>
+            <mat-icon (click)="openEditDialog(product)">edit</mat-icon>
+            <mat-icon (click)="deleteProduct(product)">delete</mat-icon>
+          </div>
         </div>
       </div>
       <div class="pagination-container">
-      
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
     </div>
-    
-    
 
     <!-- Category Listing -->
     <div class="left-section-alone" *ngIf="selectedSection === 'categories'">
-
-    
-      <!-- <div class="add-item">
-        <button mat-button (click)="addCategory()">
-          <mat-icon>add</mat-icon> Add Category
-        </button>
-      </div> -->
       <div class="search-bar">
         <mat-form-field class="search-field" appearance="outline">
           <mat-label>Search</mat-label>
@@ -76,25 +57,25 @@
         </button>
       </div>
       <div class="product-items">
+        <div class="product-header">
+          <p class="header-category">Category Name</p>
+          <p class="header-category">Tax Rate</p>
+          <p class="header-category">Actions</p>
+        </div>
         <div class="product-item" *ngFor="let category of filteredCategories">
           <div class="item-info">
-            <span>{{ category.name }}</span>
-            <span>{{ category.tax_rate }}</span>
+            <p class="item-value">{{ category.name }}</p>
+            <p class="item-value">{{ category.tax_rate }}</p>
           </div>
           <div class="options">
             <mat-icon (click)="editCategory(category)">edit</mat-icon>
             <mat-icon (click)="deleteCategory(category)">delete</mat-icon>
-        
           </div>
-        </div>  
+        </div>
       </div>
     </div>
-    
 
-    
-
-   
-
+    <!-- Product Details -->
     <div class="product-details" *ngIf="selectedProduct">
       <h2>{{ selectedProduct.name }}</h2>
       <p>Item Code: {{ selectedProduct.item_code }}</p>
@@ -104,9 +85,7 @@
       <p>Unit: {{ selectedProduct.unit }}</p>
       <p>Discount: {{ selectedProduct.discount }}</p>
       <p>Tax: {{ selectedProduct.tax_rate }}</p>
-      
       <button mat-raised-button color="primary" (click)="openEditDialog(selectedProduct)">Adjust Item</button>
     </div>
-    
   </div>
 </div>

@@ -69,6 +69,9 @@ export class DashboardComponent implements OnInit {
   {
     localStorage.removeItem('angular17token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('companyName');
+    localStorage.removeItem('location');
+    localStorage.removeItem('phone');
     this.router.navigate(['/login']);
   }
   ngOnDestroy(): void {

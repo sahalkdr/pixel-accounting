@@ -1,16 +1,14 @@
 .container {
   margin: 20px;
-}
-
-.sale-container {
-  /* Add specific styles for the SaleComponent here */
+  
 }
 
 .filters {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+
   margin-bottom: 20px;
 }
 
@@ -18,38 +16,18 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
+  width: 100%; /* Ensures the date-picker takes full width */
+
+  
 }
+.date-picker mat-form-field {
+  flex: 1; /* Makes each form field take equal width */
+  min-width: 200px; /* Ensures a minimum width */
+}
+
 .right-align {
   text-align: right;
-}
-
-.date-picker label {
-  font-size: 16px;
-  color: #333;
-}
-
-.date-picker button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  border: none;
-  background-color: #1976d2;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.date-picker button:hover {
-  background-color: #1565c0;
-}
-
-.mat-form-field {
-  margin-right: 20px;
-}
-
-.print-area {
-  background-color: #ffffff;
-  padding: 10px;
-  border-radius: 5px;
 }
 
 .summary {
@@ -93,27 +71,57 @@ table {
   width: 100%;
 }
 
+td {
+  text-align: center;
+}
+
 .mat-elevation-z8 {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
     0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
 .pagination-container {
-  position: fixed;
-  bottom: 30px;
+  position: relative;
 }
+
+.hide-on-small-screen {
+  display: table-cell;
+}
+
+.show-on-small-screen {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .hide-on-small-screen {
+    display: none;
+  }
+
+  .show-on-small-screen {
+    display: table-cell;
+  }
+  .date-picker {
+    gap: 1px; /* Reduce gap between fields */
+  }
+
+  .date-picker mat-form-field {
+    margin-bottom: 2px; /* Reduce margin between form fields */
+  }
+
+  .mat-icon {
+    cursor: pointer;
+  }
+}
+
 @media print {
-  /* Hide everything by default */
   body * {
     visibility: hidden;
   }
 
-  /* Show only the print-area */
   .print-area, .print-area * {
     visibility: visible;
   }
 
-  /* Ensure the print-area uses the full page */
   .print-area {
     position: absolute;
     left: 0;
@@ -122,11 +130,7 @@ table {
     height: 100%;
   }
 
-  /* Optional: Hide pagination controls and buttons */
   .pagination-container, .button-container, .filters {
     display: none;
   }
 }
-
-
-

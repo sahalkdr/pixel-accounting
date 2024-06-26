@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { DialogContentComponent } from './dialog-content/dialog-content.component';
 
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -51,6 +52,7 @@ interface SaleDetails {
      MatDatepickerModule,
      MatNativeDateModule,
      FormsModule,
+     
      ReactiveFormsModule],
   templateUrl: './sale.component.html',
   styleUrls: ['./sale.component.scss']
@@ -60,7 +62,7 @@ export class SaleComponent implements OnInit {
   totalPaidAmount: number = 0;
   totalPaidTax: number = 0;
   
-  itemsPerPage:number=15;
+  itemsPerPage:number=13;
   p:number=1;
   paymentMode: string = 'All';
   noRecords: boolean = false;
@@ -68,11 +70,17 @@ export class SaleComponent implements OnInit {
   fromDate: string = '';
   toDate: string = '';
   printableBills: Bill[] = []; // Store all bills for printing
-
-  constructor(private http: HttpClient, private router: Router) { }
+  selectedBill: any;  // Add this line
+  constructor(private http: HttpClient, private router: Router,public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.fetchSaleDetails();
+  }
+
+  openDialog(bill: any): void {
+    this.dialog.open(DialogContentComponent, {
+      data: { bill: bill },
+    });
   }
 
   viewReport(): void {

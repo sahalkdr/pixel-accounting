@@ -22,7 +22,10 @@ export class EditItemDialogComponent {
     this.editForm = this.fb.group({
       name: [data.item.name],
       sale_price: [data.item.sale_price],
-      stock: [data.item.stock]
+      stock: [data.item.stock],
+      unit: [data.item.unit],
+      discount: [data.item.discount],
+      tax_rate: [data.item.tax_rate]
     });
   }
 
@@ -30,16 +33,24 @@ export class EditItemDialogComponent {
     this.dialogRef.close();
   }
 
-  onSave(): void {
-    const updatedItem = this.editForm.value;
+  onSave() {
+    
+    const updatedItem=this.editForm.value;
     const id = this.data.item.id;
-
     this.userService.updateItem(id, updatedItem).then(response => {
       if (response.success) {
-        this.dialogRef.close(updatedItem);
-      } else {
-        console.error('Error updating item:', response.message);
-      }
-    });
-  }
+        this.data.item.name = updatedItem.name;
+        this.data.item.stock = updatedItem.stock;
+        this.data.item.sale_price = updatedItem.sale_price;
+          // this.data.item.tax_rate = updatedCategory.tax_rate;
+              this.dialogRef.close(updatedItem);
+           }
+           else {
+                  console.error('Error updating category:', response.message);
+                }
+              });
+              
+   
+         }
+
 }
