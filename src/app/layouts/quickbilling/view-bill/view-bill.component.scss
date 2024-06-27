@@ -1,53 +1,46 @@
 .bill-container {
-  max-width: 500px; 
   margin: 0 auto;
-  padding: 10px; 
+  padding: 10px;
   background: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
-  font-size: 10px; 
+  font-size: 10px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 15px;
 }
 
 .company-details {
-  flex: 1;
   h5 {
     font-size: 16px;
-    margin: 5px 0;
+    margin: 0 0;
   }
   h6 {
     font-size: 12px;
-    margin: 3px 0;
+    margin: 0 0;
   }
 }
 
 .bill-info {
-  margin-bottom: 15px; 
 }
 
 .bill-info-row {
   display: flex;
-  justify-content:space-between;
-  margin-bottom: 5px; 
+  justify-content: space-between;
 }
 
 .bill-info-row-s {
   display: flex;
-  justify-content:right;
-  margin-bottom: 5px; 
+  justify-content: right;
 }
 
 .bill-info-row-b {
   display: flex;
-  justify-content:left;
-  margin-bottom: 5px; 
+  justify-content: left;
 }
 
 .label {
@@ -66,8 +59,7 @@
 }
 
 .items-table th, .items-table td {
-  padding: 6px; 
-  border: 1px solid #ddd;
+  padding: 6px;
   text-align: center;
 }
 
@@ -89,26 +81,175 @@
 }
 
 .print-button {
-  background-color: #0f1fb0; 
+  background-color: #0f1fb0;
   color: white;
   border: none;
-  padding: 5px 5px; 
-  font-size: 16px; 
+  padding: 5px 5px;
+  margin-right: 10px;
+  font-size: 16px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}  
+}
 
 .button-container {
   position: fixed;
-  bottom: 20px; 
+  
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000; 
+  z-index: 1000;
 }
 
-
 @media print {
-  
-  button {
-      display: none;
+  .button-container {
+    display: none;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+  }
+
+  .bill-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .header, .company-details, .bill-info, .bill-info-row, .label, .value, .items-table, .items-table th, .items-table td {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: #000;
+  }
+
+  .company-details h5 {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .company-details h6 {
+    font-size: 12px;
+    margin: 0;
+  }
+
+  .items-table {
+    border: none;
+  }
+
+  .items-table th, .items-table td {
+    padding: 6px;
+    text-align: center;
+    border: none;
+  }
+
+  .items-table th {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+
+  .items-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .items-table tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .footer .bill-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .label {
+    font-weight: bold;
+  }
+
+  .value {
+    text-align: right;
+  }
+
+  .print-button {
+    display: none;
+  }
+
+  //53mm
+  @page {
+    size: 53mm;
+    margin: 0;
+  }
+
+  .bill-container {
+    width: 53mm;
+    padding: 5px;
+    font-size: 8px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 8px;
+  }
+
+  .items-table th, .items-table td {
+    padding: 4px;
+  }
+
+  .company-details h5 {
+    font-size: 12px;
+  }
+
+  .company-details h6 {
+    font-size: 10px;
+  }
+
+  .footer {
+    font-size: 8px;
+  }
+}
+
+//a4
+@media print and (min-width: 210mm) {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  .bill-container {
+    width: 210mm;
+    padding: 10px;
+    font-size: 10px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 10px;
+  }
+
+  .items-table th, .items-table td {
+    padding: 1px;
+  }
+
+  .company-details h5 {
+    font-size: 16px;
+  }
+
+  .company-details h6 {
+    font-size: 12px;
+  }
+
+  .footer {
+    font-size: 10px;
   }
 }

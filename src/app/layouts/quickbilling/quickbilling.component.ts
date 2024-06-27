@@ -27,12 +27,13 @@ interface Item {
   unit: string;
   sale_price: number;
   discount: number;
-  tax: number;
+  
   total: number;
   category_id: number;
   tax_rate: number;
 
   stock:number;
+  tax: number;
 }
 
 interface Customer {
@@ -185,7 +186,7 @@ export class QuickbillingComponent implements OnInit {
         this.parties.push(newCustomer);
         
 
-        this.selectCustomer(newCustomer); // Corrected line        this.customerSearchText = '';
+        this.selectCustomer(newCustomer); 
         this.customerSearchText = '';
 
         this.noCustomersFound = false;
@@ -336,8 +337,9 @@ export class QuickbillingComponent implements OnInit {
     }
     const subtotal = item.quantity * item.sale_price;
     const discountAmount = item.discount;
-    const taxableAmount = subtotal - discountAmount;
+    const taxableAmount = subtotal - (item.quantity*discountAmount);
     const taxAmount = (item.tax_rate / 100) * taxableAmount;
+    item.tax = taxAmount;
     const total = taxableAmount + taxAmount;
     console.log(`Item: ${item.name}, Subtotal: ${subtotal}, Discount: ${discountAmount}, Tax: ${taxAmount}, Total: ${total}`);
     return total;
@@ -391,14 +393,16 @@ export class QuickbillingComponent implements OnInit {
   calculateTotalTax(): number {
     const totalTax = this.filteredProducts.reduce((sum, item) => {
       const subtotal = item.quantity * item.sale_price;
-      const discountAmount = item.discount;
+      const discountAmount = item.quantity * item.discount;  // Apply discount per quantity
       const taxableAmount = subtotal - discountAmount;
       const taxAmount = (item.tax_rate / 100) * taxableAmount;
+      console.log(`Item: ${item.name}, Subtotal: ${subtotal}, Discount: ${discountAmount}, Tax Amount: ${taxAmount}`);
       return sum + taxAmount;
     }, 0);
     console.log('Total Tax:', totalTax);
     return totalTax;
   }
+  
 
   removeItem(index: number): void {
     this.filteredProducts.splice(index, 1);

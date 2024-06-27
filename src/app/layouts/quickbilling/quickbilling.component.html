@@ -42,8 +42,9 @@
             <th>Qty</th>
             <th>Unit</th>
             <th>Price/Unit</th>
-            <th>Tax</th>
+            
             <th>Discount</th>
+            <th>Tax</th>
             <th>Total</th>
             <th>Action</th>
           </tr>
@@ -58,8 +59,9 @@
             </td>
             <td>{{ product.unit }}</td>
             <td>{{ product.sale_price }}</td>
-            <td>{{ (product.quantity * product.sale_price - product.discount) * product.tax_rate / 100 }}</td>
             <td>{{ product.quantity * product.discount }}</td>
+            <td>{{ product.tax | number:'1.2-2' }}</td> 
+
             <td>{{ product.total | number:'1.2-2' }}</td>
             <td>
               <button mat-icon-button color="warn" (click)="removeItem(i)">
@@ -136,13 +138,14 @@
         <span class="label">Subtotal:</span>
         <span class="value">{{ calculateSubtotal() | number:'1.2-2' }}</span>
       </div>
-      <div class="detail">
-        <span class="label">Total Tax:</span>
-        <span class="value">{{ calculateTotalTax() | number:'1.2-2' }}</span>
-      </div>
+      
       <div class="detail">
         <span class="label">Total Discount:</span>
         <span class="value">{{ calculateTotalDiscount() | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail">
+        <span class="label">Total Tax:</span>
+        <span class="value">{{ calculateTotalTax() | number:'1.2-2' }}</span>
       </div>
       <div class="detail">
         <span class="label">Total Amount:</span>
