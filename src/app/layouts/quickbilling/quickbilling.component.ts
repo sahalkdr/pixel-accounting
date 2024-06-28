@@ -130,7 +130,7 @@ export class QuickbillingComponent implements OnInit {
 
   private _filter(value: string): Item[] {
     const filterValue = value.toLowerCase();
-    debugger;
+    
     return this.products.filter(product =>
       product.item_code.toLowerCase().includes(filterValue) ||
       product.name.toLowerCase().includes(filterValue)
@@ -336,8 +336,8 @@ export class QuickbillingComponent implements OnInit {
       return 0;
     }
     const subtotal = item.quantity * item.sale_price;
-    const discountAmount = item.discount;
-    const taxableAmount = subtotal - (item.quantity*discountAmount);
+    const discountAmount = (item.discount/100)*subtotal;
+    const taxableAmount = subtotal - discountAmount;
     const taxAmount = (item.tax_rate / 100) * taxableAmount;
     item.tax = taxAmount;
     const total = taxableAmount + taxAmount;

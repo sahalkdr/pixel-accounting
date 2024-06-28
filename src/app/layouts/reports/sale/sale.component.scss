@@ -1,5 +1,5 @@
 .container {
-  margin: 20px;
+  // margin: 5px;
   
 }
 
@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  
   flex-wrap: wrap;
   width: 100%; /* Ensures the date-picker takes full width */
 
@@ -23,7 +24,10 @@
 }
 .date-picker mat-form-field {
   flex: 1; /* Makes each form field take equal width */
-  min-width: 200px; /* Ensures a minimum width */
+  min-width: 160px; /* Ensures a minimum width */
+  // max-width: 200px; /* Ensures a minimum width */
+
+  margin-right: 20px;
 }
 
 .right-align {
@@ -69,6 +73,7 @@
 
 table {
   width: 100%;
+  // display: flex;
 }
 
 td {

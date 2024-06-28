@@ -9,41 +9,49 @@
 }
 
 .example-app-name {
-  margin-right: 1200px;
+  margin-left: 16px; /* Adjust margin to align with the menu icon */
 }
 
 .example-is-mobile .example-toolbar {
   position: fixed;
- 
-  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space items evenly */
+  height: 64px; /* Explicitly set height */
 }
-h1.example-app-name {
-  margin-left: 8px;
-}
-
 
 .example-sidenav-container {
-  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
-     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
+  margin-top: 64px; /* Ensure content starts below the toolbar */
 }
 
 .example-is-mobile .example-sidenav-container {
-  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
-     `<body>` to be our scrolling element for mobile layouts. */
   flex: 1 0 auto;
+  margin-top: 64px; /* Ensure content starts below the toolbar */
 }
+
 .mat-sidenav {
-  width: 60px; /* Changed to a more standard width */
-  background-color: #7E909A; /* Removed the comma */
-  color: white; 
+  width: 60px;
+  background-color: #7e909a;
+  color: white;
 }
 
 .mat-toolbar {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Space items evenly */
   color: white;
+  position: fixed; /* Fix the toolbar position */
+  width: 100%; /* Full width */
+  z-index: 2; /* Stay on top */
+  height: 64px; /* Explicitly set height */
+}
+
+.left-content {
+  display: flex;
+  align-items: center; /* Align items vertically centered */
 }
 
 .mat-nav-list {
@@ -66,11 +74,11 @@ h1.example-app-name {
 
   .mat-list-item {
     &.active {
-      background-color: rgba(255, 255, 255, 0.1); /* Light background for active item */
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1); /* Light background on hover */
+      background-color: rgba(255, 255, 255, 0.1);
     }
   }
 }
@@ -89,12 +97,12 @@ h1.example-app-name {
   width: 100%;
 }
 
-// // Customize the backdrop color
-// ::ng-deep .mat-drawer-backdrop {
-//   background-color: rgba(0, 0, 0, 0.1) !important; /* Adjusted backdrop color to be lighter */
-// }
+// Customize the backdrop color
+::ng-deep .mat-drawer-backdrop {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
 
 // Optional: Remove the backdrop completely
 ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
-  opacity: 0 !important; /* Makes the backdrop completely transparent */
+  opacity: 0 !important;
 }
