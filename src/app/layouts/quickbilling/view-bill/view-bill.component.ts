@@ -53,18 +53,30 @@ export class ViewBillComponent implements OnInit {
   
     if (printWindow) {
       printWindow.document.open();
+      let pageSize, bodyWidth, bodyHeight;
+      if(size == '53mm'){
+        pageSize = `53mm auto`;
+        bodyWidth = `53mm`;
+      }
+      else{
+        pageSize = `A4`;
+        bodyWidth = `210mm`
+      }
+      //size: ${size === '53mm' ? '53mm' : 'A4'};
       printWindow.document.write(`
         <html>
           <head>
             <style>
               @page {
-                size: ${size === '53mm' ? '53mm' : 'A4'};
+                
+                size: ${pageSize};
                 margin: 2px 2px;
               }
               body {
                 margin: 3px;
                 font-family: Arial, sans-serif;
                 font-size: 10px;
+                 width: ${bodyWidth};
               }
               .bill-container {
                 width: ${size === '53mm' ? '53mm' : '210mm'};
