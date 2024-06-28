@@ -55,7 +55,7 @@
             <td>{{ product.item_code }}</td>
             <td>{{ product.name }}</td>
             <td>
-                <input type="number" class="quantiyInput" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" />
+                <input type="number" class="quantiyInput" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
             </td>
             <td>{{ product.unit }}</td>
             <td>{{ product.sale_price }}</td>

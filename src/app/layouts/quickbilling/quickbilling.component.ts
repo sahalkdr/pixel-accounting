@@ -18,6 +18,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import Swal from 'sweetalert2';
 
 interface Item {
   id: number;
@@ -289,15 +290,15 @@ export class QuickbillingComponent implements OnInit {
     }
   }
 
-  selectItemById(id: string){
-    let item = this.products.filter(f=> f.id);
+  selectItemById(id: number){
+    debugger;
+    let item = this.products.filter(f=> f.id == id);
     if(!item) return;
     this.selectItem(item[0]);
     this.searchControl.setValue('');
   }
 
   selectItem(item: Item): void {
-    debugger;
     this.searchText = '';
     this.suggestedItems = [];
     this.noItemsFound = false;
@@ -305,8 +306,9 @@ export class QuickbillingComponent implements OnInit {
     
     if (selectedItem.quantity > item.stock) {
       this.showStockWarning = true; 
+      Swal.fire(`Stock not available for selected quantity. Available stock as ${item.stock}`);
     } else {
-      this.filteredProducts.push(selectedItem);
+      this.filteredProducts.unshift(selectedItem);
       this.updateItemTotal(selectedItem);
     }
 
@@ -352,7 +354,9 @@ export class QuickbillingComponent implements OnInit {
   onQuantityChange(item: Item): void {
     
     if (item.quantity > item.stock) {
+      Swal.fire(`Stock not available for selected quantity. Available stock as ${item.stock}`);
       this.showStockWarning = true; 
+      item.quantity = 1;
     } else {
       this.showStockWarning = false;
       this.updateItemTotal(item);
