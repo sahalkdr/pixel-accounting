@@ -35,6 +35,9 @@ interface Item {
 
   stock:number;
   tax: number;
+  discountAmount?: number; 
+
+  
 }
 
 interface Customer {
@@ -338,7 +341,8 @@ export class QuickbillingComponent implements OnInit {
       return 0;
     }
     const subtotal = item.quantity * item.sale_price;
-    const discountAmount = (item.discount/100)*subtotal;
+    const discountAmount = (item.discount / 100) * subtotal;
+    item.discountAmount = discountAmount;
     const taxableAmount = subtotal - discountAmount;
     const taxAmount = (item.tax_rate / 100) * taxableAmount;
     item.tax = taxAmount;
@@ -387,18 +391,20 @@ export class QuickbillingComponent implements OnInit {
     console.log('Total Amount:', total);
     return total;
   }
+  calculateItemDiscount(item: Item): number {
+    const discountAmount = (item.discount / 100) * item.sale_price * item.quantity;
+    return discountAmount;
+  }
 
   calculateTotalDiscount(): number {
-    const totalDiscount = this.filteredProducts.reduce((sum, item) => sum + (item.quantity*item.discount), 0);
-    console.log('Total Discount:', totalDiscount);
-    return totalDiscount;
+    return this.filteredProducts.reduce((sum, item) => sum + this.calculateItemDiscount(item), 0);
   }
 
   calculateTotalTax(): number {
     const totalTax = this.filteredProducts.reduce((sum, item) => {
       const subtotal = item.quantity * item.sale_price;
-      const discountAmount = item.quantity * item.discount;  // Apply discount per quantity
-      const taxableAmount = subtotal - discountAmount;
+      const discountAmount = (item.discount / 100) * subtotal;
+       const taxableAmount = subtotal - discountAmount;
       const taxAmount = (item.tax_rate / 100) * taxableAmount;
       console.log(`Item: ${item.name}, Subtotal: ${subtotal}, Discount: ${discountAmount}, Tax Amount: ${taxAmount}`);
       return sum + taxAmount;

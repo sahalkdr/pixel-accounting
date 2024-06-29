@@ -50,83 +50,137 @@ export class ViewBillComponent implements OnInit {
   printBill(size: string) {
     const printContents = document.querySelector('.bill-container')?.innerHTML;
     const printWindow = window.open('', '_blank');
-  
+
     if (printWindow) {
       printWindow.document.open();
-      let pageSize, bodyWidth, bodyHeight;
-      if(size == '53mm'){
-        pageSize = `53mm auto`;
-        bodyWidth = `53mm`;
+      let pageSize, bodyWidth, fontSize, padding, margin,marginb, elementWidth, rightPadding;
+
+      if (size === '53mm') {
+        pageSize = '53mm';
+        bodyWidth = '53mm';
+        fontSize = '4px';
+        padding = '2px';
+        margin = '10px';
+        marginb='3px';
+        rightPadding = '12px';
+        elementWidth = '100%';
+      } else {
+        pageSize = 'A4';
+        bodyWidth = '210mm';
+        fontSize = '20px';
+        padding = '50px';
+        margin = '50px';
+        rightPadding = '50px'; 
+        elementWidth = '100%';
       }
-      else{
-        pageSize = `A4`;
-        bodyWidth = `210mm`
-      }
-      //size: ${size === '53mm' ? '53mm' : 'A4'};
+
       printWindow.document.write(`
         <html>
           <head>
             <style>
               @page {
-                
                 size: ${pageSize};
-                margin: 2px 2px;
+                margin: 0;
               }
               body {
-                margin: 3px;
-                font-family: Arial, sans-serif;
-                font-size: 10px;
-                 width: ${bodyWidth};
+                width: ${bodyWidth};
+                margin: ${margin};
+                padding: 0;
+                font-size: ${fontSize};
               }
               .bill-container {
-                width: ${size === '53mm' ? '53mm' : '210mm'};
-                margin: auto;
+                width: ${bodyWidth};
+                margin: ${margin};
                 
-                padding: ${size === '53mm' ? '5px' : '20px'};
-                font-size: ${size === '53mm' ? '4px' : '16px'};
+                padding: ${padding};
+                font-size: ${fontSize};
+                padding-right: ${rightPadding};
+                background: #fff;
+                border-radius: 8px;
               }
-              .header {
+              .bill-header {
+                width: calc(${elementWidth} - ${rightPadding});
                 display: flex;
                 justify-content: space-between;
-                // align-items: flex-start;
-                font-size: ${size === '53mm' ? '4px' : '16px'};
+                border-bottom: 1px solid #948fe3;
+                padding-right: ${rightPadding};
+                padding-bottom: ${size === '53mm' ? '2px' : '10px'};
+                margin-bottom: ${size === '53mm' ? '5px' : '20px'};
+                font-size: ${fontSize};
               }
-              .company-details h5 {
-                font-size: ${size === '53mm' ? '4px' : '16px'};
+              .company-details h1 {
                 margin: 0;
-              }
-              .company-details h6 {
-                font-size: ${size === '53mm' ? '4px' : '16px'};
-                margin: 0;
-              }
-              .items-table {
-                width: 100%;
                 
-                border-collapse: collapse;
-                margin: 0 auto;
-                border: none;
+                font-size: ${size === '53mm' ? '10px' : '50px'};
               }
-              .items-table th, .items-table td {
-                padding: ${size === '53mm' ? '2px' : '8px'};
-                font-size: ${size === '53mm' ? '4px' : '16px'};
-                text-align: center;
-                border: none;
+              .company-details p {
+                 margin: 0; 
               }
-              
-              .footer {
-                font-size: ${size === '53mm' ? '4px' : '16px'};
-              }
-              .footer .bill-info-row {
+              .bill-details {
                 display: flex;
                 justify-content: space-between;
-                // margin-bottom: 10px;
+                margin-bottom: ${size === '53mm' ? '5px' : '20px'};
+                width: ${elementWidth};
+                padding-right: ${rightPadding};
               }
-              
-              .value {
+              .bill-details div p {
+                margin: 0;
+              }
+              .bill-details div strong {
+                margin-bottom: ${size === '53mm' ? '3px' : '10px'};
+                display: block;
+              }
+              .bill-info {
                 text-align: right;
               }
-              .print-button {
-                display: none;
+              .bill-table {
+                width: ${elementWidth};
+                border-collapse: collapse;
+                margin-bottom: ${size === '53mm' ? '2px' : '2px'};
+                border-bottom: 1px solid #948fe3;
+                padding-right: ${rightPadding};
+              }
+              .bill-table th, .bill-table td {
+                padding: ${size === '53mm' ? '2px' : '10px'};
+                text-align: left;
+                font-size: ${fontSize};
+              }
+              .bill-table th {
+                background: #948fe3;
+                color: #fff;
+              }
+              .bill-totals {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                margin-top: ${size === '53mm' ? '2px' : '2px'};
+                width: ${elementWidth};
+              }
+              .totals-container {
+                width: ${size === '53mm' ? '50%' : '50%'};
+                background: #fff;
+                padding: ${padding};
+                border-radius: 8px;
+              }
+              .total-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: ${size === '53mm' ? '2px' : '5px'};
+              }
+              .total-row.total {
+                font-weight: bold;
+                border-radius: 4px;
+              }
+              .label {
+                margin-right: ${size === '53mm' ? '2px' : '10px'};
+              }
+              .value {
+                margin-left: auto;
+              }
+              @media print {
+                button {
+                  display: none;
+                }
               }
             </style>
           </head>
@@ -137,6 +191,7 @@ export class ViewBillComponent implements OnInit {
       printWindow.print();
     }
   }
+
   
 
   

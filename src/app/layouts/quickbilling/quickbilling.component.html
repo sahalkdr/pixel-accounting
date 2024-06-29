@@ -59,7 +59,7 @@
             </td>
             <td>{{ product.unit }}</td>
             <td>{{ product.sale_price }}</td>
-            <td>{{ product.quantity * product.discount }}</td>
+            <td>{{ product.discountAmount | number:'1.2-2' }}</td>
             <td>{{ product.tax | number:'1.2-2' }}</td> 
 
             <td>{{ product.total | number:'1.2-2' }}</td>

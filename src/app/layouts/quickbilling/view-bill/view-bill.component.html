@@ -1,16 +1,14 @@
 
-  <div class="invoice-container">
-    <header class="invoice-header">
+  <div *ngIf="billDetails" class="bill-container">
+    <header class="bill-header">
       <div class="company-details">
         <h1><strong>{{company_name}}</strong></h1>
         <p>Phone no.: {{phone}}</p>
       </div>
-      <!-- <div class="invoice-title">
-        <h2>Tax Invoice</h2>
-      </div> -->
+      
     </header>
 
-    <div class="invoice-details">
+    <div class="bill-details">
       <div >
         <p><strong>Bill To</strong></p>
         <p><strong>{{ billDetails.bill.customer_name }}</strong></p>
@@ -18,20 +16,20 @@
       <div class="bill-info">
         <p><strong>Bill Details</strong></p>
         <p>Bill No.: {{ billDetails.bill.bill_id }}</p>
-        <p>Date: 27-06-2024</p>
+        <p>Date.: {{ billDetails.bill.created_at}}</p>
       </div>
     </div>
 
-    <table class="invoice-table">
+    <table class="bill-table">
       <thead>
         <tr>
          
           <th>Item Name</th>
           
-          <th>Quantity</th>
-          <th>Unit Price</th>
-          <th>Tax</th>
-          <th>Total</th>
+          <th>Qty</th>
+          <th>Unit Price (₹)</th>
+          <th>Tax (₹)</th>
+          <th>Total (₹)</th>
         </tr>
       </thead>
       <tbody>
@@ -42,24 +40,18 @@
           <td>{{ item.quantity }}</td>
          
           
-          <td>₹ {{ item.sale_price | number:'1.2-2' }}</td>
-          <td>₹ {{ (item.tax_rate / 100) * item.taxable_amount | number:'1.2-2' }}</td>
-          <td>₹ {{ calculateTotal(item) | number:'1.2-2' }}</td>
+          <td> {{ item.sale_price | number:'1.2-2' }}</td>
+          <td> {{ (item.tax_rate / 100) * item.taxable_amount | number:'1.2-2' }}</td>
+          <td> {{ calculateTotal(item) | number:'1.2-2' }}</td>
         </tr>
-        <!-- <tr>
-          
-          <td>Total</td>
-          <td>₹ 27.59</td>
-          <td>₹ 40.56</td>
-          <td>₹ 1,392.58</td>
-        </tr> -->
+       
         
       </tbody>
     </table>
 
     
 
-    <div class="invoice-totals">
+    <div class="bill-totals">
       <div class="totals-container">
         <div class="total-row">
           <span class="label">Sub Total</span>
@@ -87,5 +79,13 @@
         </div>
       </div>
     </div>
+    <div>
+      <button mat-raised-button class="print-button" (click)="printBill('53mm')">Print Bill (53mm)</button>
+      <button mat-raised-button class="print-button" (click)="printBill('A4')">Print Bill (A4)</button>
+    </div>
     
   </div>
+
+
+
+ 
