@@ -81,6 +81,8 @@ export class ItemsComponent implements OnInit{
   navigateToAddItem() {
     const dialogRef = this.dialog.open(AdditemComponent, {
         width: '600px'
+        // ,
+        // height:'100%'
     });
 
     dialogRef.afterClosed().subscribe((result) => {

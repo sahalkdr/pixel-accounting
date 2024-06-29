@@ -18,6 +18,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import Swal from 'sweetalert2';
 
 interface Item {
   id: number;
@@ -27,12 +28,13 @@ interface Item {
   unit: string;
   sale_price: number;
   discount: number;
-  tax: number;
+  
   total: number;
   category_id: number;
   tax_rate: number;
 
   stock:number;
+  tax: number;
 }
 
 interface Customer {
@@ -129,7 +131,7 @@ export class QuickbillingComponent implements OnInit {
 
   private _filter(value: string): Item[] {
     const filterValue = value.toLowerCase();
-    debugger;
+    
     return this.products.filter(product =>
       product.item_code.toLowerCase().includes(filterValue) ||
       product.name.toLowerCase().includes(filterValue)
@@ -185,7 +187,7 @@ export class QuickbillingComponent implements OnInit {
         this.parties.push(newCustomer);
         
 
-        this.selectCustomer(newCustomer); // Corrected line        this.customerSearchText = '';
+        this.selectCustomer(newCustomer); 
         this.customerSearchText = '';
 
         this.noCustomersFound = false;
@@ -288,15 +290,15 @@ export class QuickbillingComponent implements OnInit {
     }
   }
 
-  selectItemById(id: string){
-    let item = this.products.filter(f=> f.id);
+  selectItemById(id: number){
+    debugger;
+    let item = this.products.filter(f=> f.id == id);
     if(!item) return;
     this.selectItem(item[0]);
     this.searchControl.setValue('');
   }
 
   selectItem(item: Item): void {
-    debugger;
     this.searchText = '';
     this.suggestedItems = [];
     this.noItemsFound = false;
@@ -304,8 +306,9 @@ export class QuickbillingComponent implements OnInit {
     
     if (selectedItem.quantity > item.stock) {
       this.showStockWarning = true; 
+      Swal.fire(`Stock not available for selected quantity. Available stock as ${item.stock}`);
     } else {
-      this.filteredProducts.push(selectedItem);
+      this.filteredProducts.unshift(selectedItem);
       this.updateItemTotal(selectedItem);
     }
 
@@ -335,9 +338,10 @@ export class QuickbillingComponent implements OnInit {
       return 0;
     }
     const subtotal = item.quantity * item.sale_price;
-    const discountAmount = item.discount;
+    const discountAmount = (item.discount/100)*subtotal;
     const taxableAmount = subtotal - discountAmount;
     const taxAmount = (item.tax_rate / 100) * taxableAmount;
+    item.tax = taxAmount;
     const total = taxableAmount + taxAmount;
     console.log(`Item: ${item.name}, Subtotal: ${subtotal}, Discount: ${discountAmount}, Tax: ${taxAmount}, Total: ${total}`);
     return total;
@@ -350,7 +354,9 @@ export class QuickbillingComponent implements OnInit {
   onQuantityChange(item: Item): void {
     
     if (item.quantity > item.stock) {
+      Swal.fire(`Stock not available for selected quantity. Available stock as ${item.stock}`);
       this.showStockWarning = true; 
+      item.quantity = 1;
     } else {
       this.showStockWarning = false;
       this.updateItemTotal(item);
@@ -391,14 +397,16 @@ export class QuickbillingComponent implements OnInit {
   calculateTotalTax(): number {
     const totalTax = this.filteredProducts.reduce((sum, item) => {
       const subtotal = item.quantity * item.sale_price;
-      const discountAmount = item.discount;
+      const discountAmount = item.quantity * item.discount;  // Apply discount per quantity
       const taxableAmount = subtotal - discountAmount;
       const taxAmount = (item.tax_rate / 100) * taxableAmount;
+      console.log(`Item: ${item.name}, Subtotal: ${subtotal}, Discount: ${discountAmount}, Tax Amount: ${taxAmount}`);
       return sum + taxAmount;
     }, 0);
     console.log('Total Tax:', totalTax);
     return totalTax;
   }
+  
 
   removeItem(index: number): void {
     this.filteredProducts.splice(index, 1);

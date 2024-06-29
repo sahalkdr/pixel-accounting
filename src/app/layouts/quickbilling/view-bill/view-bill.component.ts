@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { UserService } from '../../../shared/services/user.service';
 
-
 @Component({
   selector: 'app-view-bill',
   imports: [CurrencyPipe, CommonModule],
@@ -13,13 +12,18 @@ import { UserService } from '../../../shared/services/user.service';
   styleUrls: ['./view-bill.component.scss']
 })
 export class ViewBillComponent implements OnInit {
+  
+
+  
+  
   company_name: string | null = null;
   location: string | null = null;
   phone: string | null = null;
   billDetails: { bill: any, items: any[] } = { bill: {}, items: [] };
 
   constructor(
-    private http: HttpClient,private userService: UserService,
+    private http: HttpClient,
+    private userService: UserService,
     private route: ActivatedRoute
   ) { }
 
@@ -37,15 +41,107 @@ export class ViewBillComponent implements OnInit {
     }
 
     const billId = this.route.snapshot.queryParamMap.get('bill_id');
-    console.log('Bill ID from route:', billId); 
+    console.log('Bill ID from route:', billId);
     if (billId) {
       this.fetchBillDetails(billId);
     }
   }
 
-  printBill(): void {
-    window.print();
+  printBill(size: string) {
+    const printContents = document.querySelector('.bill-container')?.innerHTML;
+    const printWindow = window.open('', '_blank');
+  
+    if (printWindow) {
+      printWindow.document.open();
+      let pageSize, bodyWidth, bodyHeight;
+      if(size == '53mm'){
+        pageSize = `53mm auto`;
+        bodyWidth = `53mm`;
+      }
+      else{
+        pageSize = `A4`;
+        bodyWidth = `210mm`
+      }
+      //size: ${size === '53mm' ? '53mm' : 'A4'};
+      printWindow.document.write(`
+        <html>
+          <head>
+            <style>
+              @page {
+                
+                size: ${pageSize};
+                margin: 2px 2px;
+              }
+              body {
+                margin: 3px;
+                font-family: Arial, sans-serif;
+                font-size: 10px;
+                 width: ${bodyWidth};
+              }
+              .bill-container {
+                width: ${size === '53mm' ? '53mm' : '210mm'};
+                margin: auto;
+                
+                padding: ${size === '53mm' ? '5px' : '20px'};
+                font-size: ${size === '53mm' ? '4px' : '16px'};
+              }
+              .header {
+                display: flex;
+                justify-content: space-between;
+                // align-items: flex-start;
+                font-size: ${size === '53mm' ? '4px' : '16px'};
+              }
+              .company-details h5 {
+                font-size: ${size === '53mm' ? '4px' : '16px'};
+                margin: 0;
+              }
+              .company-details h6 {
+                font-size: ${size === '53mm' ? '4px' : '16px'};
+                margin: 0;
+              }
+              .items-table {
+                width: 100%;
+                
+                border-collapse: collapse;
+                margin: 0 auto;
+                border: none;
+              }
+              .items-table th, .items-table td {
+                padding: ${size === '53mm' ? '2px' : '8px'};
+                font-size: ${size === '53mm' ? '4px' : '16px'};
+                text-align: center;
+                border: none;
+              }
+              
+              .footer {
+                font-size: ${size === '53mm' ? '4px' : '16px'};
+              }
+              .footer .bill-info-row {
+                display: flex;
+                justify-content: space-between;
+                // margin-bottom: 10px;
+              }
+              
+              .value {
+                text-align: right;
+              }
+              .print-button {
+                display: none;
+              }
+            </style>
+          </head>
+          <body>${printContents}</body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
   }
+  
+
+  
+
+  
 
   fetchBillDetails(billId: string | null): void {
     if (billId) {
@@ -56,10 +152,10 @@ export class ViewBillComponent implements OnInit {
         .subscribe({
           next: (data: any) => {
             if (data.success) {
-              console.log('Fetched bill details:', data.data); 
+              console.log('Fetched bill details:', data.data);
               this.billDetails = data.data;
             } else {
-              console.error('Error fetching bill details:', data.message); 
+              console.error('Error fetching bill details:', data.message);
             }
           },
           error: (err) => {
@@ -68,5 +164,12 @@ export class ViewBillComponent implements OnInit {
           }
         });
     }
+  }
+
+  calculateTotal(item: any): number {
+    const taxableAmount = parseFloat(item.taxable_amount);
+    const taxRate = parseFloat(item.tax_rate);
+    const taxAmount = (taxRate / 100) * taxableAmount;
+    return taxableAmount + taxAmount;
   }
 }
