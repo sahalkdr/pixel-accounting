@@ -80,7 +80,7 @@ export class QuickbillingComponent implements OnInit {
   billId: number = 0;
   showStockWarning: boolean = false;
   additionalDiscount: number = 0;
-
+  isEditMode:boolean=false;
 
   constructor(private userService: UserService, 
     private http: HttpClient, private router: Router, 
@@ -109,7 +109,18 @@ export class QuickbillingComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchProducts();
-    this.fetchParties();
+  this.fetchParties();
+    this.route.queryParams.subscribe(params => {
+      this.billId = params['bill_id'];
+      console.log('Fetched Bill ID:', this.billId);  
+
+      this.isEditMode = !!this.billId;
+      if (this.isEditMode) {
+          this.loadBillDetails(this.billId);
+      }
+  });
+    
+   
     this.filteredOptions = this.searchControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
@@ -278,6 +289,88 @@ export class QuickbillingComponent implements OnInit {
       this.errorMessage = 'An error occurred while saving the bill or items. Please try again later.';
     }
   }
+  loadBillDetails(billId: number): void {
+    console.log("Fetching bill details for Bill ID:", billId);
+    const userId = localStorage.getItem('userId');
+  
+    this.http.get(`http://localhost/restaurant/get_bill_details_for_edit.php?bill_id=${billId}&user_id=${userId}`)
+      .subscribe((response: any) => {
+        if (response.success) {
+          const bill = response.bill;
+  
+          
+          this.customerDetails = this.parties.find(party => party.id === bill.party_id) || null;
+  
+          // Set the form values 
+          this.billingForm.patchValue({
+            customer_name: this.customerDetails ? this.customerDetails.name : '',
+            subtotal: parseFloat(bill.subtotal),
+            total_amount: parseFloat(bill.total_amount),
+            payment_mode: bill.payment_mode,
+            amount_received: parseFloat(bill.amount_received),
+            additional_discount: parseFloat(bill.additional_discount),
+            total_tax: parseFloat(bill.total_tax),
+            total_discount: parseFloat(bill.total_discount),
+          });
+  
+          // Map items to filteredProducts array
+          this.filteredProducts = response.items.map((item: any) => {
+            const product = this.products.find(product => product.id === item.item_id);
+            if (product) {
+              // Calculate discountAmount and tax for each item
+              const total = this.calculateItemTotal({
+                ...product,
+                quantity: item.quantity,
+              });
+              const discountAmount = this.calculateItemDiscount({
+                ...product,
+                quantity: item.quantity,
+                discount: product.discount 
+              });
+              const taxAmount = this.calculateItemTax({
+                ...product,
+                quantity: item.quantity,
+                tax: product.tax
+              });          
+              return {
+                ...product,
+                quantity: item.quantity,
+                total: total,
+                discountAmount: discountAmount,
+                tax: taxAmount, 
+              };
+            } else {
+              console.warn(`Product with id ${item.item_id} not found`);
+              return {
+                id: item.item_id,
+                item_code: '',
+                name: '',
+                quantity: item.quantity,
+                unit: '',
+                sale_price: 0,
+                discount: 0,
+                total: 0,
+                category_id: 0,
+                tax_rate: 0,
+                stock: 0,
+                tax: 0,
+                discountAmount: 0, 
+              };
+            }
+          });
+          
+          this.calculateTotal();
+  
+          console.log("Bill details loaded:", bill);
+          console.log("Items loaded:", this.filteredProducts);
+        } else {
+          console.error('Error fetching bill details:', response.message);
+        }
+      }, (error) => {
+        console.error('Error fetching bill details:', error);
+      });
+  }
+  
   
 
   searchParties(): void {
@@ -363,6 +456,8 @@ export class QuickbillingComponent implements OnInit {
       item.quantity = 1;
     } else {
       this.showStockWarning = false;
+      
+
       this.updateItemTotal(item);
     }
 
@@ -395,6 +490,15 @@ export class QuickbillingComponent implements OnInit {
     const discountAmount = (item.discount / 100) * item.sale_price * item.quantity;
     return discountAmount;
   }
+  
+ calculateItemTax(item: Item): number {
+  const discountAmount = item.discountAmount || 0; // Handle undefined case
+  const taxableAmount = (item.quantity * item.sale_price) - discountAmount;
+  const taxAmount = (item.tax_rate / 100) * taxableAmount;
+  item.tax = taxAmount;
+  return taxAmount;
+}
+
 
   calculateTotalDiscount(): number {
     return this.filteredProducts.reduce((sum, item) => sum + this.calculateItemDiscount(item), 0);
@@ -407,6 +511,7 @@ export class QuickbillingComponent implements OnInit {
        const taxableAmount = subtotal - discountAmount;
       const taxAmount = (item.tax_rate / 100) * taxableAmount;
       console.log(`Item: ${item.name}, Subtotal: ${subtotal}, Discount: ${discountAmount}, Tax Amount: ${taxAmount}`);
+      
       return sum + taxAmount;
     }, 0);
     console.log('Total Tax:', totalTax);
@@ -422,9 +527,3 @@ export class QuickbillingComponent implements OnInit {
     return this.amountReceived - this.calculateTotal();
   }
 }
-
-
-
-
-
-

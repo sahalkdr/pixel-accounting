@@ -90,6 +90,11 @@ export class SaleComponent implements OnInit {
   viewBillDetails(billId: string): void {
     this.router.navigate(['/bill-details'], { queryParams: { bill_id: billId } });
   }
+  editbill(billId: string): void {
+    console.log('Navigating to quickbilling with bill_id:', billId);  // Debugging line
+    this.router.navigate(['/dashboard/quickbilling'], { queryParams: { bill_id: billId } });
+}
+
 
   calculateTotalPaidAmount() {
     if (this.saledetails.bills && this.saledetails.bills.length > 0) {

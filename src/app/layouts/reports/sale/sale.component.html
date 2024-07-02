@@ -64,13 +64,18 @@
           <td class="hide-on-small-screen">{{ bill.payment_mode }}</td>
           <td class="right-align hide-on-small-screen">{{ bill.total_tax }}</td>
           <td class="right-align">{{ bill.amount_received }}</td>
+          <td>
+            <button mat-icon-button (click)="editbill(bill.bill_id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
           <td class="show-on-small-screen">
             <button mat-icon-button (click)="openDialog(bill)">
               <mat-icon>info</mat-icon>
             </button>
           </td>
-
-        </tr>
+          
+ </tr>
       </tbody>
     </table>
   </div>
