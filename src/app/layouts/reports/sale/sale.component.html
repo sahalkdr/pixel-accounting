@@ -31,7 +31,7 @@
       <mat-icon (click)="printPage()">print</mat-icon>
     </div>
   </div>
-  
+
   <div class="summary">
     <div class="summary-item paid">
       <div class="label">Total</div>
@@ -42,49 +42,57 @@
       <div class="amount">₹{{ totalPaidTax.toFixed(2) }}</div>
     </div>
   </div>
+  
+    <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
+      <table class="normal-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th class="hide-on-small-screen">Bill No.</th>
+            <th>Party Name</th>
+            <th class="hide-on-small-screen">Payment Mode</th>
+            <th class="hide-on-small-screen">Total Tax (Rs)</th>
+            <th>Amount Received</th>
+            <th class="show-on-small-screen">Info</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bill of (saledetails.bills || []) | paginate: { itemsPerPage: itemsPerPage, currentPage: p }" [id]="'bill-' + bill.bill_id">
+            <td>{{ bill.created_at }}</td>
+            <td class="hide-on-small-screen">{{ bill.bill_id }}</td>
+            <td>{{ bill.customer_name || 'N/A' }}</td>
+            <td class="hide-on-small-screen">{{ bill.payment_mode }}</td>
+            <td class="right-align hide-on-small-screen">{{ bill.total_tax }}</td>
+            <td class="right-align">{{ bill.amount_received }}</td>
+            <td>
+              <button mat-icon-button (click)="navigate(bill.bill_id)">
+                <mat-icon>print</mat-icon>
+              </button>
+              
 
-  <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
-    <table class="normal-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th class="hide-on-small-screen">Bill No.</th>
-          <th>Party Name</th>
-          <th class="hide-on-small-screen">Payment Mode</th>
-          <th class="hide-on-small-screen">Total Tax (Rs)</th>
-          <th>Amount Received</th>
-          <th class="show-on-small-screen">Info</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let bill of (saledetails.bills || []) | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
-          <td>{{ bill.created_at }}</td>
-          <td class="hide-on-small-screen">{{ bill.bill_id }}</td>
-          <td>{{ bill.customer_name || 'N/A' }}</td>            
-          <td class="hide-on-small-screen">{{ bill.payment_mode }}</td>
-          <td class="right-align hide-on-small-screen">{{ bill.total_tax }}</td>
-          <td class="right-align">{{ bill.amount_received }}</td>
-          <td class="show-on-small-screen">
-            <button mat-icon-button (click)="openDialog(bill)">
-              <mat-icon>info</mat-icon>
-            </button>
-          </td>
-
-        </tr>
-      </tbody>
-    </table>
-  </div>
+            </td>
+            <td class="show-on-small-screen">
+              <button mat-icon-button (click)="openDialog(bill)">
+                <mat-icon>info</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noRecordsTemplate>
+        <div class="no-records">No records found.</div>
+      </ng-template>
+    </div>
+  
 
   <ng-template #noRecordsTemplate>
     <div class="no-records">No records found.</div>
   </ng-template>
-  
 </div>
 
 <div class="pagination-container" *ngIf="!noRecords && saledetails.bills?.length">
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
-
 
 <div id="print-area" style="display: none;">
   <div class="summary">
