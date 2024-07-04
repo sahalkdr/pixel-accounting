@@ -42,7 +42,10 @@ export class EditItemDialogComponent {
         this.data.item.name = updatedItem.name;
         this.data.item.stock = updatedItem.stock;
         this.data.item.sale_price = updatedItem.sale_price;
-          // this.data.item.tax_rate = updatedCategory.tax_rate;
+          this.data.item.tax_rate = updatedItem.tax_rate;
+          this.data.item.discount = updatedItem.discount;
+          this.data.item.unit = updatedItem.unit;
+
               this.dialogRef.close(updatedItem);
            }
            else {

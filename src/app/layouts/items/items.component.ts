@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms'; //
 import { MatDialog } from '@angular/material/dialog';
 import { EditItemDialogComponent } from './edit-item-dialog/edit-item-dialog.component'; 
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
+
 import { EditCategoryDialogComponent } from './edit-category-dialog/edit-category-dialog.component';
 import { ConfirmDialogComponent } from '../../layouts/confirm-dialog/confirm-dialog.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -53,7 +54,7 @@ export class ItemsComponent implements OnInit{
   selectedSection: string = 'products';
   selectedProduct: any = null;
   p:number=1;
-  itemsPerPage:number=7;
+  itemsPerPage:number=6;
   // isEditMode: boolean = false;
   editForm: FormGroup;
   

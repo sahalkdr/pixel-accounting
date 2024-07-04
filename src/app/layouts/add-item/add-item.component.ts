@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AddCategoryDialogComponent } from '../items/add-category-dialog/add-category-dialog.component';
 
 
+
 @Component({
   selector: 'app-additem',
   standalone: true,
@@ -52,6 +53,7 @@ export class AdditemComponent implements OnInit{
       const response = await this.userService.fetchCategories(); 
       if (response.success) {
         this.categories = response.categories;
+        console.log("cat",this.categories);
       } else {
         console.error('Failed to fetch categories:', response.message);
       }
@@ -59,7 +61,7 @@ export class AdditemComponent implements OnInit{
       console.error('Error fetching categories:', error);
     }
   }
-
+ 
   
   openAddCategoryDialog(): void {
     const dialogRef = this.dialog.open(AddCategoryDialogComponent, {
@@ -104,6 +106,7 @@ export class AdditemComponent implements OnInit{
         alert('Failed to add item: ' + result.message);
     }
 }
+
 
 
 

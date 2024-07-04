@@ -1,6 +1,5 @@
 .container {
-  // margin: 5px;
-  
+ 
 }
 
 .filters {
@@ -66,14 +65,14 @@
 }
 
 .transactions {
+ 
   background-color: #ffffff;
-  padding: 10px;
-  border-radius: 5px;
+  
 }
 
 table {
   width: 100%;
-  // display: flex;
+  border-collapse: collapse; /* Ensure table borders collapse for cleaner look */
 }
 
 td {
