@@ -1,0 +1,140 @@
+.container {
+ 
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+
+  margin-bottom: 20px;
+}
+
+.date-picker {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  
+  flex-wrap: wrap;
+  width: 100%; /* Ensures the date-picker takes full width */
+
+  
+}
+.date-picker mat-form-field {
+  flex: 1; /* Makes each form field take equal width */
+  min-width: 160px; /* Ensures a minimum width */
+  // max-width: 200px; /* Ensures a minimum width */
+
+  margin-right: 20px;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #e0f7fa;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.summary-item.total-tax {
+  background-color: #a5d6a7;
+}
+
+.summary-item.paid {
+  background-color: #a5d6a7;
+}
+
+.summary-item.date-range {
+  background-color: #fff9c4;
+}
+
+.summary-item .label {
+  font-weight: bold;
+}
+
+.transactions {
+ 
+  background-color: #ffffff;
+  
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Ensure table borders collapse for cleaner look */
+}
+
+td {
+  text-align: center;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.pagination-container {
+  position: relative;
+}
+
+.hide-on-small-screen {
+  display: table-cell;
+}
+
+.show-on-small-screen {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .hide-on-small-screen {
+    display: none;
+  }
+
+  .show-on-small-screen {
+    display: table-cell;
+  }
+  .date-picker {
+    gap: 1px; /* Reduce gap between fields */
+  }
+
+  .date-picker mat-form-field {
+    margin-bottom: 2px; /* Reduce margin between form fields */
+  }
+
+  .mat-icon {
+    cursor: pointer;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-area, .print-area * {
+    visibility: visible;
+  }
+
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pagination-container, .button-container, .filters {
+    display: none;
+  }
+}

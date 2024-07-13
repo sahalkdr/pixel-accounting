@@ -271,7 +271,7 @@ export class UserService {
       return { success: false, message: 'An error occurred while updating the party. Please try again later.' };
     }
   }
-  async addItem(item: { name: string, category_id: number, sale_price: number, stock: number, unit: string, discount: number,user_id: string | number }) {
+  async addItem(item: { item_code:string,name: string, category_id: number, sale_price: number, stock: number, unit: string, discount: number,user_id: string | number,purchase_price:number }) {
     
     try {
       const addItemResponse = await this.apiService.httpRequest({
@@ -283,6 +283,7 @@ export class UserService {
       if (addItemResponse.success) {
         return { success: true, message: addItemResponse.message, item: {
           id: addItemResponse.item.id,
+          item_code: addItemResponse.item.item_code,
                     name: addItemResponse.item.name,
                     category_id: addItemResponse.item.category_id,
                     sale_price: addItemResponse.item.sale_price,
@@ -291,7 +292,8 @@ export class UserService {
                     discount: addItemResponse.item.discount,
                     has_tax: addItemResponse.item.has_tax,
                     tax_rate: addItemResponse.item.tax_rate,
-                    user_id: addItemResponse.item.user_id
+                    user_id: addItemResponse.item.user_id,
+                    purchase_price: addItemResponse.item.purchase_price
       } };
       } else {
         return { success: false, message: addItemResponse.message };
@@ -359,6 +361,44 @@ export class UserService {
     }
   }
 
+  async savePurchaseWithItems(purchase: any, items: { Id: number, quantity: number,discount: number, tax: number,purchase_price:number }[]) {
+    try {
+      // Save the bill first
+      const purchaseResponse = await this.apiService.httpRequest({
+        method: 'POST',
+        url: 'http://localhost/restaurant/add_purchase_details.php',
+        data: purchase
+      });
+  
+      if (!purchaseResponse.success) {
+        return { success: false, message: purchaseResponse.error || 'Error saving purchase' };
+        console.error('messag:', purchaseResponse.error);
+
+      }
+  
+      // If the bill is saved successfully, save the bill items
+      const purchaseId = purchaseResponse.purchase_id;
+      const itemsPayload = { purchase_id: purchaseId, items };
+  
+      const itemsResponse = await this.apiService.httpRequest({
+        method: 'POST',
+        url: 'http://localhost/restaurant/savePurchaseItems.php',
+        data: itemsPayload
+      });
+  
+      if (!itemsResponse.success) {
+        return { success: false, message: itemsResponse.message || 'Error saving purchase items' };
+        console.log('message:',itemsResponse.message);
+      }
+  
+      // If both the bill and items are saved successfully
+      return { success: true, purchaseId ,message:"Purchase sabed successfully"};
+    } catch (error) {
+      console.error('Save purchase with items error:', error);
+      return { success: false, message: 'An error occurred while saving the purchase and items. Please try again later.' };
+    }
+  }
+
  
   
 
@@ -409,6 +449,28 @@ export class UserService {
       return { success: false, message: 'An error occurred while deleting the party. Please try again later.' };
     }
   }
+
+  async addPaymentOut(payload: { party_id: number|null, amount: number, payment_date: string, user_id: number }) {
+    try {
+        const addPaymentOutResponse = await this.apiService.httpRequest({
+            method: 'POST',
+            url: 'http://localhost/restaurant/payment_out.php',  
+            data: payload
+        });
+
+        if (addPaymentOutResponse.success) {
+            return {
+                success: true,
+                message: addPaymentOutResponse.message,
+            };
+        } else {
+            return { success: false, message: addPaymentOutResponse.message };
+        }
+    } catch (error) {
+        console.error('Add payment out error:', error);
+        return { success: false, message: 'An error occurred while adding the payment out. Please try again later.' };
+    }
+}
 
   
 

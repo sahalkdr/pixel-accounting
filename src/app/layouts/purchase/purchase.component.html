@@ -1,0 +1,191 @@
+<div class="quickbilling-container">
+    <div class="left-side">
+      <div class="table-container">
+  
+  
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>Search</mat-label>
+            <input type="text"
+                   placeholder="Search By Item code or Name"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="searchControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectItemById($event.option.value)">
+              @for (option of filteredOptions | async; track option) {
+                <mat-option [value]="option.id">{{option.name}} - {{option.unit}}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+          <div class="add-item-wrapper">
+            <button mat-mini-fab class="small-mini-fab" (click)="openAddItemDialog()">
+              <mat-icon>add</mat-icon>
+            </button>
+            <span class="add-item-text">Add Item</span>
+          </div>
+          
+        </form>
+        
+
+        
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Search..." [(ngModel)]="searchText" (input)="searchItems()" />
+        </mat-form-field>
+        <div *ngIf="suggestedItems.length > 0" class="suggestions">
+          <ul>
+            <li *ngFor="let item of suggestedItems" (click)="selectItem(item)">
+              {{ item.name }} - {{ item.unit }}
+            </li>
+          </ul>
+        </div> -->
+        <div *ngIf="noItemsFound" class="not-found">
+          <p>Item not found</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Item Code</th>
+              <th>Item Name</th>
+              <th>Qty</th>
+              <th>Unit</th>
+              <th>Price/Unit</th>
+              
+              <th>Discount (In %)</th>
+              <th>Tax (In %)</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ product.item_code }}</td>
+              <td>{{ product.name }}</td>
+              <!-- <td>{{ product.stock }}</td> -->
+              <td>
+                  <input type="number" class="quantiyInput" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
+              </td>
+              <td>{{ product.unit }}</td>
+              <!-- <td>{{ product.purchase_price }}</td> -->
+              <td>
+                <input type="number" class="quantiyInput" [(ngModel)]="product.purchase_price" (ngModelChange)="onQuantityChange(product)" style="width: 70px;" step="0.01" />
+              </td>
+              <!-- <td>{{ product.discountAmount | number:'1.2-2' }}</td>
+              <td>{{ product.tax | number:'1.2-2' }}</td>  -->
+              <td>
+                <input type="number" class="hidden-input" [(ngModel)]="product.discount" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
+            </td>
+            <td>
+              <input type="number" class="hidden-input" [(ngModel)]="product.tax_rate" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
+          </td>
+  
+              <td>{{ product.total | number:'1.2-2' }}</td>
+              <td>
+                <button mat-icon-button color="warn" (click)="removeItem(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <!-- <tr>
+              <td colspan="9">Payment Mode</td>
+              <td>
+  
+                <mat-button-toggle-group [(ngModel)]="paymentMode" appearance="legacy" name="fontStyle" aria-label="Font Style">
+                  <mat-button-toggle value="Cash">Cash</mat-button-toggle>
+                  <mat-button-toggle value="Online">Online</mat-button-toggle>
+                </mat-button-toggle-group>
+  
+               
+              </td>
+            </tr> -->
+          </tfoot>
+        </table>
+        <!-- <div *ngIf="showStockWarning" class="stock-warning">Stock not available for selected quantity</div> -->
+      </div>
+    </div>
+    <div class="right-side">
+      <div class="customer-search">
+        <h2>Customer Details</h2>
+        <form class="example-form">
+          <mat-form-field>
+            <mat-label>Search</mat-label>
+            <input type="text"
+                   placeholder="Search Customer By Name"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="customerControl"
+                   [matAutocomplete]="auto2">
+            <mat-autocomplete  #auto2="matAutocomplete" (optionSelected)="selectCustomerByID($event.option.value)">
+              @for (option of filteredOptionsCustomer | async; track option) {
+                <mat-option [value]="option.id">{{option.name}} - {{option.phone}}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>Search Customer</mat-label>
+          <input matInput placeholder="Search Customer..." [(ngModel)]="customerSearchText" (input)="searchParties()" />
+        </mat-form-field> -->
+        <div *ngIf="customerDetails">
+          <p>Name: {{ customerDetails.name }}</p>
+          <p>Phone: {{ customerDetails.phone }}</p>
+        </div>
+        <!-- <div *ngIf="suggestedCustomers.length > 0" class="suggestions">
+          <ul>
+            <li *ngFor="let party of suggestedCustomers" (click)="selectCustomer(party)">
+              {{ party.name }} - {{ party.phone }}
+            </li>
+          </ul>
+        </div> -->
+        <div *ngIf="noCustomersFound" class="not-found">
+          <p>Customer not found</p>
+          <button mat-button (click)="openAddPartyDialog()">Add New Customer</button>
+        </div>
+      </div>
+      <div class="billing-details">
+        <h2>Billing Details</h2>
+        <div class="detail">
+          <span class="label">Subtotal:</span>
+          <span class="value">{{ calculateSubtotal() | number:'1.2-2' }}</span>
+        </div>
+        
+        <div class="detail">
+          <span class="label">Total Discount:</span>
+          <span class="value">{{ calculateTotalDiscount() | number:'1.2-2' }}</span>
+        </div>
+        <div class="detail">
+          <span class="label">Total Tax:</span>
+          <span class="value">{{ calculateTotalTax() | number:'1.2-2' }}</span>
+        </div>
+        <div class="detail">
+          <span class="label">Total Amount:</span>
+          <span class="value">{{ calculateTotal() | number:'1.2-2' }}</span>
+        </div>
+        <!-- <div class="detail">
+          <span class="label">Additional Discount:</span>
+          <span class="value">
+            <input type="number" class="quantiyInput" [(ngModel)]="additionalDiscount" (ngModelChange)="calculateTotal()"  />
+          </span>
+        </div> -->
+        <!-- <div class="detail">
+          <span class="label">Payment Mode:</span>
+          <span class="value">{{ paymentMode }}</span>
+        </div> -->
+        <!-- <div class="detail">
+          <span class="label">Amount Paid:</span>
+          <span class="value">{{ amountReceived | number:'1.2-2' }}</span>
+        </div>
+      </div> -->
+      <div class="bottom-options">
+        <button mat-raised-button color="primary" (click)="savePurchase()">Save</button>
+      </div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </div>
+  </div>
+  

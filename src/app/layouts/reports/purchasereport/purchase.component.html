@@ -1,0 +1,142 @@
+<div class="container">
+    <div class="filters">
+      <div class="date-picker">
+        <mat-form-field>
+          <mat-label>From:</mat-label>
+          <input matInput [matDatepicker]="fromDatePicker" id="from-date" name="from-date" (dateInput)="filterByDateRange()">
+          <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromDatePicker></mat-datepicker>
+        </mat-form-field>
+  
+        <mat-form-field>
+          <mat-label>To:</mat-label>
+          <input matInput [matDatepicker]="toDatePicker" id="to-date" name="to-date" (dateInput)="filterByDateRange()">
+          <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #toDatePicker></mat-datepicker>
+        </mat-form-field>
+  
+        <mat-form-field>
+          <mat-label>Party Name:</mat-label>
+          <input matInput type="text" id="party-name" name="party-name" (input)="filterByDateRange()">
+        </mat-form-field>
+  
+        <!-- <mat-form-field>
+          <mat-label>Payment Mode</mat-label>
+          <mat-select name="payment_mode" id="payment_mode" [(ngModel)]="paymentMode" (selectionChange)="filterByDateRange()">
+            <mat-option value="All">All</mat-option>
+            <mat-option value="Cash">Cash</mat-option>
+            <mat-option value="Online">Online</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-icon (click)="printPage()">print</mat-icon>
+      </div>
+    </div>
+    
+    <div class="summary">
+      <div class="summary-item paid">
+        <div class="label">Total</div>
+        <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
+      </div>
+      <div class="summary-item total-tax">
+        <div class="label">Total Tax</div>
+        <div class="amount">₹{{ totalPaidTax.toFixed(2) }}</div>
+      </div>
+    </div>
+  
+    <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
+      <table class="normal-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th class="hide-on-small-screen">Purchase No.</th>
+            <th>Party Name</th>
+            <!-- <th class="hide-on-small-screen">Payment Mode</th> -->
+            <th class="hide-on-small-screen">Total Tax (Rs)</th>
+            <!-- <th>Amount Received</th> -->
+            <th class="show-on-small-screen">Info</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let purchase of (purchasedetails.purchase || []) | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+            <td>{{ purchase.created_at }}</td>
+            <td class="hide-on-small-screen">{{ purchase.purchase_id }}</td>
+            <td>{{ purchase.customer_name || 'N/A' }}</td>            
+            
+            <td class="right-align hide-on-small-screen">{{ purchase.total_tax }}</td>
+            <!-- <td class="right-align">{{ bill.amount_received }}</td> -->
+            <td>
+              <button mat-icon-button (click)="editbill(purchase.purchase_id)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+            <!-- <td>
+              <button mat-icon-button (click)="navigate(purchase.purchase_id)">
+                <mat-icon>print</mat-icon>
+              </button>
+              </td> -->
+            <td class="show-on-small-screen">
+              <button mat-icon-button (click)="openDialog(purchase)">
+                <mat-icon>info</mat-icon>
+              </button>
+            </td>
+            
+   </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <ng-template #noRecordsTemplate>
+      <div class="no-records">No records found.</div>
+    </ng-template>
+    
+  </div>
+  
+  <div class="pagination-container" *ngIf="!noRecords && purchasedetails.purchase?.length">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+  
+  
+  <div id="print-area" style="display: none;">
+    <div class="summary">
+      <div class="summary-item paid">
+        <div class="label">Total</div>
+        <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
+      </div>
+      <div class="summary-item total-tax">
+        <div class="label">Total Tax</div>
+        <div class="amount">₹{{ totalPaidTax.toFixed(2) }}</div>
+      </div>
+      <div class="summary-item date-range">
+        <div><strong>From Date:</strong> {{ fromDate }}</div>
+        <div><strong>To Date:</strong> {{ toDate }}</div>
+      </div>
+    </div>
+  
+    <div class="transactions">
+      <table class="normal-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Bill No.</th>
+            <th>Party Name</th>
+            <th>Payment Mode</th>
+            <th class="right-align">Total Tax (Rs)</th>
+            <th class="right-align">Amount Received</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let purchase of printablePurchase">
+            <td>{{ purchase.created_at }}</td>
+            <td>{{ purchase.purchase_id }}</td>
+            <td>{{ purchase.customer_name }}</td>
+            <!-- <td>{{ bill.payment_mode }}</td> -->
+            <td class="right-align">{{ purchase.total_tax }}</td>
+            <!-- <td class="right-align">{{ bill.amount_received }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="printablePurchase.length === 0" class="no-records">No records found.</div>
+  </div>
+  

@@ -27,6 +27,7 @@ import { AddCategoryDialogComponent } from '../items/add-category-dialog/add-cat
 export class AdditemComponent implements OnInit{
 
   newItem = {
+    item_code:'',
     name: '',
     category_id: 0,
     sale_price: 0,
@@ -35,7 +36,8 @@ export class AdditemComponent implements OnInit{
     discount: 0,
     has_tax:false,
     tax_rate:0,
-    user_id:''
+    user_id:'',
+    purchase_price: 0,
     
   };
   categories: { id: number, name: string,tax_rate:number }[] = [];

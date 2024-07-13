@@ -18,6 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { AppComponent } from './app.component';
 import { PartiesComponent } from './layouts/parties/parties.component';
@@ -59,6 +60,7 @@ const appRoutes: Routes = [
         MatIconModule,
         MatListModule,
         MatButtonModule,
+        MatNativeDateModule,
         MatFormFieldModule,
         MatInputModule,
         MatDialogModule,

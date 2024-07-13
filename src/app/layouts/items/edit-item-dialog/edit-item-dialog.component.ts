@@ -22,6 +22,7 @@ export class EditItemDialogComponent {
     this.editForm = this.fb.group({
       name: [data.item.name],
       sale_price: [data.item.sale_price],
+      purchase_price: [data.item.purchase_price],
       stock: [data.item.stock],
       unit: [data.item.unit],
       discount: [data.item.discount],
@@ -42,6 +43,7 @@ export class EditItemDialogComponent {
         this.data.item.name = updatedItem.name;
         this.data.item.stock = updatedItem.stock;
         this.data.item.sale_price = updatedItem.sale_price;
+        this.data.item.purchase_price = updatedItem.purchase_price;
           this.data.item.tax_rate = updatedItem.tax_rate;
           this.data.item.discount = updatedItem.discount;
           this.data.item.unit = updatedItem.unit;

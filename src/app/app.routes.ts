@@ -5,8 +5,14 @@ import { DashboardComponent } from './layouts/dashboard/dashboard.component';
 import { ItemsComponent } from './layouts/items/items.component';
 import { PartiesComponent } from './layouts/parties/parties.component';
 import { QuickbillingComponent } from './layouts/quickbilling/quickbilling.component';
+import { PurchaseComponent } from './layouts/purchase/purchase.component';
+import { PaymentOutComponent } from './layouts/purchase/payment-out/payment-out.component';
+import { AddPaymentOutComponent } from './layouts/purchase/payment-out/add-payment-out/add-payment-out.component';
+
 import { ReportsComponent } from './layouts/reports/reports.component';
 import { SaleComponent } from './layouts/reports/sale/sale.component';
+import { PurchaseReportComponent } from './layouts/reports/purchasereport/purchase.component';
+
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './layouts/home/home.component';
 
@@ -32,11 +38,14 @@ export const routes: Routes = [
         { path: 'items', component: ItemsComponent },
         { path: 'parties', component: PartiesComponent },
         { path: 'quickbilling', component: QuickbillingComponent},
+        { path: 'purchase', component: PurchaseComponent},
+        { path: 'payment_out', component: PaymentOutComponent},
+        { path: 'add_payment_out', component: AddPaymentOutComponent},
         {
           path: 'reports', component: ReportsComponent, children: [
             { path: '', redirectTo: 'sale', pathMatch: 'full' },
             { path: 'sale', component: SaleComponent },
-            
+            { path: 'purchase', component: PurchaseReportComponent },
           ]
         }
         ],canActivate: [AuthGuard]
