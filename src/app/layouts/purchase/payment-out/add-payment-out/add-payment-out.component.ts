@@ -12,9 +12,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule,DateAdapter } from '@angular/material/core';
-import { NativeDateAdapter } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
+import { AddpartyComponent } from '../../../parties/addparty/addparty.component';
+
+import { HttpClientModule } from '@angular/common/http';
 
 interface Customer {
   id: number;
@@ -35,32 +36,34 @@ interface Customer {
     MatButtonModule,
     ReactiveFormsModule,
     CommonModule,
-    MatDatepickerModule,
-    MatNativeDateModule
+    MatCardModule,
+    HttpClientModule,
+    
   ],
   providers: [
-    { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: DateAdapter, useClass: NativeDateAdapter },  // Explicitly provide DateAdapter
+   
   ]
 })
 export class AddPaymentOutComponent implements OnInit {
 
   customerSearchText: string = '';
   parties: Customer[] = [];
+  public suggestedCustomers: Customer[] = [];
+  filteredParties: Customer[] = [];
+
   filteredOptionsCustomer: Observable<Customer[]> = new Observable();
   customerControl = new FormControl('');
   noCustomersFound: boolean = false;
   customerDetails: Customer | null = null;
 
   paymentForm: FormGroup = new FormGroup({
-    payment_date: new FormControl('', Validators.required),
     amount: new FormControl('', [Validators.required, Validators.min(0.01)])
   });
 
   constructor(
     private http: HttpClient,
-    @Inject(MatDialogRef) private dialogRef: MatDialogRef<AddPaymentOutComponent>,
+    private dialogRef: MatDialogRef<AddPaymentOutComponent>,
     private userService: UserService,
     private dialog: MatDialog
   ) {}
@@ -80,6 +83,25 @@ export class AddPaymentOutComponent implements OnInit {
       party.name.toLowerCase().includes(filterValue)
     );
   }
+  openAddPartyDialog(): void {
+    const dialogRef = this.dialog.open(AddpartyComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.success) {
+        this.parties.push(result.party);
+        this.fetchParties();
+        this.customerDetails = { id: result.party.id, name: result.party.name, phone: result.party.phone }; // Auto-select new party
+
+        this.filteredParties = [...this.parties];
+        this.customerControl.setValue(result.party.name);
+
+        
+      }
+      
+    });
+  }
 
   fetchParties(): void {
     const userId = localStorage.getItem('userId');
@@ -93,7 +115,7 @@ export class AddPaymentOutComponent implements OnInit {
       }
     );
   }
-
+  
   selectCustomer(name: string): void {
     this.customerSearchText = '';
     this.noCustomersFound = false;
@@ -109,21 +131,23 @@ export class AddPaymentOutComponent implements OnInit {
     console.log('Selected customer:', this.customerDetails);
   }
 
+
   savePaymentout(): void {
-    const formattedDate = this.paymentForm.get('payment_date')?.value ?
-      new Date(this.paymentForm.get('payment_date')?.value).toISOString().split('T')[0] : '';
+    console.log('Before saving payment out:', this.customerDetails, this.paymentForm.value);
 
     const payload = {
       party_id: this.customerDetails ? this.customerDetails.id : null,
       amount: parseFloat(this.paymentForm.get('amount')?.value),
-      payment_date: formattedDate,
       user_id: parseInt(localStorage.getItem('userId') || '0', 10)
     };
+    console.log('Sending payload:', payload);
 
     this.userService.addPaymentOut(payload).then(response => {
       if (response.success) {
         Swal.fire(`Payment Out saved successfully `);
         console.log('Payment out recorded successfully:', response.message);
+        this.dialogRef.close(); // Ensure dialogRef is accessible here
+
       } else {
         console.error('Error recording payment out:', response.message);
       }

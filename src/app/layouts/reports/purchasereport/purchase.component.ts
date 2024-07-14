@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogContentComponent } from '../sale/dialog-content/dialog-content.component';
+import { HttpClientModule } from '@angular/common/http';
 
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -48,7 +49,7 @@ interface Purchase {
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FormsModule,
+    FormsModule,HttpClientModule,
     ReactiveFormsModule],
   templateUrl: './purchase.component.html',
   styleUrl: './purchase.component.scss'
@@ -87,8 +88,8 @@ export class PurchaseReportComponent implements OnInit{
   viewPurchaseDetails(PurchaseId: string): void {
     this.router.navigate(['/bill-details'], { queryParams: { purchase_id: PurchaseId } });
   }
-  editbill(purchaseId: string): void {
-    console.log('Navigating to quickbilling with purchase_id:', purchaseId);  // Debugging line
+  editpurchase(purchaseId: string): void {
+    console.log('Navigating to purchase with purchase_id:', purchaseId);  // Debugging line
     this.router.navigate(['/dashboard/purchase'], { queryParams: { purchase_id: purchaseId } });
 }
 

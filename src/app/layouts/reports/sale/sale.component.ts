@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { formatDate } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 interface SaleDetails {
   success: boolean;
@@ -51,6 +52,7 @@ interface Bill {
     MatDatepickerModule,
     MatNativeDateModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule
   ],
   templateUrl: './sale.component.html',

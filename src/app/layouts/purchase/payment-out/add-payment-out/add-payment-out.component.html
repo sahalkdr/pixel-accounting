@@ -1,30 +1,23 @@
-<h1>Payment Out</h1>
-<form [formGroup]="paymentForm" (ngSubmit)="savePaymentout()">
-  
-  <mat-form-field>
-    <mat-label>Date:</mat-label>
-    <input matInput [matDatepicker]="toDatePicker" formControlName="payment_date">
-    <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #toDatePicker></mat-datepicker>
-  </mat-form-field>
-  
-  <mat-form-field>
-    <mat-label>Amount</mat-label>
-    <input matInput formControlName="amount" type="number">
-  </mat-form-field>
-  
-  <mat-form-field>
-    <mat-label>Party</mat-label>
-    <input matInput [formControl]="customerControl" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptionsCustomer | async" [value]="option.name">
-        {{ option.name }} - {{ option.phone }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  
-  <div>
-    <button mat-raised-button type="submit" [disabled]="!paymentForm.valid">Save</button>
-  </div>
-  
-</form>
+ <div class="add-party-container">   
+    <mat-card>
+        <mat-card-title>Payment Out</mat-card-title>
+        <form [formGroup]="paymentForm" (ngSubmit)="savePaymentout()">
+        <mat-form-field class="form-group" appearance="fill">
+            <mat-label>Amount</mat-label>
+            <input matInput formControlName="amount" type="number" required>
+        </mat-form-field>
+        <mat-form-field class="form-group" appearance="fill">
+            <mat-label>Party</mat-label>
+            <input matInput [formControl]="customerControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectCustomer($event.option.value)">
+            <mat-option (click)="openAddPartyDialog()">+ Add New Party</mat-option>
+
+            <mat-option *ngFor="let option of filteredOptionsCustomer | async" [value]="option.name">
+                {{ option.name }} - {{ option.phone }}
+            </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button type="submit" [disabled]="!paymentForm.valid">Save</button>
+    </form>
+    </mat-card>
+ </div>

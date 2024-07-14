@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -23,7 +24,7 @@ import { Router } from '@angular/router';
     MatListModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,HttpClientModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']

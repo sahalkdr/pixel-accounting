@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../shared/services/user.service';
@@ -19,6 +19,7 @@ import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import Swal from 'sweetalert2';
+import { HttpClientModule } from '@angular/common/http';
 
 interface Item {
   id: number;
@@ -53,7 +54,8 @@ interface Customer {
   standalone: true,
   
   imports: [CommonModule, FormsModule, 
-    ReactiveFormsModule, HttpClientModule, 
+    ReactiveFormsModule, HttpClientModule,
+
     DatePipe,MatButtonModule,MatIconModule,MatInputModule,
     MatSelectModule, MatAutocompleteModule,
     MatButtonToggleModule],
@@ -202,6 +204,7 @@ export class QuickbillingComponent implements OnInit {
         
 
         this.selectCustomer(newCustomer); 
+        this.customerControl.setValue(newCustomer.name);
         this.customerSearchText = '';
 
         this.noCustomersFound = false;
@@ -248,6 +251,8 @@ export class QuickbillingComponent implements OnInit {
     // }
 
     const billData = {
+      bill_id: this.billId, // Include the bill ID
+
       party_id: this.customerDetails ? this.customerDetails.id : null,  // Allowing null for party_id
       subtotal: this.calculateSubtotal(),
       total_amount: this.calculateTotal(),

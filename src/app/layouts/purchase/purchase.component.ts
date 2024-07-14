@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient,HttpClientModule } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../shared/services/user.service';
@@ -49,7 +49,11 @@ interface Customer {
   selector: 'app-purchase',
   standalone: true,
   imports: [CommonModule, FormsModule, 
-    ReactiveFormsModule, HttpClientModule, 
+    ReactiveFormsModule, 
+// TODO: `HttpClientModule` should not be imported into a component directly.
+// Please refactor the code to add `provideHttpClient()` call to the provider list in the
+// application bootstrap logic and remove the `HttpClientModule` import from this component.
+HttpClientModule, 
     DatePipe,MatButtonModule,MatIconModule,MatInputModule,
     MatSelectModule, MatAutocompleteModule,
     MatButtonToggleModule],
@@ -109,6 +113,7 @@ export class PurchaseComponent implements OnInit {
 
       this.isEditMode = !!this.purchaseId;
       if (this.isEditMode) {
+
           this.loadPurchaseDetails(this.purchaseId);
       }
   });
@@ -195,6 +200,8 @@ export class PurchaseComponent implements OnInit {
         
 
         this.selectCustomer(newCustomer); 
+        this.customerControl.setValue(newCustomer.name);
+
         this.customerSearchText = '';
 
         this.noCustomersFound = false;
@@ -284,6 +291,8 @@ export class PurchaseComponent implements OnInit {
     // }
 
     const billData = {
+      purchase_id: this.purchaseId, // Include the bill ID
+
       party_id: this.customerDetails ? this.customerDetails.id : null,  // Allowing null for party_id
       subtotal: this.calculateSubtotal(),
       total_amount: this.calculateTotal(),
@@ -302,7 +311,7 @@ export class PurchaseComponent implements OnInit {
       Id: item.id,
       quantity: item.quantity,     
       discount: item.discount,
-      tax: item.tax,
+      tax: item.tax_rate,
       purchase_price:item.purchase_price
 
 
@@ -330,83 +339,72 @@ export class PurchaseComponent implements OnInit {
     console.log("Fetching purchase details for purchase ID:", purchaseId);
     const userId = localStorage.getItem('userId');
   
-    this.http.get(`http://localhost/restaurant/get_bill_details_for_edit.php?bill_id=${purchaseId}&user_id=${userId}`)
-      .subscribe((response: any) => {
-        if (response.success) {
-          const purchase = response.purchase;
+    this.http.get(`http://localhost/restaurant/get_purchase_details_for_edit.php?purchase_id=${purchaseId}&user_id=${userId}`)
+      .subscribe(
+        (response: any) => {
+          console.log("Success response:", response);
+          if (response.success) {
+            const purchase = response.purchase;
+            const items = response.items;
   
-          
-          this.customerDetails = this.parties.find(party => party.id === purchase.party_id) || null;
+            // Handle customer details (assuming parties and customerDetails are defined)
+            this.customerDetails = this.parties.find(party => party.id === purchase.party_id) || null;
   
-          // Set the form values 
-          this.purchaseForm.patchValue({
-            customer_name: this.customerDetails ? this.customerDetails.name : '',
-            subtotal: parseFloat(purchase.subtotal),
-            total_amount: parseFloat(purchase.total_amount),
-            // payment_mode: purchase.payment_mode,
-            // amount_received: parseFloat(purchase.amount_received),
-            // additional_discount: parseFloat(purchase.additional_discount),
-            total_tax: parseFloat(purchase.total_tax),
-            total_discount: parseFloat(purchase.total_discount),
-          });
+            // Set form values
+            this.purchaseForm.patchValue({
+              customer_name: this.customerDetails ? this.customerDetails.name : '',
+              subtotal: parseFloat(purchase.subtotal || '0'),
+              total_amount: parseFloat(purchase.total_amount || '0'),
+              total_tax: parseFloat(purchase.total_tax || '0'),
+              total_discount: parseFloat(purchase.total_discount || '0'),
+            });
   
-          // Map items to filteredProducts array
-          this.filteredProducts = response.items.map((item: any) => {
-            const product = this.products.find(product => product.id === item.item_id);
-            if (product) {
-              // Calculate discountAmount and tax for each item
-              const total = this.calculateItemTotal({
-                ...product,
-                quantity: item.quantity,
-              });
-              const discountAmount = this.calculateItemDiscount({
-                ...product,
-                quantity: item.quantity,
-                discount: product.discount 
-              });
-              const taxAmount = this.calculateItemTax({
-                ...product,
-                quantity: item.quantity,
-                tax: product.tax
-              });          
-              return {
-                ...product,
-                quantity: item.quantity,
-                total: total,
-                discountAmount: discountAmount,
-                tax: taxAmount, 
-              };
-            } else {
-              console.warn(`Product with id ${item.item_id} not found`);
-              return {
-                id: item.item_id,
-                item_code: '',
-                name: '',
-                quantity: item.quantity,
-                unit: '',
-                purchase_price: 0,
-                discount: 0,
-                total: 0,
-                category_id: 0,
-                // tax_rate: 0,
-                // stock: 0,
-                tax: 0,
-                discountAmount: 0, 
-              };
+            // Handle items
+            if (items && Array.isArray(items)) {
+              this.filteredProducts = items.map((item: any) => {
+                const product = this.products.find(p => p.id === item.item_id);
+                if (!product) {
+                  console.error(`Product with id ${item.item_id} not found in products array.`);
+                  return null; // Handle this case according to your application logic
+                }
+  
+                // Fetch purchase_price from product
+                const purchase_price = parseFloat(String(product.purchase_price || '0'));
+  
+                return {
+                  id: item.item_id,
+                  item_code: product.item_code,
+                  name: product.name,
+                  quantity: item.quantity,
+                  unit: product.unit,
+                  purchase_price: purchase_price,
+                  discount: parseFloat(item.discount || '0'),
+                  tax_rate: parseFloat(item.tax || '0'),
+                  total: 0, // fill with appropriate data
+                  category_id: 0, // fill with appropriate data
+                  tax: 0, // fill with appropriate data
+                  discountAmount: 0, // fill with appropriate data
+                };
+              }).filter((item: any) => item !== null) as Item[]; // Filter out null items
+              this.filteredProducts.forEach(item => this.updateItemTotal(item));
+
+            } 
+            else {
+              console.error('Invalid items array:', items);
             }
-          });
-          
-          this.calculateTotal();
-  
-          console.log("Purchase details loaded:", purchase);
-          console.log("Items loaded:", this.filteredProducts);
-        } else {
-          console.error('Error fetching purchase details:', response.message);
+          } else {
+            console.error('API returned error:', response.message);
+          }
+        },
+        (error) => {
+          console.error('Error fetching purchase details:', error);
         }
-      }, (error) => {
-        console.error('Error fetching purchase details:', error);
-      });
+      );
   }
+  
+  
+  
+  
   
   
 
@@ -429,6 +427,7 @@ export class PurchaseComponent implements OnInit {
     if(!item) return;
     this.selectItem(item[0]);
     this.searchControl.setValue('');
+    
   }
 
   selectItem(item: Item): void {

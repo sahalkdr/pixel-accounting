@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
@@ -52,7 +53,7 @@ interface Payment_outDetails {
     MatDatepickerModule,
     MatNativeDateModule,
     MatAutocompleteModule,
-    FormsModule,
+    FormsModule,HttpClientModule,
     ReactiveFormsModule
   ],
   templateUrl: './payment-out.component.html',
@@ -65,7 +66,7 @@ export class PaymentOutComponent implements OnInit {
   noRecords: boolean = false;
   fromDate: string = '';
   toDate: string = '';
-  itemsPerPage: number = 13;
+  itemsPerPage: number = 9;
   p: number = 1;
   customerSearchText: string = '';
   parties: Customer[] = [];
@@ -121,7 +122,7 @@ export class PaymentOutComponent implements OnInit {
   }
   navigateToAddPaymentOut() {
     const dialogRef = this.dialog.open(AddPaymentOutComponent, {
-        width: '900px'
+        width: '400px'
         // ,
         // height:'100%'
     });
@@ -292,6 +293,17 @@ export class PaymentOutComponent implements OnInit {
         this.noRecords = true;
       }
     );
+  }
+
+  printPage(): void {
+    const printContents = document.getElementById('print-area')?.innerHTML;
+    if (printContents) {
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload();
+    }
   }
   
   

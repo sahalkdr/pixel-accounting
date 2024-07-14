@@ -13,17 +13,19 @@
                    [formControl]="searchControl"
                    [matAutocomplete]="auto">
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectItemById($event.option.value)">
+              <mat-option (click)="openAddItemDialog()">+ Add New Item</mat-option>
+
               @for (option of filteredOptions | async; track option) {
                 <mat-option [value]="option.id">{{option.name}} - {{option.unit}}</mat-option>
               }
             </mat-autocomplete>
           </mat-form-field>
-          <div class="add-item-wrapper">
+          <!-- <div class="add-item-wrapper">
             <button mat-mini-fab class="small-mini-fab" (click)="openAddItemDialog()">
               <mat-icon>add</mat-icon>
             </button>
-            <span class="add-item-text">Add Item</span>
-          </div>
+            <span class="add-item-text">Add Item</span> -->
+          <!-- </div> -->
           
         </form>
         
@@ -53,8 +55,8 @@
               <th>Unit</th>
               <th>Price/Unit</th>
               
-              <th>Discount (In %)</th>
-              <th>Tax (In %)</th>
+              <th colspan="2">Discount (In %)</th>
+              <th colspan="2">Tax (In %)</th>
               <th>Total</th>
               <th>Action</th>
             </tr>
@@ -78,12 +80,14 @@
               <td>
                 <input type="number" class="hidden-input" [(ngModel)]="product.discount" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
             </td>
+            <td>{{ product.discountAmount | number:'1.2-2' }}</td>
             <td>
               <input type="number" class="hidden-input" [(ngModel)]="product.tax_rate" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
           </td>
+          <td>{{ product.tax | number:'1.2-2' }}</td> 
   
-              <td>{{ product.total | number:'1.2-2' }}</td>
-              <td>
+          <td>{{ product.total | number:'1.2-2' }}</td>
+          <td>
                 <button mat-icon-button color="warn" (click)="removeItem(i)">
                   <mat-icon>delete</mat-icon>
                 </button>
@@ -121,6 +125,8 @@
                    [formControl]="customerControl"
                    [matAutocomplete]="auto2">
             <mat-autocomplete  #auto2="matAutocomplete" (optionSelected)="selectCustomerByID($event.option.value)">
+              <mat-option (click)="openAddPartyDialog()">+ Add New Party</mat-option>
+
               @for (option of filteredOptionsCustomer | async; track option) {
                 <mat-option [value]="option.id">{{option.name}} - {{option.phone}}</mat-option>
               }

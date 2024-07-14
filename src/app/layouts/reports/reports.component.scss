@@ -50,6 +50,31 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: 100%;
   }
+  .sub-menu {
+    padding-left: 20px;
+  }
+  
+  .sub-menu li {
+    margin-bottom: 5px;
+  }
+  
+  .sub-menu a {
+    color: #495057;
+    padding: 5px 0;
+    position: relative;
+  }
+  
+  .sub-menu a::before {
+    
+    position: absolute;
+    left: -15px;
+    color: #495057;
+  }
+  
+  .sub-menu a:hover {
+    background-color: #e9ecef;
+    border-radius: 5px;
+  }
   
   @media print {
     .report-container,

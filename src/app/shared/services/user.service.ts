@@ -450,7 +450,7 @@ export class UserService {
     }
   }
 
-  async addPaymentOut(payload: { party_id: number|null, amount: number, payment_date: string, user_id: number }) {
+  async addPaymentOut(payload: { party_id: number|null, amount: number,  user_id: number }) {
     try {
         const addPaymentOutResponse = await this.apiService.httpRequest({
             method: 'POST',

@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { ItemsModule } from './layouts/items/items.module'; 
 import { PartiesModule } from './layouts/parties/parties.module';
@@ -19,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule here
 
 import { AppComponent } from './app.component';
 import { PartiesComponent } from './layouts/parties/parties.component';
@@ -48,6 +48,7 @@ const appRoutes: Routes = [
         PartiesComponent,
         ItemsComponent,
         ReportsComponent,
+        HttpClientModule,
         QuickbillingComponent,
     ],
     imports: [

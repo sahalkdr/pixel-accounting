@@ -2,10 +2,11 @@ import { Component, OnInit} from '@angular/core';
 import { OnSameUrlNavigation, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { HttpClientModule } from '@angular/common/http';
 
 import { EditPartyDialogComponent } from './edit-party-dialog/edit-party-dialog.component';
 import { AddpartyComponent } from './addparty/addparty.component';
@@ -26,7 +27,9 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-parties',
   standalone: true,
-  imports: [CommonModule,MatIconModule,HttpClientModule,NgxPaginationModule,MatButtonModule,MatInputModule,MatCardModule],
+  imports: [CommonModule,MatIconModule,HttpClientModule,
+
+NgxPaginationModule,MatButtonModule,MatInputModule,MatCardModule],
   templateUrl: './parties.component.html',
   styleUrl: './parties.component.scss'
 })

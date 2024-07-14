@@ -1,13 +1,17 @@
 <div class="report-container">
-    <nav class="sidebar">
-      <ul>
-        <li><a routerLink="/dashboard/reports/sale" routerLinkActive="active">Sale</a></li>
-        <li><a routerLink="/dashboard/reports/purchase_report" routerLinkActive="active">Purchase</a></li>
-
-      </ul>
-    </nav>
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
+  <nav class="sidebar">
+    <ul>
+      <li><a routerLink="/dashboard/reports/sale" routerLinkActive="active">Sale</a></li>
+      <li>
+        <a (click)="togglePurchaseMenu()">Purchase</a>
+        <ul *ngIf="showPurchaseOptions" class="sub-menu">
+          <li><a routerLink="/dashboard/reports/purchase/order" routerLinkActive="active">Purchase Order</a></li>
+          <li><a routerLink="/dashboard/reports/purchase" routerLinkActive="active">Purchase Out</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <div class="content">
+    <router-outlet></router-outlet>
   </div>
-  
+</div>

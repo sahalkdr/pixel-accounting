@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
@@ -22,7 +23,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatButtonModule,
     MatFormFieldModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,HttpClientModule
     
     
   ]

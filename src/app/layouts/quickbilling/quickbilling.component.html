@@ -13,7 +13,9 @@
                  [formControl]="searchControl"
                  [matAutocomplete]="auto">
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectItemById($event.option.value)">
+
             @for (option of filteredOptions | async; track option) {
+
               <mat-option [value]="option.id">{{option.name}} - {{option.unit}}</mat-option>
             }
           </mat-autocomplete>
@@ -106,7 +108,10 @@
                  [formControl]="customerControl"
                  [matAutocomplete]="auto2">
           <mat-autocomplete  #auto2="matAutocomplete" (optionSelected)="selectCustomerByID($event.option.value)">
+            <mat-option (click)="openAddPartyDialog()">+ Add New Party</mat-option>
+
             @for (option of filteredOptionsCustomer | async; track option) {
+
               <mat-option [value]="option.id">{{option.name}} - {{option.phone}}</mat-option>
             }
           </mat-autocomplete>

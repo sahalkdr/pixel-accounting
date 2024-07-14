@@ -10,4 +10,10 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, FormsModule,RouterModule],
   styleUrls: ['./reports.component.scss']
 })
-export class ReportsComponent {}
+export class ReportsComponent {
+  showPurchaseOptions: boolean = false;
+
+  togglePurchaseMenu(): void {
+    this.showPurchaseOptions = !this.showPurchaseOptions;
+  }
+}

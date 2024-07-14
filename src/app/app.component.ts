@@ -10,8 +10,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http'; 
+import {} from '@angular/common/http'; 
 import { ItemsComponent } from './layouts/items/items.component'; 
+import { HttpClientModule } from '@angular/common/http';
 
 
 
