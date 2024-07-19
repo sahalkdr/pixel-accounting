@@ -1,8 +1,8 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="example-toolbar">
-    <div class="left-content"> <!-- Wrap menu icon and company name in a div -->
+    <div class="left-content">
       <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-      <h1 class="example-app-name">{{company_name}}</h1>
+      <h1 class="example-app-name">{{ company_name }}</h1>
     </div>
     <button mat-icon-button class="icon" (click)="logout()">
       <mat-icon>logout</mat-icon>
@@ -24,9 +24,36 @@
         <mat-list-item routerLink="/dashboard/quickbilling" routerLinkActive="active" matTooltip="QuickBilling" matTooltipPosition="above">
           <mat-icon>receipt</mat-icon>
         </mat-list-item>
-        <mat-list-item routerLink="/dashboard/purchase" routerLinkActive="active" matTooltip="Purchase" matTooltipPosition="above">
-          <mat-icon>shopping_cart</mat-icon>
-        </mat-list-item>
+
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+            <li>
+              <div class="mat-tree-node" (click)="navigateTo(node.route)" matTooltip={{node.name}} matTooltipPosition="above">
+                <mat-icon>{{ node.icon }}</mat-icon>
+                
+              </div>
+            </li>
+          </mat-tree-node>
+          <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+            <li>
+              <div class="mat-tree-node" [class.example-tree-node]="!treeControl.isExpanded(node)">
+                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.name">
+                  <mat-icon class="mat-icon-rtl-mirror">
+                    {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                  </mat-icon>
+                </button>
+                <div (click)="navigateTo(node.route)">
+                  <mat-icon>{{ node.icon }} matTooltip={{node.name}}</mat-icon>
+                  {{ node.name }}
+                </div>
+              </div>
+              <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                <ng-container matTreeNodeOutlet></ng-container>
+              </ul>
+            </li>
+          </mat-nested-tree-node>
+        </mat-tree>
+
         <mat-list-item routerLink="/dashboard/reports" routerLinkActive="active" matTooltip="Reports" matTooltipPosition="above">
           <mat-icon>assessment</mat-icon>
         </mat-list-item>

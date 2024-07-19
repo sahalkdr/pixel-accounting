@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../shared/services/user.service';
 import { AddpartyComponent } from '../parties/addparty/addparty.component';
 import { AdditemComponent } from '../add-item/add-item.component';
+import { RouterModule } from '@angular/router';
 
 import { CurrencyPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -56,7 +57,7 @@ interface Customer {
 HttpClientModule, 
     DatePipe,MatButtonModule,MatIconModule,MatInputModule,
     MatSelectModule, MatAutocompleteModule,
-    MatButtonToggleModule],
+    MatButtonToggleModule,RouterModule],
   templateUrl: './purchase.component.html',
   styleUrl: './purchase.component.scss'
 })

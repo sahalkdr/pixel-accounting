@@ -1,0 +1,110 @@
+<!-- payment-out.component.html -->
+<div class="payment-out-container">
+  <header class="parties-header">
+    <div class="option">Quotes</div>
+    <button mat-mini-fab (click)="navigateToAddQuote()" matTooltip="Add New Quote">
+      <mat-icon>add</mat-icon>
+    </button>
+  </header>
+
+  <div class="filters">
+    <div class="date-picker">
+      <mat-form-field>
+        <mat-label>From:</mat-label>
+        <input matInput [matDatepicker]="fromDatePicker" id="from-date" name="from-date" (dateInput)="filterByDateRange()">
+        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>To:</mat-label>
+        <input matInput [matDatepicker]="toDatePicker" id="to-date" name="to-date" (dateInput)="filterByDateRange()">
+        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #toDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Party Name:</mat-label>
+        <input matInput type="text" id="party-name" name="party-name" (input)="filterByDateRange()">
+      </mat-form-field>
+      <mat-icon class="mat-icon-print" (click)="printPage()">print</mat-icon>
+    </div>
+    
+
+  </div>
+
+    
+
+    <!-- <div class="summary">
+      <div class="summary-item paid">
+        <div class="label">Total</div>
+        <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
+      </div>
+      
+    </div> -->
+    
+
+
+  <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
+    <table class="normal-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Party Name</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let quote of (quotedetails.quotes || [] )| paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+          <td>{{ quote.quote_date| date: 'yyyy-MM-dd'  }}</td>
+          <td>{{ quote.customer_name || 'N/A' }}</td>            
+          
+          <td class="right-align hide-on-small-screen">{{ quote.amount_received }}</td>
+          <td>
+            <button mat-icon-button (click)="editbill(quote.quote_id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noRecordsTemplate>
+    <div class="no-records">No records found.</div>
+  </ng-template>
+
+
+
+  <div class="pagination-container" *ngIf="!noRecords && quotedetails.quotes?.length">
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+
+<div id="print-area" style="display: none;">
+  <!-- <div class="summary">
+    <div class="summary-item paid">
+      <div class="label">Total</div>
+      <div class="amount">₹{{ totalPaidAmount.toFixed(2) }}</div>
+    </div>
+    </div> -->
+  <div class="transactions" *ngIf="!noRecords; else noRecordsTemplate">
+  <table class="normal-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Party Name</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let quote of (quotedetails.quotes || [] )| paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <td>{{ quote.quote_date| date: 'yyyy-MM-dd'  }}</td>
+        <td>{{ quote.customer_name || 'N/A' }}</td>            
+        
+        <td class="right-align hide-on-small-screen">{{ quote.amount_received }}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>

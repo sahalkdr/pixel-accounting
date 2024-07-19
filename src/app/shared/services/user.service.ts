@@ -164,6 +164,40 @@ export class UserService {
     }
 }
 
+async addSalesperson(name: string,email: string, company_id: string | number) {
+  const payload = { name, email,  company_id };
+
+  try {
+      console.log('Sending add salesperson payload:', payload);
+
+      const addSalespersonResponse = await this.apiService.httpRequest({
+          method: 'POST',
+          url: 'http://localhost/restaurant/add_salesperson.php',
+          data: payload
+      });
+
+      console.log('Add salesperson response:', addSalespersonResponse);
+
+      if (addSalespersonResponse.success) {
+          return {
+              success: true,
+              person: {
+                  id: addSalespersonResponse.person_id,
+                  name,
+                  
+                  email,
+                 
+              }
+          };
+      } else {
+          return { success: false, message: addSalespersonResponse.error };
+      }
+  } catch (error) {
+      console.error('Add salesperson error:', error);
+      return { success: false, message: 'An error occurred while adding the salesperson. Please try again later.' };
+  }
+}
+
   
 
   async addCategory(category: { name: string, tax_rate: number },user_id: string | number) {
@@ -398,6 +432,45 @@ export class UserService {
       return { success: false, message: 'An error occurred while saving the purchase and items. Please try again later.' };
     }
   }
+
+  async saveQuoteWithItems(quote: any, items: { Id: number, quantity: number }[]) {
+    try {
+      // Save the quote first
+      const quoteResponse = await this.apiService.httpRequest({
+        method: 'POST',
+        url: 'http://localhost/restaurant/add_quotes.php',
+        data: quote
+      });
+  
+      if (!quoteResponse.success) {
+        return { success: false, message: quoteResponse.error || 'Error saving quote' };
+        console.error('messag:', quoteResponse.error);
+
+      }
+  
+      // If the quote is saved successfully, save the bill items
+      const quoteId = quoteResponse.quoteId;
+      const itemsPayload = { quoteId: quoteId, items };
+  
+      const itemsResponse = await this.apiService.httpRequest({
+        method: 'POST',
+        url: 'http://localhost/restaurant/saveQuoteItems.php',
+        data: itemsPayload
+      });
+  
+      if (!itemsResponse.success) {
+        return { success: false, message: itemsResponse.message || 'Error saving quote items' };
+        console.log('message:',itemsResponse.message);
+      }
+  
+      // If both the quote and items are saved successfully
+      return { success: true, quoteId ,message:"quote sabed successfully"};
+    } catch (error) {
+      console.error('Save quote with items error:', error);
+      return { success: false, message: 'An error occurred while saving the quote and items. Please try again later.' };
+    }
+  }
+
 
  
   

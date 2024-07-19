@@ -18,6 +18,11 @@ import { HomeComponent } from './layouts/home/home.component';
 
 import { AdditemComponent } from './layouts/add-item/add-item.component';
 import { AddpartyComponent } from './layouts/parties/addparty/addparty.component'
+import { QuotesComponent } from './layouts/quotes/quotes.component'
+import { AddSalespersonsComponent } from './layouts/quotes/add-salespersons/add-salespersons.component'
+import { AddQuoteComponent } from './layouts/quotes/add-quote/add-quote.component'
+
+import { ViewQuoteComponent } from './layouts/quotes/view-quote/view-quote.component'
 
 import { ViewBillComponent } from './layouts/quickbilling/view-bill/view-bill.component';
 import { PrintSaleReportComponent } from './layouts/reports/print-sale-report/print-sale-report.component';
@@ -41,6 +46,7 @@ export const routes: Routes = [
         { path: 'purchase', component: PurchaseComponent},
         { path: 'payment_out', component: PaymentOutComponent},
         { path: 'add_payment_out', component: AddPaymentOutComponent},
+        { path: 'quote', component: QuotesComponent},
         {
           path: 'reports', component: ReportsComponent, children: [
             { path: '', redirectTo: 'sale', pathMatch: 'full' },
@@ -53,8 +59,14 @@ export const routes: Routes = [
        
         { path: 'item/add', component: AdditemComponent ,canActivate: [AuthGuard]},
         { path: 'parties/add', component: AddpartyComponent ,canActivate: [AuthGuard]},
+        { path: 'add_quotes', component: AddQuoteComponent,canActivate: [AuthGuard]},
+
+        { path: 'add_quotes/add-salespersons', component: AddSalespersonsComponent,canActivate: [AuthGuard]},
+
         { path: 'bill-details', component: ViewBillComponent ,canActivate: [AuthGuard]},
-        { path: 'sale-details', component: PrintSaleReportComponent ,canActivate: [AuthGuard]}
+        { path: 'sale-details', component: PrintSaleReportComponent ,canActivate: [AuthGuard]},
+        { path: 'quote-details', component: ViewQuoteComponent ,canActivate: [AuthGuard]},
+
         
 ];
 

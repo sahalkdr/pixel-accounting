@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { UserService } from '../../../shared/services/user.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-bill',
-  imports: [CurrencyPipe, CommonModule],
+  imports: [CurrencyPipe, CommonModule,HttpClientModule],
   standalone: true,
   templateUrl: './view-bill.component.html',
   styleUrls: ['./view-bill.component.scss']

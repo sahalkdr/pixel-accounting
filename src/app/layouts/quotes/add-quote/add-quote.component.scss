@@ -1,0 +1,200 @@
+.quickbilling-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #f7f7f7;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    max-width: 1460px;
+  
+    .left-side {
+      flex: 1 1 70%;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+  
+      .parties-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 10px;
+
+        .icon{
+          color: red;
+          cursor: pointer;
+        }
+  
+        .option {
+          cursor: pointer;
+          font-size: 25px;
+          font-weight: 500;
+          color: #007bff;
+          padding: 10px 15px;
+          border-bottom: 2px solid transparent;
+          transition: all 0.3s ease;
+  
+          &:hover {
+            border-bottom: 2px solid #007bff;
+          }
+        }
+      }
+  
+      .quote-details {
+        margin-bottom: 20px;
+        padding: 10px;
+        
+        background-color: #f8f9fa;
+        border-radius: 8px;
+  
+        .quote-dates {
+          display: flex;
+          flex-wrap: nowrap; // Ensure both date inputs are in the same row
+          justify-content: space-between; // Add space between date inputs
+  
+          margin-bottom: 20px;
+  
+          .date {
+            flex: 1;
+            font-weight: bold;
+            color: red;
+            margin-top: 10px; // Add some space between date labels
+  
+          }
+  
+          .dateinput {
+            flex: 1;
+            display: flex;
+  
+            // margin-bottom: 10px;
+            margin-right: 100px; // Add space between the date inputs
+            align-items: center; // Ensure the input and icon are aligned
+  
+  
+            input {
+              margin-right: 25; // Add space between input field and icon
+  
+  
+              width: calc(100% - 40px); // Adjust width to accommodate date picker icon
+              border-radius: 5px;
+              height: 30px;
+            }
+            
+          }
+        }
+  
+        .message {
+          margin-bottom: 20px;
+          display: flex; // Make the container flex
+          align-items: center; // Align items in the center vertically
+  
+          span {
+            font-weight: bold;
+            margin-right: 10px; // Add space between the label and the input field
+          }
+  
+          mat-form-field {
+            flex: 1; // Allow the input field to take the remaining space
+            margin: 0; // Remove any default margin
+          }
+        }
+      }
+  
+  
+      .table-container {
+        max-height: 600px;
+        overflow-y: auto;
+  
+        mat-form-field {
+          width: 100%;
+        }
+  
+        table {
+          width: 100%;
+          border-collapse: collapse;
+  
+          th, td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+          }
+  
+          th {
+            background-color: #f1f1f1;
+          }
+        }
+  
+        .not-found {
+          text-align: center;
+          margin-top: 20px;
+          color: #ff6f61;
+        }
+      }
+    }
+  
+    .right-side {
+      flex: 1 1 30%;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+  
+      .customer-search {
+        margin-bottom: 20px;
+  
+        mat-form-field {
+          width: 100%;
+        }
+  
+        .not-found {
+          text-align: center;
+          margin-top: 20px;
+          color: #ff6f61;
+        }
+      }
+  
+      .billing-details {
+        h2 {
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+  
+        .detail {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+  
+          .label {
+            font-weight: bold;
+          }
+  
+          .value {
+            text-align: right;
+            min-width: 100px;
+          }
+        }
+      }
+  
+      .bottom-options {
+        text-align: right;
+        margin-top: 20px;
+  
+        button {
+          margin-left: 10px;
+        }
+      }
+  
+      .success-message {
+        color: green;
+        text-align: center;
+        margin-top: 10px;
+      }
+  
+      .error-message {
+        color: red;
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+  }
+  

@@ -1,0 +1,146 @@
+body {
+  font-family: Ubuntu;
+    color: #000;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  border: 2px solid black;
+  background: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+
+  .company-info {
+      flex: 1;
+      h1 {
+        font-family: Ubuntu;
+        font-size: 22px;
+
+          margin: 0;
+      }
+      p {
+          margin: 5px 0;
+      }
+  }
+
+  .quote-title {
+      flex: 1;
+      text-align: right;
+      h2 {
+          margin: 0;
+          margin-top: 65px;
+          font-family: Ubuntu;
+          font-size: 22pt;
+      }
+  }
+}
+
+.quote-info {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  text-align: right;
+
+  p {
+      margin: 5px 0;
+      
+  }
+}
+
+.bill-to {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+
+  p {
+      margin: 5px 0;
+  }
+  .name {
+    color: blue;
+} 
+
+}
+
+.subject {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+
+  p {
+      margin: 5px 0;
+      
+  }
+
+  
+}
+
+.quote-items {
+  table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+
+      th, td {
+          padding: 10px;
+          border: 1px solid #ddd;
+          text-align: left;
+      }
+
+      th {
+          background: #f2f3f4;
+      }
+  }
+}
+
+.totals {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid black;
+
+  .notes {
+      width: 50%;
+  }
+
+  .total-amount {
+      width: 40%;
+
+      table {
+          width: 100%;
+          border-collapse: collapse;
+
+          td {
+              padding: 5px;
+          }
+
+          .red {
+              color: red;
+          }
+
+          tr:last-child {
+              font-weight: bold;
+          }
+      }
+  }
+}
+
+
+
+footer {
+  text-align: right;
+  margin-top: 80px;
+  padding-top: 10px;
+}
+@media print {
+  button {
+    display: none;
+  }
+}

@@ -1,14 +1,40 @@
 <div class="quickbilling-container">
-  <div>
-    <router-outlet></router-outlet>
-  </div>
+  
     <div class="left-side">
+      <header class="parties-header">
+        <div class="option">New Quote</div>
+        <mat-icon class="icon" (click)="navigate()">close</mat-icon>
+
+      </header>
+      <div class="quote-details">
+        <div class="quote-dates">
+          <span class="date">Quote Date:</span>
+            <span class="dateinput">
+              <input matInput [matDatepicker]="quotationDatepicker" placeholder="dd/MM/yyyy" [(ngModel)]="quotationDate">
+              <mat-datepicker-toggle matSuffix [for]="quotationDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #quotationDatepicker></mat-datepicker>
+            </span>
+        
+          <span class="date">Expiry Date:</span>
+            <span class="dateinput">
+              <input matInput [matDatepicker]="expiryDatepicker" placeholder="dd/MM/yyyy" [(ngModel)]="expiryDate">
+              <mat-datepicker-toggle matSuffix [for]="expiryDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #expiryDatepicker></mat-datepicker>
+            </span>
+        </div>
+        <div class="message">
+        <form [formGroup]="qouteForm">
+          <span>Subject</span>
+          <mat-form-field appearance="outline">
+              <input matInput formControlName="subject" placeholder="Let your Customer know what this Quote is for">
+            </mat-form-field>
+        </form>
+        </div>
+      </div>
       <div class="table-container">
-  
-  
         <form class="example-form">
-          <mat-form-field class="example-full-width">
-            <mat-label>Search</mat-label>
+          <h2>Item Table</h2>
+          <mat-form-field class="example-full-width" appearance="outline">
             <input type="text"
                    placeholder="Search By Item code or Name"
                    aria-label="Number"
@@ -16,35 +42,15 @@
                    [formControl]="searchControl"
                    [matAutocomplete]="auto">
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectItemById($event.option.value)">
-              <mat-option (click)="openAddItemDialog()">+ Add New Item</mat-option>
-
+  
               @for (option of filteredOptions | async; track option) {
+  
                 <mat-option [value]="option.id">{{option.name}} - {{option.unit}}</mat-option>
               }
             </mat-autocomplete>
           </mat-form-field>
-          <!-- <div class="add-item-wrapper">
-            <button mat-mini-fab class="small-mini-fab" (click)="openAddItemDialog()">
-              <mat-icon>add</mat-icon>
-            </button>
-            <span class="add-item-text">Add Item</span> -->
-          <!-- </div> -->
-          
         </form>
         
-
-        
-        <!-- <mat-form-field appearance="fill">
-          <mat-label>Search</mat-label>
-          <input matInput placeholder="Search..." [(ngModel)]="searchText" (input)="searchItems()" />
-        </mat-form-field>
-        <div *ngIf="suggestedItems.length > 0" class="suggestions">
-          <ul>
-            <li *ngFor="let item of suggestedItems" (click)="selectItem(item)">
-              {{ item.name }} - {{ item.unit }}
-            </li>
-          </ul>
-        </div> -->
         <div *ngIf="noItemsFound" class="not-found">
           <p>Item not found</p>
         </div>
@@ -58,8 +64,8 @@
               <th>Unit</th>
               <th>Price/Unit</th>
               
-              <th colspan="2">Discount (In %)</th>
-              <th colspan="2">Tax (In %)</th>
+              <th>Discount</th>
+              <th>Tax</th>
               <th>Total</th>
               <th>Action</th>
             </tr>
@@ -69,28 +75,16 @@
               <td>{{ i + 1 }}</td>
               <td>{{ product.item_code }}</td>
               <td>{{ product.name }}</td>
-              <!-- <td>{{ product.stock }}</td> -->
               <td>
                   <input type="number" class="quantiyInput" [(ngModel)]="product.quantity" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
               </td>
               <td>{{ product.unit }}</td>
-              <!-- <td>{{ product.purchase_price }}</td> -->
-              <td>
-                <input type="number" class="quantiyInput" [(ngModel)]="product.purchase_price" (ngModelChange)="onQuantityChange(product)" style="width: 70px;" step="0.01" />
-              </td>
-              <!-- <td>{{ product.discountAmount | number:'1.2-2' }}</td>
-              <td>{{ product.tax | number:'1.2-2' }}</td>  -->
-              <td>
-                <input type="number" class="hidden-input" [(ngModel)]="product.discount" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
-            </td>
-            <td>{{ product.discountAmount | number:'1.2-2' }}</td>
-            <td>
-              <input type="number" class="hidden-input" [(ngModel)]="product.tax_rate" (ngModelChange)="onQuantityChange(product)" style="width: 50px;" />
-          </td>
-          <td>{{ product.tax | number:'1.2-2' }}</td> 
+              <td>{{ product.sale_price }}</td>
+              <td>{{ product.discountAmount | number:'1.2-2' }}</td>
+              <td>{{ product.tax | number:'1.2-2' }}</td> 
   
-          <td>{{ product.total | number:'1.2-2' }}</td>
-          <td>
+              <td>{{ product.total | number:'1.2-2' }}</td>
+              <td>
                 <button mat-icon-button color="warn" (click)="removeItem(i)">
                   <mat-icon>delete</mat-icon>
                 </button>
@@ -107,57 +101,84 @@
                   <mat-button-toggle value="Online">Online</mat-button-toggle>
                 </mat-button-toggle-group>
   
-               
+                
               </td>
             </tr> -->
+           
           </tfoot>
         </table>
         <!-- <div *ngIf="showStockWarning" class="stock-warning">Stock not available for selected quantity</div> -->
       </div>
+     
     </div>
+    
+    
     <div class="right-side">
       <div class="customer-search">
-        <h2>Customer Details</h2>
-        <form class="example-form">
+        
+        <form>
+          <span class="party">Customer Name</span>
           <mat-form-field>
-            <mat-label>Search</mat-label>
+            <span></span>
+            <!-- <mat-label>Search or Add Party</mat-label> -->
             <input type="text"
-                   placeholder="Search Customer By Name"
+                   placeholder="Search or Add Customer"
                    aria-label="Number"
                    matInput
                    [formControl]="customerControl"
                    [matAutocomplete]="auto2">
             <mat-autocomplete  #auto2="matAutocomplete" (optionSelected)="selectCustomerByID($event.option.value)">
               <mat-option (click)="openAddPartyDialog()">+ Add New Party</mat-option>
-
+  
               @for (option of filteredOptionsCustomer | async; track option) {
+  
                 <mat-option [value]="option.id">{{option.name}} - {{option.phone}}</mat-option>
               }
             </mat-autocomplete>
           </mat-form-field>
+          <span>Salesperson</span>
+          <mat-form-field appearance="fill">
+            <!-- <mat-label>Search or Add Salesperson</mat-label> -->
+            <input type="text"  placeholder="Search or add salesperson" matInput [formControl]="salespersonControl" [matAutocomplete]="autoSalesperson">
+            <mat-autocomplete #autoSalesperson="matAutocomplete" (optionSelected)="selectSalesperson($event.option.value)">
+              <mat-option (click)="openAddSalespersonDialog()">+ Add New Salesperson</mat-option>
+              <mat-option *ngFor="let option of filteredOptionsSalesperson | async" [value]="option.name">
+                  {{ option.name }} 
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field> 
         </form>
-        <!-- <mat-form-field appearance="fill">
-          <mat-label>Search Customer</mat-label>
-          <input matInput placeholder="Search Customer..." [(ngModel)]="customerSearchText" (input)="searchParties()" />
-        </mat-form-field> -->
-        <div *ngIf="customerDetails">
+        
+        <!-- <div *ngIf="customerDetails">
           <p>Name: {{ customerDetails.name }}</p>
           <p>Phone: {{ customerDetails.phone }}</p>
-        </div>
-        <!-- <div *ngIf="suggestedCustomers.length > 0" class="suggestions">
-          <ul>
-            <li *ngFor="let party of suggestedCustomers" (click)="selectCustomer(party)">
-              {{ party.name }} - {{ party.phone }}
-            </li>
-          </ul>
         </div> -->
+        
         <div *ngIf="noCustomersFound" class="not-found">
           <p>Customer not found</p>
           <button mat-button (click)="openAddPartyDialog()">Add New Customer</button>
         </div>
       </div>
+  
+      <!-- <div class="salesperson-search">
+        <h2>Select salesperson</h2>
+        <form>
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input type="text" matInput [formControl]="salespersonControl" [matAutocomplete]="autoSalesperson">
+            <mat-autocomplete #autoSalesperson="matAutocomplete" (optionSelected)="selectSalesperson($event.option.value)">
+              <mat-option (click)="openAddSalespersonDialog()">+ Add New Salesperson</mat-option>
+              <mat-option *ngFor="let option of filteredOptionsSalesperson | async" [value]="option.name">
+                  {{ option.name }} 
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field> 
+        </form>
+      </div> -->
+  
       <div class="billing-details">
         <h2>Billing Details</h2>
+        
         <div class="detail">
           <span class="label">Subtotal:</span>
           <span class="value">{{ calculateSubtotal() | number:'1.2-2' }}</span>
@@ -175,26 +196,25 @@
           <span class="label">Total Amount:</span>
           <span class="value">{{ calculateTotal() | number:'1.2-2' }}</span>
         </div>
-        <!-- <div class="detail">
+        <div class="detail">
           <span class="label">Additional Discount:</span>
           <span class="value">
             <input type="number" class="quantiyInput" [(ngModel)]="additionalDiscount" (ngModelChange)="calculateTotal()"  />
           </span>
-        </div> -->
+        </div>
         <!-- <div class="detail">
           <span class="label">Payment Mode:</span>
           <span class="value">{{ paymentMode }}</span>
         </div> -->
-        <!-- <div class="detail">
-          <span class="label">Amount Paid:</span>
+        <div class="detail">
+          <span class="label">Amount Received:</span>
           <span class="value">{{ amountReceived | number:'1.2-2' }}</span>
         </div>
-      </div> -->
+      </div>
       <div class="bottom-options">
-        <button mat-raised-button color="primary" (click)="savePurchase()">Save</button>
+        <button mat-raised-button color="primary" (click)="saveAndViewQuote()">Save</button>
       </div>
       <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
   </div>
-  

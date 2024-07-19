@@ -12,13 +12,23 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { NestedTreeControl } from '@angular/cdk/tree'; // Corrected import
+import { MatTreeNestedDataSource, MatTreeModule } from '@angular/material/tree'; // Corrected import
+interface TreeNode {
+  name: string;
+  icon: string;
+  route?: string;  // Make route optional
 
+  children?: TreeNode[];
+}
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [RouterModule,
+    MatTreeModule,
+
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
@@ -31,6 +41,9 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class DashboardComponent implements OnInit {
   mobileQuery: MediaQueryList;
+  treeControl = new NestedTreeControl<TreeNode>(node => node.children);
+  dataSource = new MatTreeNestedDataSource<TreeNode>();
+
 
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
@@ -50,7 +63,21 @@ export class DashboardComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    this.dataSource.data = [
+      {
+        name: '',
+        icon: 'shopping_cart',
+        children: [
+          { name: 'Purchase Order', icon: 'shopping_cart', route: '/dashboard/purchase' },
+          { name: 'Payment Out', icon: 'payment', route: '/dashboard/payment_out' },
+          { name: 'Quote', icon: 'shopping_cart', route: '/dashboard/quote' }
+        ]
+      },
+      // Other root nodes
+    ];
   }
+  hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
+
 
   company_name: string | null = null;
 
@@ -74,6 +101,12 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('location');
     localStorage.removeItem('phone');
     this.router.navigate(['/login']);
+  }
+
+  navigateTo(route: string | undefined) {
+    if (route) {
+      this.router.navigate([route]);
+    }
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

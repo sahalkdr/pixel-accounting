@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
-  selector: 'app-addparty',
+  selector: 'app-add-salespersons',
   standalone: true,
   imports: [CommonModule,
     FormsModule,
@@ -20,35 +20,35 @@ import { MatCardModule } from '@angular/material/card';
     MatFormFieldModule,
   MatButtonModule,
 MatInputModule],
-  templateUrl: './addparty.component.html',
-  styleUrl: './addparty.component.scss'
+  templateUrl: './add-salespersons.component.html',
+  styleUrl: './add-salespersons.component.scss'
 })
-export class AddpartyComponent {
+export class AddSalespersonsComponent {
   name: string = '';
-  phone: string = '';
+  // phone: string = '';
   email: string = '';
-  address: string = '';
+  // address: string = '';
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private userService: UserService, private router: Router,    private dialogRef: MatDialogRef<AddpartyComponent>
+  constructor(private userService: UserService, private router: Router,    private dialogRef: MatDialogRef<AddSalespersonsComponent>
   ) { }
   
 
   
 
   async onSubmit() {
-    const company_id = localStorage.getItem('userId');
+    const user_id = localStorage.getItem('userId');
 
-    if (company_id === null) {
+    if (user_id === null) {
         this.errorMessage = 'User not logged in.';
         return;
     }  
-    const result = await this.userService.addParty(this.name, this.phone, this.email, this.address, company_id);
+    const result = await this.userService.addSalesperson(this.name,this.email,  user_id);
 
     if (result.success) {
-        this.successMessage = 'Party added successfully!';
-        this.dialogRef.close({ success: true, party: result.party });
+        this.successMessage = 'Sales person added successfully!';
+        this.dialogRef.close({ success: true, person: result.person });
     } else {
         this.errorMessage = result.message;
     }
